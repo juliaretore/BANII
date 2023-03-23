@@ -1,0 +1,120 @@
+create sequence id_autor;
+create table autor(
+	id int NOT NULL UNIQUE,
+	nacionalidade varchar(100) NOT NULL,
+	area varchar(100) NOT NULL, 
+	nome varchar(100) NOT NULL,
+	primary key (id)
+);
+
+create sequence id_livro;
+create table livro(
+	id int NOT NULL UNIQUE,
+	isbn varchar(50) NULL UNIQUE,
+	titulo varchar(100) NOT NULL,
+	colecao varchar(100), -- emprestimo, permanente, reserva...
+	editora varchar(100) NOT NULL,
+	primary key (id)
+);
+
+create sequence id_autores_livro;
+create table autores_livro(
+	id_livro int NOT NULL,
+	id_autor int NOT NULL,
+	primary key (id_livro, id_autor),
+	foreign key (id_livro) references livro,
+	foreign key (id_autor) references autor
+);
+
+create table categoria(
+	id int NOT NULL UNIQUE,
+	nome varchar(100) NOT NULL,
+	tempo_empr int NOT NULL, --em dias
+	qnt_max_empr int NOT NULL, 
+	primary key (id)
+);
+
+create sequence id_endereco;
+create table endereco(
+	id int NOT NULL UNIQUE,
+	estado varchar(2) NOT NULL,
+	cidade varchar(100) NOT NULL,
+	bairro varchar(100) NOT NULL,
+	rua varchar(100) NOT NULL,
+	numero int NOT NULL,
+	complemento varchar(300) NOT NULL,
+	primary key (id)
+);
+
+create sequence id_usuario;
+create table usuario(
+	id int NOT NULL UNIQUE,
+	nome varchar(100) NOT NULL,
+	endereco int NOT NULL,
+	turno varchar(40) NOT NULL, -- Vespertino, Matutino, Notuno, Integral
+	id_categoria int NOT NULL,
+	primary key (id),
+	foreign key (id_categoria) references categoria,
+	foreign key (endereco) references endereco
+);
+
+
+create  table telefone(
+	id_usuario int NOT NULL, 
+	numero varchar(15) NOT NULL,
+	primary key (id_usuario, numero),
+	foreign key (id_usuario) references usuario
+);
+
+
+create sequence id_exemplar;
+create table exemplar(
+	id int NOT NULL UNIQUE,
+	prateleira int NOT NULL,
+	estante int NOT NULL,
+	id_livro int NOT NULL, 
+	id_usuario_reserva int,
+	data_reserva date,
+	primary key (id),
+	foreign key (id_usuario_reserva) references usuario,
+	foreign key (id_livro) references livro
+);
+
+create sequence id_funcionario;
+create table funcionario(
+	id int NOT NULL UNIQUE,
+	login varchar(100) NOT NULL UNIQUE,
+	senha varchar(100) NOT NULL,
+	nome varchar(100) NOT NULL,
+	salario real NOT NULL,
+	turno varchar(40) NOT NULL, -- Vespertino, Matutino, Notuno, Integral
+	tipo int NOT NULL,          -- 1 -> bibliotecario  2->assistente
+	primary key (id)
+);
+
+create table supervisao(
+	id_assistente int NOT NULL,
+	id_bibliotecario int NOT NULL,
+	primary key (id_assistente, id_bibliotecario),
+	foreign key (id_assistente) references funcionario,
+	foreign key (id_bibliotecario) references funcionario
+);
+
+create sequence id_emprestimo;
+create table emprestimo(
+	id int NOT NULL UNIQUE,
+	multa real NOT NULL,
+	renovacoes int NOT NULL,
+	data_empr date NOT NULL,
+	data_est_entr date NOT NULL,
+	data_real_entr date,
+	id_exemplar int NOT NULL,
+	id_usuario int NOT NULL,
+	id_funcionario int NOT NULL,
+	situacao int NOT NULL,   -- 0->não devolvido  1->devolvido
+	primary key (id),
+	foreign key (id_exemplar) references exemplar,
+	foreign key (id_usuario) references usuario,
+	foreign key (id_funcionario) references funcionario
+);
+

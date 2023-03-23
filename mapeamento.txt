@@ -1,0 +1,34 @@
+Autor(#id, nacionalidade, area, nome)
+
+Livro(#id, isbn, titulo, colecao, editora)
+
+Autores_livro(#id_livro, #id_autor)
+   id_livro referencia Livro
+   id_autor referencia Autor
+
+Categoria(#id, nome, tempo_empr, qnt_max_empr)
+
+Endereco(#id, estado, cidade, bairro, rua, numero, complemento)
+
+Usuario(#id, nome, telefone, turno, id_categoria, endereco)
+   categoria referencia Categoria
+   endereco referencia Endereco
+
+Telefone(#id_usuario, #numero)
+   id_usuario referencia Usuario
+
+Exemplar(#id, estante, prateleira, id_livro, id_usuario_reserva, data_reserva)
+   id_livro referencia Livro
+   id_usuario_reserva referencia usuario
+
+Funcionario(#id, nome, salario, turno, tipo, login, senha)
+
+Supervisao(#id_assistente, #id_bibliotecario)
+   id_assistente referencia Funcionario
+   id_bibliotecario referencia Funcionario
+
+Emprestimo(#id, multa, renovacoes, data_empr, data_est_entr, data_real_entr, id_exemplar, id_usuario, id_funcionario, situacao)
+   id_exemplar referencia Exemplar
+   id_usuario referencia Usuario
+   id_funcionario referencia Funcionario
+
