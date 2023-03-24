@@ -1,7 +1,8 @@
 
 ---------------------------	FUNCOES E GATILHOS----------------------
 ----------------------------------------------------------------------
--- atualizar a multa dependendo do atraso (não pode cobrar multa de professores em tempo integral)
+-- 1) atualizar a multa dependendo do atraso (não pode cobrar multa de professores em tempo integral)
+
 create or replace function atualiza_multas() returns void as
 $$
 declare item record;
@@ -85,11 +86,25 @@ select cadastro_emprestimo(10, 2, 3)
 ---------------------------------------------------------------------------------------------
 -- 3) permitir a renovação no máximo 3 vezes
 
-
+create or replace function renovar_emprestimo(id_emprestimo int) returns void as
+$$
+declare tempo_empr_usu int;
+begin
+	if (select renovacoes from emprestimo where id=id_emprestimo) < 3 then
+		update emprestimo set renovacoes=renovacoes+1 where id=id_emprestimo;
+		tempo_empr_usu := (select c.tempo_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=(select id_usuario from emprestimo where id=id_emprestimo));
+		update emprestimo set data_est_entr=data_est_entr+tempo_empr_usu where id=id_emprestimo;
+	else
+		raise exception 'Numero máximo de renovações atingido.';
+	end if;
+end;
+$$ language plpgsql;
 
 ---------------------------------------------------------------------------------------------
 -- 4) cancelar a reserva caso passe do tempo limite (10 dias)
 
+---------------------------------------------------------------------------------------------
+-- 5) ao mudar a situacao de um emprestimo para 1, mudar a data real de entrega para a data atual 
 
 
 ----------------------------------------EXTRAS-----------------------------------------------------
