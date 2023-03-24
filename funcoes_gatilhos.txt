@@ -1,0 +1,98 @@
+
+---------------------------	FUNCOES E GATILHOS----------------------
+----------------------------------------------------------------------
+-- atualizar a multa dependendo do atraso (não pode cobrar multa de professores em tempo integral)
+create or replace function atualiza_multas() returns void as
+$$
+declare item record;
+declare dias_atrasados real;
+declare valor_multa real;
+declare nome_categoria varchar(100);
+declare turno_usuario varchar(40);
+begin
+	for item in select * from emprestimo loop
+		if(current_date > item.data_est_entr) then
+			nome_categoria := (select c.nome from categoria c join usuario u on c.id=u.id_categoria where u.id=item.id);
+			turno_usuario := (select u.turno from usuario u join emprestimo e on u.id=e.id_usuario where e.id=item.id);
+			if (turno_usuario='Integral' and (nome_categoria = 'Professor' or  nome_categoria = 'Professor Pós-Graduação'))  then
+			else
+				dias_atrasados := (select (current_date - item.data_est_entr) from emprestimo where id=item.id);
+				valor_multa := dias_atrasados * 0.5;			
+				update emprestimo set multa=valor_multa where id=item.id;
+			end if;
+		end if;
+	end loop;
+end;
+$$ language plpgsql;
+
+select atualiza_multas()
+
+---------------------------------------------------------------------------------------------
+-- 2) permitir o empréstimo só se: usuario não tem livros atrasados, não tem multas, não excedeu o nmr max de emprestimos, 
+--se o exemplar está disponível (emprestimo/reserva) e se NAO for um exemplar da coleção de reserva
+
+create or replace function cadastro_emprestimo(cid_exemplar int, cid_usuario int, cid_funcionario int) returns void as
+$$
+declare livros_atrasados int;
+declare multas real;
+declare nmr_max_est int;
+declare nmr_emprestimos int;
+declare tempo_empr_usu int;
+declare esta_reservado int;
+declare esta_emprestado int;
+declare colecao_exemplar varchar(100);
+begin 
+	livros_atrasados := (select count(*) from emprestimo where situacao=0 and current_date > data_est_entr and id_usuario=cid_usuario);
+	multas := (select sum(multa) from emprestimo where id_usuario=cid_usuario);
+	nmr_max_est := (select c.qnt_max_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=cid_usuario);
+	nmr_emprestimos := (select count(*) from emprestimo where situacao=0 and id_usuario=cid_usuario);
+	esta_reservado := (select id_usuario_reserva from exemplar where id=cid_exemplar);
+	esta_emprestado := (select id_usuario from emprestimo where situacao=0 and id_exemplar=cid_exemplar);
+	colecao_exemplar := (select l.colecao from livro l join exemplar e on l.id=e.id_livro where e.id=cid_exemplar);
+
+	if (livros_atrasados = 0) then
+		if(multas = 0 or multas is not distinct from NULL) then
+			if(nmr_emprestimos < nmr_max_est) then	
+				if(esta_emprestado is not distinct from NULL) then
+					if(esta_reservado is not distinct from NULL) then
+						if (colecao_exemplar != 'Reserva') then
+							tempo_empr_usu := (select c.tempo_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=cid_usuario);
+							insert into emprestimo values ((select nextval('id_emprestimo')), 0, 0, current_date, current_date+tempo_empr_usu, NULL, cid_exemplar, cid_usuario, cid_funcionario, 0);
+						else
+							raise exception 'Cadastro negado. Exemplar escolhido pertence à coleção de reserva.';
+						end if;
+					else
+						raise exception 'Cadastro negado. Exemplar escolhido está reservado.';
+					end if;
+				else
+					raise exception 'Cadastro negado. Exemplar escolhido está emprestado.';
+				end if;
+			else
+				raise exception 'Cadastro negado. Usuario excedeu o número máximo de emprestimos.';
+			end if;
+		else
+			raise exception 'Cadastro negado. Usuario tem multas não pagas.';
+		end if;
+	else
+		raise exception 'Cadastro negado. Usuario tem livros atrasados.';
+	end if;
+end;
+$$ language plpgsql;
+
+select cadastro_emprestimo(10, 2, 3)
+
+
+---------------------------------------------------------------------------------------------
+-- 3) permitir a renovação no máximo 3 vezes
+
+
+
+---------------------------------------------------------------------------------------------
+-- 4) cancelar a reserva caso passe do tempo limite (10 dias)
+
+
+
+----------------------------------------EXTRAS-----------------------------------------------------
+--  localizar qual usuário está com o exemplar de um determinado livro
+SELECT u.id, u.nome from usuario u JOIN emprestimo e ON u.id=e.id_usuario JOIN exemplar ex ON e.id_exemplar=ex.id WHERE e.situacao=0 and ex.id=1 
+
