@@ -1,4 +1,3 @@
-
 ---------------------------	FUNCOES E GATILHOS  ----------------------
 ----------------------------------------------------------------------
 -- 1) Fatualizar a multa dependendo do atraso (não pode cobrar multa de professores em tempo integral)
@@ -27,6 +26,7 @@ end;
 $$ language plpgsql;
 
 select atualiza_multas()
+
 
 ---------------------------------------------------------------------------------------------
 -- 2) permitir o empréstimo só se: usuario não tem livros atrasados, não tem multas, não excedeu o nmr max de emprestimos, 
@@ -112,11 +112,23 @@ $$ language plpgsql;
 ---------------------------------------------------------------------------------------------
 -- 4) cancelar a reserva caso passe do tempo limite (10 dias)
 
+create or replace function verifica_datas_reservas() returns void as
+$$
+declare item record;
+begin
+for item in select * from exemplar loop
+		if(current_date-item.data_reserva>10) then
+			update exemplar set id_usuario_reserva=NULL, data_reserva=NULL where id=1;
+		end if;
+	end loop;
+end;
+$$ language plpgsql;
+
+select verifica_datas_reservas()
 
 ---------------------------------------------------------------------------------------------
--- 5) ao mudar a situacao de um emprestimo para 1, mudar a data real para a data atual 
-
+-- 5) ao mudar a situacao de um emprestimo para 1, mudar a data real de entrega para a data atual 
 
 ---------------------------------------------------------------------------------------------
 -- 6) ao realizar um emprestimo para o usuario que havia reservado o exemplar, mudar os campos 
--- de reserva do exemplar 
+-- de reserva do exemplar para NULL
