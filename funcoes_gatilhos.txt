@@ -1,7 +1,7 @@
 
----------------------------	FUNCOES E GATILHOS----------------------
+---------------------------	FUNCOES E GATILHOS  ----------------------
 ----------------------------------------------------------------------
--- 1) atualizar a multa dependendo do atraso (não pode cobrar multa de professores em tempo integral)
+-- 1) Fatualizar a multa dependendo do atraso (não pode cobrar multa de professores em tempo integral)
 
 create or replace function atualiza_multas() returns void as
 $$
@@ -30,9 +30,19 @@ select atualiza_multas()
 
 ---------------------------------------------------------------------------------------------
 -- 2) permitir o empréstimo só se: usuario não tem livros atrasados, não tem multas, não excedeu o nmr max de emprestimos, 
---se o exemplar está disponível (emprestimo/reserva) e se NAO for um exemplar da coleção de reserva
+-- se o exemplar está disponível (emprestimo/reserva) e se NAO for um exemplar da coleção de reserva
 
 create or replace function cadastro_emprestimo(cid_exemplar int, cid_usuario int, cid_funcionario int) returns void as
+$$
+declare tempo_empr_usu int;
+begin 
+	tempo_empr_usu := (select c.tempo_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=cid_usuario);
+	insert into emprestimo values ((select nextval('id_emprestimo')), 0, 0, current_date, current_date+tempo_empr_usu, NULL, cid_exemplar, cid_usuario, cid_funcionario, 0);
+end;
+$$ language plpgsql;
+
+
+create or replace function cadastro_emprestimo() returns trigger as
 $$
 declare livros_atrasados int;
 declare multas real;
@@ -43,13 +53,13 @@ declare esta_reservado int;
 declare esta_emprestado int;
 declare colecao_exemplar varchar(100);
 begin 
-	livros_atrasados := (select count(*) from emprestimo where situacao=0 and current_date > data_est_entr and id_usuario=cid_usuario);
-	multas := (select sum(multa) from emprestimo where id_usuario=cid_usuario);
-	nmr_max_est := (select c.qnt_max_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=cid_usuario);
-	nmr_emprestimos := (select count(*) from emprestimo where situacao=0 and id_usuario=cid_usuario);
-	esta_reservado := (select id_usuario_reserva from exemplar where id=cid_exemplar);
-	esta_emprestado := (select id_usuario from emprestimo where situacao=0 and id_exemplar=cid_exemplar);
-	colecao_exemplar := (select l.colecao from livro l join exemplar e on l.id=e.id_livro where e.id=cid_exemplar);
+	livros_atrasados := (select count(*) from emprestimo where situacao=0 and current_date > data_est_entr and id_usuario=new.id_usuario);
+	multas := (select sum(multa) from emprestimo where id_usuario=new.id_usuario);
+	nmr_max_est := (select c.qnt_max_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=new.id_usuario);
+	nmr_emprestimos := (select count(*) from emprestimo where situacao=0 and id_usuario=new.id_usuario);
+	esta_reservado := (select id_usuario_reserva from exemplar where id=new.id_exemplar);
+	esta_emprestado := (select id_usuario from emprestimo where situacao=0 and id_exemplar=new.id_exemplar);
+	colecao_exemplar := (select l.colecao from livro l join exemplar e on l.id=e.id_livro where e.id=new.id_exemplar);
 
 	if (livros_atrasados = 0) then
 		if(multas = 0 or multas is not distinct from NULL) then
@@ -57,8 +67,7 @@ begin
 				if(esta_emprestado is not distinct from NULL) then
 					if(esta_reservado is not distinct from NULL) then
 						if (colecao_exemplar != 'Reserva') then
-							tempo_empr_usu := (select c.tempo_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=cid_usuario);
-							insert into emprestimo values ((select nextval('id_emprestimo')), 0, 0, current_date, current_date+tempo_empr_usu, NULL, cid_exemplar, cid_usuario, cid_funcionario, 0);
+							return new;
 						else
 							raise exception 'Cadastro negado. Exemplar escolhido pertence à coleção de reserva.';
 						end if;
@@ -77,14 +86,14 @@ begin
 	else
 		raise exception 'Cadastro negado. Usuario tem livros atrasados.';
 	end if;
+	return null;
 end;
 $$ language plpgsql;
 
-select cadastro_emprestimo(10, 2, 3)
-
+create trigger cadastro_emprestimo  before insert on emprestimo for each row execute procedure cadastro_emprestimo();
 
 ---------------------------------------------------------------------------------------------
--- 3) permitir a renovação no máximo 3 vezes
+-- 3) permitir a renovação no máximo 3 vezes e ao aumentar a renovação, aumentar a data_est_entrega
 
 create or replace function renovar_emprestimo(id_emprestimo int) returns void as
 $$
@@ -103,11 +112,11 @@ $$ language plpgsql;
 ---------------------------------------------------------------------------------------------
 -- 4) cancelar a reserva caso passe do tempo limite (10 dias)
 
+
 ---------------------------------------------------------------------------------------------
--- 5) ao mudar a situacao de um emprestimo para 1, mudar a data real de entrega para a data atual 
+-- 5) ao mudar a situacao de um emprestimo para 1, mudar a data real para a data atual 
 
 
-----------------------------------------EXTRAS-----------------------------------------------------
---  localizar qual usuário está com o exemplar de um determinado livro
-SELECT u.id, u.nome from usuario u JOIN emprestimo e ON u.id=e.id_usuario JOIN exemplar ex ON e.id_exemplar=ex.id WHERE e.situacao=0 and ex.id=1 
-
+---------------------------------------------------------------------------------------------
+-- 6) ao realizar um emprestimo para o usuario que havia reservado o exemplar, mudar os campos 
+-- de reserva do exemplar 
