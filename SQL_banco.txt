@@ -12,7 +12,6 @@ create table livro(
 	id int NOT NULL UNIQUE,
 	isbn varchar(50) NULL UNIQUE,
 	titulo varchar(100) NOT NULL,
-	colecao varchar(100), -- emprestimo, permanente, reserva...
 	editora varchar(100) NOT NULL,
 	primary key (id)
 );
@@ -42,7 +41,7 @@ create table endereco(
 	bairro varchar(100) NOT NULL,
 	rua varchar(100) NOT NULL,
 	numero int NOT NULL,
-	complemento varchar(300) NOT NULL,
+	complemento varchar(300),
 	primary key (id)
 );
 
@@ -73,6 +72,7 @@ create table exemplar(
 	prateleira int NOT NULL,
 	estante int NOT NULL,
 	id_livro int NOT NULL, 
+	colecao varchar(100), -- emprestimo, permanente, reserva...
 	id_usuario_reserva int,
 	data_reserva date,
 	primary key (id),
