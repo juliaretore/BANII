@@ -69,20 +69,23 @@ public class FuncionarioView extends JFrame {
 	private JTextField textPNome;
 	private JTextField textPCodigo;
 
-	private static List<Object> telefones = new ArrayList<Object>();
-	private static List<Object> usuarios = new ArrayList<Object>();
+	private static List<Object> assistentes = new ArrayList<Object>();
+	private static List<Object> bibliotecarios = new ArrayList<Object>();
 	Usuario usuario = new Usuario();		
 	private static Sistema sistema;
 	private JTextField tfNome;
 	private JTextField tfCodigo;
-	JComboBox comboBox = new JComboBox();
 	JComboBox comboBox_1 = new JComboBox();
+	JComboBox comboBox_1_1 = new JComboBox();
 	private static JTable table = new JTable();
 	private static FuncionarioView funcionarioView;
 	private static JTable table_1;
-	private JTextField tfTelefone;
 	private JTextField tfLogin;
 	private JTextField tfSalario;
+	private JTextField tfCodigo_1;
+	private JTextField tfNome_1;
+	private JTextField tfLogin_1;
+	private JTextField tfSalario_1;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -101,6 +104,7 @@ public class FuncionarioView extends JFrame {
 	public static FuncionarioView getInstance() {
         if(funcionarioView==null) funcionarioView=new FuncionarioView();
         atualizarTabela();
+        atualizarTabela_1();
         return funcionarioView;
     } 
 	public FuncionarioView() {
@@ -113,6 +117,7 @@ public class FuncionarioView extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			public void windowOpened(WindowEvent arg0) {
 				atualizarTabela();
+				atualizarTabela_1();
 			}
 		});
 //		ImageIcon imagemTituloJanela = new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpg"));
@@ -148,7 +153,7 @@ public class FuncionarioView extends JFrame {
 			}
 		});
 		sair.setBackground(SystemColor.window);
-		sair.setBounds(727, 943, 173, 20);
+		sair.setBounds(784, 931, 173, 20);
 		contentPane.add(sair);
 		
 		
@@ -230,7 +235,7 @@ public class FuncionarioView extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(967, 186, 614, 308);
+		scrollPane_1.setBounds(967, 186, 614, 431);
 		contentPane.add(scrollPane_1);
 		
 		table_1 = new JTable();
@@ -263,94 +268,6 @@ public class FuncionarioView extends JFrame {
 		lblTelefones.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblTelefones.setBounds(1154, 154, 272, 20);
 		contentPane.add(lblTelefones);
-		
-		JButton alterar_2 = new JButton("Alterar");
-		alterar_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					if(table_1.getSelectedRow()!=-1){
-						try {
-							sistema.alterarTelefone(Integer.parseInt(tfCodigo.getText()), tfTelefone.getText(), String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));		
-							tfTelefone.setText("");
-						} catch (Exception e1) {
-							JOptionPane.showMessageDialog(null, e1.getMessage());
-						}
-						atualizarTabela_1(Integer.parseInt(tfCodigo.getText()));
-						tfTelefone.setText("");
-						
-					}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
-				}
-				
-		});
-		alterar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		alterar_2.setBackground(SystemColor.window);
-		alterar_2.setBounds(1369, 533, 118, 21);
-		contentPane.add(alterar_2);
-		
-		JButton cadastrar_2 = new JButton("Cadastrar");
-		cadastrar_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(table.getSelectedRow()!=-1){
-					try {
-						sistema.adicionarTelefone(Integer.parseInt(tfCodigo.getText()), tfTelefone.getText());
-					} catch (Exception e1) {
-						JOptionPane.showMessageDialog(null, e1.getMessage());
-					}
-					atualizarTabela_1(Integer.parseInt(tfCodigo.getText()));
-					tfTelefone.setText("");
-				}else JOptionPane.showMessageDialog(null, "Nenhuma usuário selecionado");
-						
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			}
-		});
-		cadastrar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		cadastrar_2.setBackground(SystemColor.window);
-		cadastrar_2.setBounds(1502, 533, 118, 21);
-		contentPane.add(cadastrar_2);
-		
-		JButton excluir_2 = new JButton("Excluir");
-		excluir_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (table_1.getSelectedRow()!=-1){
-					try {
-						sistema.excluirTelefone(Integer.parseInt(tfCodigo.getText()), String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));
-					} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
-						JOptionPane.showMessageDialog(null,  e1.getMessage());
-					}
-					atualizarTabela_1(Integer.parseInt(tfCodigo.getText()));
-					tfTelefone.setText("");
-				
-				}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
-				
-				
-			}
-		});
-		excluir_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		excluir_2.setBackground(SystemColor.window);
-		excluir_2.setBounds(1436, 562, 118, 21);
-		contentPane.add(excluir_2);
-		
-		tfTelefone = new JTextField();
-		tfTelefone.setColumns(10);
-		tfTelefone.setBounds(1398, 506, 183, 19);
-		contentPane.add(tfTelefone);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBounds(169, 629, 611, 276);
@@ -402,19 +319,6 @@ public class FuncionarioView extends JFrame {
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Selecione", "Vespertino", "Matutino", "Noturno", "Integral"}));
 		comboBox_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		comboBox_1.setBackground(SystemColor.window);
-		
-		JLabel lblCargo = new JLabel("Tipo");
-		lblCargo.setBounds(22, 149, 70, 20);
-		layeredPane.add(lblCargo);
-		lblCargo.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCargo.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		comboBox.setBounds(126, 149, 283, 21);
-		layeredPane.add(comboBox);
-		comboBox.setBackground(SystemColor.window);
-		comboBox.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		
-
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Selecione", "Aluno Graduação", "Aluno Pós-Graduação", "Professor", "Prefessor Pós-Graduação"}));
 		
 		tfSalario = new JTextField();
 		tfSalario.setColumns(10);
@@ -512,10 +416,158 @@ public class FuncionarioView extends JFrame {
 			}
 		});
 		cadastrar_1_1_1.setBackground(SystemColor.window);
+		
+		JLayeredPane layeredPane_1 = new JLayeredPane();
+		layeredPane_1.setBounds(967, 629, 611, 276);
+		contentPane.add(layeredPane_1);
+		
+		JLabel lblNome_1_2 = new JLabel("Nome");
+		lblNome_1_2.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNome_1_2.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblNome_1_2.setBounds(22, 63, 70, 20);
+		layeredPane_1.add(lblNome_1_2);
+		
+		JLabel lblCdigo_1_1 = new JLabel("ID");
+		lblCdigo_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblCdigo_1_1.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblCdigo_1_1.setBounds(22, 31, 70, 20);
+		layeredPane_1.add(lblCdigo_1_1);
+		
+		tfCodigo_1 = new JTextField();
+		tfCodigo_1.setEditable(false);
+		tfCodigo_1.setColumns(10);
+		tfCodigo_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		tfCodigo_1.setBounds(127, 31, 33, 19);
+		layeredPane_1.add(tfCodigo_1);
+		
+		tfNome_1 = new JTextField();
+		tfNome_1.setColumns(10);
+		tfNome_1.setBounds(127, 64, 282, 19);
+		layeredPane_1.add(tfNome_1);
+		
+		JLabel lblNome_1_1_1 = new JLabel("Login");
+		lblNome_1_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNome_1_1_1.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblNome_1_1_1.setBounds(22, 89, 70, 20);
+		layeredPane_1.add(lblNome_1_1_1);
+		
+		tfLogin_1 = new JTextField();
+		tfLogin_1.setColumns(10);
+		tfLogin_1.setBounds(127, 89, 282, 19);
+		layeredPane_1.add(tfLogin_1);
+		
+		JLabel btnTurno_1 = new JLabel("Turno");
+		btnTurno_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		btnTurno_1.setFont(new Font("Dialog", Font.BOLD, 15));
+		btnTurno_1.setBounds(22, 118, 70, 20);
+		layeredPane_1.add(btnTurno_1);
+		
+		comboBox_1_1.setModel(new DefaultComboBoxModel(new String[] {"Selecione", "Vespertino", "Matutino", "Noturno", "Integral"}));
+		comboBox_1_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		comboBox_1_1.setBackground(SystemColor.window);
+		comboBox_1_1.setBounds(127, 118, 283, 21);
+		layeredPane_1.add(comboBox_1_1);
+		
+		tfSalario_1 = new JTextField();
+		tfSalario_1.setColumns(10);
+		tfSalario_1.setBounds(127, 184, 282, 19);
+		layeredPane_1.add(tfSalario_1);
+		
+		JLabel lblSalrio_1 = new JLabel("Salário");
+		lblSalrio_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSalrio_1.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblSalrio_1.setBounds(22, 181, 70, 20);
+		layeredPane_1.add(lblSalrio_1);
+		
+		JButton limpar_2 = new JButton("Limpar");
+		limpar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		limpar_2.setBackground(SystemColor.window);
+		limpar_2.setBounds(456, 63, 118, 21);
+		layeredPane_1.add(limpar_2);
+		
+		JButton excluir_2 = new JButton("Excluir");
+		excluir_2.setBounds(456, 159, 118, 21);
+		layeredPane_1.add(excluir_2);
+		excluir_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (table_1.getSelectedRow()!=-1){
+					try {
+						sistema.excluirTelefone(Integer.parseInt(tfCodigo.getText()), String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));
+					} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
+						JOptionPane.showMessageDialog(null,  e1.getMessage());
+					}
+//					atualizarTabela_1(Integer.parseInt(tfCodigo.getText()));
+				
+				}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
+				
+				
+			}
+		});
+		excluir_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		excluir_2.setBackground(SystemColor.window);
+		
+		JButton cadastrar_2 = new JButton("Cadastrar");
+		cadastrar_2.setBounds(456, 126, 118, 21);
+		layeredPane_1.add(cadastrar_2);
+		cadastrar_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedRow()!=-1){
+					try {
+//						sistema.adicionarTelefone(Integer.parseInt(tfCodigo.getText()), tfTelefone.getText());
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage());
+					}
+//					atualizarTabela_1(Integer.parseInt(tfCodigo.getText()));
+				}else JOptionPane.showMessageDialog(null, "Nenhuma usuário selecionado");
+						
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			}
+		});
+		cadastrar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		cadastrar_2.setBackground(SystemColor.window);
+		
+		JButton alterar_2 = new JButton("Alterar");
+		alterar_2.setBounds(456, 93, 118, 21);
+		layeredPane_1.add(alterar_2);
+		alterar_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					if(table_1.getSelectedRow()!=-1){
+						try {
+//							sistema.alterarTelefone(Integer.parseInt(tfCodigo.getText()), tfTelefone.getText(), String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));		
+						} catch (Exception e1) {
+							JOptionPane.showMessageDialog(null, e1.getMessage());
+						}
+//						atualizarTabela_1(Integer.parseInt(tfCodigo.getText()));
+						
+					}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
+				}
+				
+		});
+		alterar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		alterar_2.setBackground(SystemColor.window);
 		table.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
 				try {
 					setCamposFromTabela();
+					atualizarTabela_1_1();
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -533,32 +585,56 @@ public class FuncionarioView extends JFrame {
 	}
 
 	public void limpar() {
-		tfNome.setText(null);
-		tfCodigo.setText(null);
-		comboBox.setSelectedIndex(0);
+		tfNome.setText("");
+		tfCodigo.setText("");
+		tfSalario.setText("");
+		tfLogin.setText("");
 		comboBox_1.setSelectedIndex(0);
-
+		table.clearSelection();
+		atualizarTabela_1();
 	}
 	
+	public void limpar_1() {
+		tfNome_1.setText("");
+		tfCodigo_1.setText("");
+		tfSalario_1.setText("");
+		tfLogin_1.setText("");
+		comboBox_1_1.setSelectedIndex(0);
+		table_1.clearSelection();
+	}	
 
 	public static void atualizarTabela() {
 		try {
-			usuarios = sistema.listarBibliotecarios();
+			bibliotecarios = sistema.listarBibliotecarios();
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.setNumRows(0);
-		for (int i=0;i!=usuarios.size();i++)model.addRow((Object[]) usuarios.get(i));
+		for (int i=0;i!=bibliotecarios.size();i++)model.addRow((Object[]) bibliotecarios.get(i));
 		
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
 	
-	public static void atualizarTabela_1(int id_usuario) {
+	public static void atualizarTabela_1() {
 		try {
-			telefones = sistema.listarTelefones(id_usuario);
+			assistentes = sistema.listarAssistentes();
 			DefaultTableModel model = (DefaultTableModel) table_1.getModel();
 			model.setNumRows(0);
-		for (int i=0;i!=telefones.size();i++)model.addRow((Object[]) telefones.get(i));
+		for (int i=0;i!=assistentes.size();i++)model.addRow((Object[]) assistentes.get(i));
+		
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
+
+public static void atualizarTabela_1_1() {
+		try {
+			int id_bibliotecario = Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
+			assistentes = sistema.listarAssistentesBibliotecario(id_bibliotecario);
+			DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+			model.setNumRows(0);
+		for (int i=0;i!=assistentes.size();i++)model.addRow((Object[]) assistentes.get(i));
+		
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
@@ -566,16 +642,20 @@ public class FuncionarioView extends JFrame {
 	
 	public void setCamposFromTabela() throws NumberFormatException, SelectException {
 		tfCodigo.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
-		atualizarTabela_1(Integer.parseInt((tfCodigo.getText())));
 		tfNome.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
-		String categoria = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));
-		comboBox.setSelectedItem(categoria);
+		tfLogin.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 2)));
 		String turno = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
 		comboBox_1.setSelectedItem(turno);
+		tfSalario.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 4)));
+
 	}
 	
-	
 	public void setCamposFromTabela_1() throws NumberFormatException, SelectException {
-		tfTelefone.setText(String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));
+		tfCodigo_1.setText(String.valueOf(table_1.getValueAt(table.getSelectedRow(), 0)));
+		tfNome_1.setText(String.valueOf(table_1.getValueAt(table.getSelectedRow(), 1)));
+		tfLogin_1.setText(String.valueOf(table_1.getValueAt(table.getSelectedRow(), 2)));
+		String turno = String.valueOf(table_1.getValueAt(table.getSelectedRow(), 3));
+		comboBox_1_1.setSelectedItem(turno);
+		tfSalario_1.setText(String.valueOf(table_1.getValueAt(table.getSelectedRow(), 4)));
 	}
 }

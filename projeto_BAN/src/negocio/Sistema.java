@@ -88,4 +88,12 @@ public class Sistema {
 		return funcionarioDAO.select_bibliotecarios();
 	}
 	
+	public List<Object> listarAssistentes() throws SelectException{
+		return funcionarioDAO.select_assistentes();
+	}
+	
+	public List<Object> listarAssistentesBibliotecario(int id_bibliotecario) throws SelectException{
+		return funcionarioDAO.select_assistentes_bibliotecario(id_bibliotecario);
+	}
+	
 }

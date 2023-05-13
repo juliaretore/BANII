@@ -27,7 +27,7 @@ private static FuncionarioDAO instance = null;
 	
 	private PreparedStatement select_bibliotecarios;
 	private PreparedStatement select_assistentes;
-	private PreparedStatement select_assistentes_bibliotecarios;
+	private PreparedStatement select_assistentes_bibliotecario;
 	private PreparedStatement select_all;
 	
 
@@ -45,8 +45,8 @@ private static FuncionarioDAO instance = null;
 
 		
 		select_bibliotecarios = conexao.prepareStatement("select id, nome, login, turno, salario from funcionario where tipo=1");
-		select_assistentes = conexao.prepareStatement("select * from endereco where id=?");
-		select_assistentes_bibliotecarios = conexao.prepareStatement("select u.id, u.nome, c.nome, u.turno, endereco from usuario u join categoria c on u.id_categoria=c.id");
+		select_assistentes = conexao.prepareStatement("select id, nome, login, turno, salario from funcionario where tipo=2");
+		select_assistentes_bibliotecario = conexao.prepareStatement("select id, nome, login, turno, salario from funcionario where tipo=2 and id in (select id_assistente from supervisao where id_bibliotecario=?)");
 		select_all = conexao.prepareStatement("select ");
 	}
 	
@@ -100,25 +100,7 @@ private static FuncionarioDAO instance = null;
 
 
 	
-//	public  Endereco select_endereco(int id_endereco) throws SelectException {
-//		Endereco endereco = new Endereco();
-//		try {
-//			select_endereco.setInt(1, id_endereco);
-//			ResultSet rs = select_endereco.executeQuery();
-//			if(rs.next()) {
-//				endereco.setId(rs.getInt(1));
-//				endereco.setEstado(rs.getString(2));
-//				endereco.setCidade(rs.getString(3));
-//				endereco.setBairro(rs.getString(4));
-//				endereco.setRua(rs.getString(5));
-//				endereco.setNumero(rs.getInt(6));
-//				endereco.setComplemento(rs.getString(7));		
-//			}
-//		}catch(SQLException e) {
-//			throw new SelectException("Erro ao buscar endereço");
-//		}
-//		return endereco;
-//	}
+
 	
 //	public List<Object> select_telefones(int id_usuario) throws SelectException {
 //		List<Object> lista = new ArrayList<Object>();
@@ -140,7 +122,6 @@ private static FuncionarioDAO instance = null;
 		try {
 			ResultSet rs = select_bibliotecarios.executeQuery();
 			while(rs.next()) {
-				String tipo;
 				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getDouble(5)};
 				lista.add(linha);
 			}
@@ -149,6 +130,38 @@ private static FuncionarioDAO instance = null;
 		}
 		return lista;
 	}
+	
+	
+	public List<Object> select_assistentes() throws SelectException {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			ResultSet rs = select_assistentes.executeQuery();
+			while(rs.next()) {
+				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getDouble(5)};
+				lista.add(linha);
+			}
+		}catch(SQLException e) {
+			throw new SelectException("Erro ao buscar dados para preencher a tabela de assistentes");
+		}
+		return lista;
+	}
+	
+	
+	public  List<Object> select_assistentes_bibliotecario(int id_bibliotecario) throws SelectException {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			select_assistentes_bibliotecario.setInt(1, id_bibliotecario);
+			ResultSet rs = select_assistentes_bibliotecario.executeQuery();
+			if(rs.next()) {
+				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getDouble(5)};
+				lista.add(linha);	
+			}
+		}catch(SQLException e) {
+			throw new SelectException("Erro ao buscar os assistentes do bibliotecário selecionado");
+		}
+		return lista;
+	}	
+	
 //
 //	public List<Integer> select_usuarios() throws SelectException {
 //		List<Integer> lista = new ArrayList<Integer>();
