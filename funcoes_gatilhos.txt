@@ -41,7 +41,6 @@ begin
 end;
 $$ language plpgsql;
 
-
 create or replace function cadastro_emprestimo() returns trigger as
 $$
 declare livros_atrasados int;
@@ -59,7 +58,7 @@ begin
 	nmr_emprestimos := (select count(*) from emprestimo where situacao=0 and id_usuario=new.id_usuario);
 	esta_reservado := (select id_usuario_reserva from exemplar where id=new.id_exemplar);
 	esta_emprestado := (select id_usuario from emprestimo where situacao=0 and id_exemplar=new.id_exemplar);
-	colecao_exemplar := (select l.colecao from livro l join exemplar e on l.id=e.id_livro where e.id=new.id_exemplar);
+	colecao_exemplar := (select colecao from exemplar where id=new.id_exemplar);
 
 	if (livros_atrasados = 0) then
 		if(multas = 0 or multas is not distinct from NULL) then
