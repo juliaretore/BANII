@@ -28,7 +28,10 @@ private static FuncionarioDAO instance = null;
 	private PreparedStatement select_bibliotecarios;
 	private PreparedStatement select_assistentes;
 	private PreparedStatement select_assistentes_bibliotecario;
-	private PreparedStatement select_all;
+	private PreparedStatement select_adicionar_supervisao;
+	private PreparedStatement delete_supervisoes;
+	private PreparedStatement delete_supervisoes_a;
+	
 	
 
 	public static FuncionarioDAO getInstance() throws ClassNotFoundException, SQLException, SelectException{
@@ -40,14 +43,15 @@ private static FuncionarioDAO instance = null;
 		Connection conexao = Conexao.getConexao();
 		select_new_id_funcionario = conexao.prepareStatement("select nextval('id_funcionario')");
 		insert_funcionario =  conexao.prepareStatement("insert into funcionario values (?,?,?,?,?,?,?)");
-		update_funcionario = conexao.prepareStatement("update funcionario set login=?, nome=?, salario=?, turno=?, tipo=? where id=?");
+		update_funcionario = conexao.prepareStatement("update funcionario set login=?, nome=?, salario=?, turno=? where id=?");
 		delete_funcionario = conexao.prepareStatement("delete from funcionario where id=?");
-
+		delete_supervisoes = conexao.prepareStatement("delete from supervisao where id_bibliotecario=?");
+		delete_supervisoes_a = conexao.prepareStatement("delete from supervisao where id_assistente=?");
 		
 		select_bibliotecarios = conexao.prepareStatement("select id, nome, login, turno, salario from funcionario where tipo=1");
 		select_assistentes = conexao.prepareStatement("select id, nome, login, turno, salario from funcionario where tipo=2");
 		select_assistentes_bibliotecario = conexao.prepareStatement("select id, nome, login, turno, salario from funcionario where tipo=2 and id in (select id_assistente from supervisao where id_bibliotecario=?)");
-		select_all = conexao.prepareStatement("select ");
+		select_adicionar_supervisao = conexao.prepareStatement("select id, nome, login, turno, salario from funcionario where tipo=2 and id not in (select id_assistente from supervisao where id_bibliotecario=?)");
 	}
 	
 	private int select_new_id_funcionario() throws SelectException{
@@ -81,15 +85,23 @@ private static FuncionarioDAO instance = null;
 			update_funcionario.setString(2, funcionario.getNome());
 			update_funcionario.setDouble(3, funcionario.getSalario());
 			update_funcionario.setString(4, funcionario.getTurno());
-			update_funcionario.setInt(5, funcionario.getTipo());
+			update_funcionario.setInt(5, funcionario.getId());
 			update_funcionario.executeUpdate();
 		}catch (SQLException e) {
 			throw new UpdateException("Erro ao atualizar funcionário.");
 		}
 	}
 	
-	public void delete_funcionario(int funcionario) throws DeleteException, SelectException, NaoCadastradoException{
+	public void delete_funcionario(int funcionario, int op) throws DeleteException, SelectException, NaoCadastradoException{
 		try {
+			
+			if(op==0) { 
+				delete_supervisoes.setInt(1, funcionario);
+				delete_supervisoes.executeUpdate();
+			}else if(op==1) {
+				delete_supervisoes_a.setInt(1, funcionario);
+				delete_supervisoes_a.executeUpdate();
+			}
 			delete_funcionario.setInt(1, funcionario);
 			delete_funcionario.executeUpdate();
 		}catch(SQLException e) {
@@ -97,26 +109,6 @@ private static FuncionarioDAO instance = null;
 		}
 	}
 	
-
-
-	
-
-	
-//	public List<Object> select_telefones(int id_usuario) throws SelectException {
-//		List<Object> lista = new ArrayList<Object>();
-//		try {
-//			select_telefones.setInt(1, id_usuario);
-//			ResultSet rs = select_telefones.executeQuery();
-//			while(rs.next()) {
-//				Object[] linha  = {rs.getString(1)};
-//				lista.add(linha);
-//			}
-//		}catch(SQLException e) {
-//			throw new SelectException("Erro ao buscar endereço");
-//		}
-//		return lista;	
-//	}
-//	
 	public List<Object> select_bibliotecarios() throws SelectException {
 		List<Object> lista = new ArrayList<Object>();
 		try {
@@ -147,34 +139,37 @@ private static FuncionarioDAO instance = null;
 	}
 	
 	
-	public  List<Object> select_assistentes_bibliotecario(int id_bibliotecario) throws SelectException {
+	
+public List<Object> select_assistentes_bibliotecario(int id_bibliotecario) throws SelectException {
 		List<Object> lista = new ArrayList<Object>();
 		try {
 			select_assistentes_bibliotecario.setInt(1, id_bibliotecario);
 			ResultSet rs = select_assistentes_bibliotecario.executeQuery();
+			while(rs.next()) {
+				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getDouble(5)};
+				lista.add(linha);
+			}
+		}catch(SQLException e) {
+			throw new SelectException("Erro ao buscar dados para preencher a tabela de assistentes");
+		}
+		return lista;
+	}	
+
+	
+	public  List<Object> select_adicionar_supervisao(int id_bibliotecario) throws SelectException {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			select_adicionar_supervisao.setInt(1, id_bibliotecario);
+			ResultSet rs = select_adicionar_supervisao.executeQuery();
 			if(rs.next()) {
 				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getDouble(5)};
 				lista.add(linha);	
 			}
 		}catch(SQLException e) {
-			throw new SelectException("Erro ao buscar os assistentes do bibliotecário selecionado");
+			throw new SelectException("Erro ao buscar os assistentes para supervisão");
 		}
 		return lista;
-	}	
-	
-//
-//	public List<Integer> select_usuarios() throws SelectException {
-//		List<Integer> lista = new ArrayList<Integer>();
-//		try {
-//			ResultSet rs = select_usuarios.executeQuery();
-//			while(rs.next()) {
-//				lista.add(rs.getInt(1));
-//			}
-//		}catch(SQLException e) {
-//			throw new SelectException("Erro ao buscar usuários");
-//		}
-//		return lista;
-//	}
+	}		
 	
 
 

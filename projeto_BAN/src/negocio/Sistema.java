@@ -96,4 +96,19 @@ public class Sistema {
 		return funcionarioDAO.select_assistentes_bibliotecario(id_bibliotecario);
 	}
 	
+	public List<Object> listarAdicionarAssistentesBibliotecario(int id_bibliotecario) throws SelectException{
+		return funcionarioDAO.select_adicionar_supervisao(id_bibliotecario);
+	}
+	
+	public void adicionarFuncionario(Funcionario funcionario) throws InsertException, SelectException, JaCadastradoException {
+		funcionarioDAO.insert_funcionario(funcionario);
+	}
+	public void alterarFuncionario(Funcionario funcionario) throws UpdateException, SelectException, NaoCadastradoException {
+		funcionarioDAO.update_funcionario(funcionario);
+	}
+	public void excluirFuncionario(int funcionario, int op) throws DeleteException, SelectException, NaoCadastradoException {
+		funcionarioDAO.delete_funcionario(funcionario, op);
+	}
+
+	
 }

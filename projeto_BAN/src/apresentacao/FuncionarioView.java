@@ -24,6 +24,7 @@ import javax.swing.table.TableRowSorter;
 import persistencia.*;
 import dados.Categoria;
 import dados.Endereco;
+import dados.Funcionario;
 import dados.Usuario;
 import exceptions.DeleteException;
 import exceptions.InsertException;
@@ -38,6 +39,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.nio.file.spi.FileSystemProvider;
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +63,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.UIManager;
 
 public class FuncionarioView extends JFrame {
 
@@ -70,8 +74,10 @@ public class FuncionarioView extends JFrame {
 	private JTextField textPCodigo;
 
 	private static List<Object> assistentes = new ArrayList<Object>();
+	private static List<Object> assistentes2 = new ArrayList<Object>();
+
 	private static List<Object> bibliotecarios = new ArrayList<Object>();
-	Usuario usuario = new Usuario();		
+	Funcionario funcionario = new Funcionario();		
 	private static Sistema sistema;
 	private JTextField tfNome;
 	private JTextField tfCodigo;
@@ -86,6 +92,15 @@ public class FuncionarioView extends JFrame {
 	private JTextField tfNome_1;
 	private JTextField tfLogin_1;
 	private JTextField tfSalario_1;
+	private JButton cadastrar_2;
+	private JButton cadastrar_1;
+	private JButton cadatrar_asisstente;
+	private JButton alterar;
+	private JButton excluir_1;
+	private JButton alterar_2;
+	private JButton excluir_2;
+	private JButton remover_assistente;
+
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -103,8 +118,6 @@ public class FuncionarioView extends JFrame {
 
 	public static FuncionarioView getInstance() {
         if(funcionarioView==null) funcionarioView=new FuncionarioView();
-        atualizarTabela();
-        atualizarTabela_1();
         return funcionarioView;
     } 
 	public FuncionarioView() {
@@ -152,7 +165,7 @@ public class FuncionarioView extends JFrame {
 				sair();
 			}
 		});
-		sair.setBackground(SystemColor.window);
+		sair.setBackground(UIManager.getColor("Button.darkShadow"));
 		sair.setBounds(784, 931, 173, 20);
 		contentPane.add(sair);
 		
@@ -256,6 +269,11 @@ public class FuncionarioView extends JFrame {
 			public void mousePressed(MouseEvent arg0) {
 				try {
 					setCamposFromTabela_1();
+					cadastrar_2.setEnabled(false);
+//					cadatrar_asisstente.setEnabled(true);
+//					remover_assistente.setEnabled(true);
+					excluir_2.setEnabled(true);
+					alterar_2.setEnabled(true);
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				} catch (SelectException e) {
@@ -270,7 +288,7 @@ public class FuncionarioView extends JFrame {
 		contentPane.add(lblTelefones);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(169, 629, 611, 276);
+		layeredPane.setBounds(169, 657, 611, 221);
 		contentPane.add(layeredPane);
 		
 		JLabel lblNome_1 = new JLabel("Nome");
@@ -322,103 +340,105 @@ public class FuncionarioView extends JFrame {
 		
 		tfSalario = new JTextField();
 		tfSalario.setColumns(10);
-		tfSalario.setBounds(127, 184, 282, 19);
+		tfSalario.setBounds(127, 151, 282, 19);
 		layeredPane.add(tfSalario);
 		
 		JLabel lblSalrio = new JLabel("Salário");
 		lblSalrio.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSalrio.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblSalrio.setBounds(22, 181, 70, 20);
+		lblSalrio.setBounds(22, 150, 70, 20);
 		layeredPane.add(lblSalrio);
 		
-		JButton cadastrar_1 = new JButton("Cadastrar");
-		cadastrar_1.setBounds(456, 129, 118, 21);
+		cadastrar_1 = new JButton("Cadastrar");
+		cadastrar_1.setBounds(456, 118, 118, 21);
 		layeredPane.add(cadastrar_1);
 		cadastrar_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		cadastrar_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//					if(tfNome.getText().equals("") || tfCidade.getText().equals("") || tfBairro.getText().equals("") || tfRua.getText().equals("") || tfNumero.getText().equals("") || comboBox.getSelectedItem().equals("Selecione") || comboBox_1.getSelectedItem().equals("Selecione") || comboBox_2.getSelectedItem().equals("Selecione")) {      
-//						JOptionPane.showMessageDialog(null, "Preencha todos os campos");
-//					}else {
-//
-//						String nome = tfNome.getText();
-//						String turno = String.valueOf(comboBox_1.getSelectedItem());				
-//
-//						try {
-//							sistema.adicionarUsuario(usuario);
-//						} catch (InsertException | SelectException | JaCadastradoException e1) {
-//							JOptionPane.showMessageDialog(null, e1.getMessage());
-//						}
-//						
-//						atualizarTabela();
-//						limpar();
-//
-//					}	
+					if(tfNome.getText().equals("") || tfLogin.getText().equals("") || tfSalario.getText().equals("") || comboBox_1.getSelectedItem().equals("Selecione")) {      
+						JOptionPane.showMessageDialog(null, "Preencha todos os campos");
+					}else {
+						Funcionario funcionario = new Funcionario();
+						funcionario.setNome(tfNome.getText());
+						funcionario.setLogin(tfLogin.getText());
+						funcionario.setSalario(Double.parseDouble(tfSalario.getText()));
+						funcionario.setSenha(gerarSenhaAleatoria(8));
+						funcionario.setTipo(1);
+						funcionario.setTurno(String.valueOf(comboBox_1.getSelectedItem()));						
+						try {
+							sistema.adicionarFuncionario(funcionario);
+						} catch (InsertException | SelectException | JaCadastradoException e1) {
+							JOptionPane.showMessageDialog(null, e1.getMessage());
+						}
+					
+						atualizarTabela();
+						limpar();
+					}	
 			}
 			
 		});
-		cadastrar_1.setBackground(SystemColor.window);
+		cadastrar_1.setBackground(UIManager.getColor("Button.darkShadow"));
 		
-		JButton cadastrar_1_1 = new JButton("Alterar");
-		cadastrar_1_1.setBounds(456, 96, 118, 21);
-		layeredPane.add(cadastrar_1_1);
-		cadastrar_1_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		cadastrar_1_1.addActionListener(new ActionListener() {
+		alterar = new JButton("Alterar");
+		alterar.setEnabled(false);
+		alterar.setBounds(456, 89, 118, 21);
+		layeredPane.add(alterar);
+		alterar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		alterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				if (table.getSelectedRow()!=-1){
-//					int categoria = comboBox.getSelectedIndex();
-//					if(categoria!=0) {
-//						String turno = String.valueOf(comboBox_1.getSelectedItem());
-//						if(!(turno.equals("Selecione"))) {
-//								try {
-//									sistema.alterarUsuario(usuario);						
-//								} catch (Exception e1) {
-//									JOptionPane.showMessageDialog(null, e1.getMessage());
-//								}
-//								atualizarTabela();
-//						}else JOptionPane.showMessageDialog(null, "É necessário atribuir um turno ao usuário!");
-//					}else JOptionPane.showMessageDialog(null, "É necessário atribuir uma categoria ao usuário!");
-//				}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
+					Funcionario funcionario = new Funcionario();
+					funcionario.setId(Integer.parseInt(tfCodigo.getText()));
+					funcionario.setNome(tfNome.getText());
+					funcionario.setLogin(tfLogin.getText());
+					funcionario.setSalario(Double.parseDouble(tfSalario.getText()));
+					funcionario.setTurno(String.valueOf(comboBox_1.getSelectedItem()));		
+					try {
+						sistema.alterarFuncionario(funcionario);
+					} catch (UpdateException | SelectException | NaoCadastradoException e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage());
+					};						
+			
+				atualizarTabela();
+				limpar();
 			}
 		});
-		cadastrar_1_1.setBackground(SystemColor.window);
+		alterar.setBackground(UIManager.getColor("Button.darkShadow"));
 		
 	
 		
-		JButton excluir_1 = new JButton("Excluir");
-		excluir_1.setBounds(456, 162, 118, 21);
+		excluir_1 = new JButton("Excluir");
+		excluir_1.setEnabled(false);
+		excluir_1.setBounds(456, 150, 118, 21);
 		layeredPane.add(excluir_1);
 		excluir_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		excluir_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (table.getSelectedRow()!=-1){
-//					try {
-//						sistema.excluirUsuario(Integer.parseInt(tfCodigo.getText()), Integer.parseInt(tfCodigoEndereco.getText()));
-//					} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
-//						JOptionPane.showMessageDialog(null,  e1.getMessage());
-//					}
+					try {
+						sistema.excluirFuncionario(Integer.parseInt(tfCodigo.getText()), 0);
+					} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
+						JOptionPane.showMessageDialog(null,  e1.getMessage());
+					}
 					atualizarTabela();
+					atualizarTabela_1();
 					limpar();
-				
-				}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
-				
+					limpar_1();				
 			}
 		});
-		excluir_1.setBackground(SystemColor.window);
+		excluir_1.setBackground(UIManager.getColor("Button.darkShadow"));
 		
-		JButton cadastrar_1_1_1 = new JButton("Limpar");
-		cadastrar_1_1_1.setBounds(456, 63, 118, 21);
-		layeredPane.add(cadastrar_1_1_1);
-		cadastrar_1_1_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		cadastrar_1_1_1.addActionListener(new ActionListener() {
+		JButton limpar = new JButton("Limpar");
+		limpar.setBounds(456, 62, 118, 21);
+		layeredPane.add(limpar);
+		limpar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		limpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				limpar();
 			}
 		});
-		cadastrar_1_1_1.setBackground(SystemColor.window);
+		limpar.setBackground(UIManager.getColor("Button.focus"));
 		
 		JLayeredPane layeredPane_1 = new JLayeredPane();
-		layeredPane_1.setBounds(967, 629, 611, 276);
+		layeredPane_1.setBounds(970, 657, 611, 221);
 		contentPane.add(layeredPane_1);
 		
 		JLabel lblNome_1_2 = new JLabel("Nome");
@@ -470,104 +490,138 @@ public class FuncionarioView extends JFrame {
 		
 		tfSalario_1 = new JTextField();
 		tfSalario_1.setColumns(10);
-		tfSalario_1.setBounds(127, 184, 282, 19);
+		tfSalario_1.setBounds(127, 151, 282, 19);
 		layeredPane_1.add(tfSalario_1);
 		
 		JLabel lblSalrio_1 = new JLabel("Salário");
 		lblSalrio_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSalrio_1.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblSalrio_1.setBounds(22, 181, 70, 20);
+		lblSalrio_1.setBounds(32, 150, 70, 20);
 		layeredPane_1.add(lblSalrio_1);
 		
 		JButton limpar_2 = new JButton("Limpar");
+		limpar_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				limpar_1();
+			}
+		});
 		limpar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		limpar_2.setBackground(SystemColor.window);
+		limpar_2.setBackground(UIManager.getColor("Button.darkShadow"));
 		limpar_2.setBounds(456, 63, 118, 21);
 		layeredPane_1.add(limpar_2);
 		
-		JButton excluir_2 = new JButton("Excluir");
-		excluir_2.setBounds(456, 159, 118, 21);
+		excluir_2 = new JButton("Excluir");
+		excluir_2.setEnabled(false);
+		excluir_2.setBounds(456, 150, 118, 21);
 		layeredPane_1.add(excluir_2);
 		excluir_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (table_1.getSelectedRow()!=-1){
 					try {
-						sistema.excluirTelefone(Integer.parseInt(tfCodigo.getText()), String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));
+						sistema.excluirFuncionario(Integer.parseInt(tfCodigo_1.getText()),1);
 					} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
 						JOptionPane.showMessageDialog(null,  e1.getMessage());
 					}
-//					atualizarTabela_1(Integer.parseInt(tfCodigo.getText()));
-				
-				}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
-				
+					atualizarTabela();
+					atualizarTabela_1();
+					limpar();
+					limpar_1();				
 				
 			}
 		});
 		excluir_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		excluir_2.setBackground(SystemColor.window);
+		excluir_2.setBackground(UIManager.getColor("Button.darkShadow"));
 		
-		JButton cadastrar_2 = new JButton("Cadastrar");
-		cadastrar_2.setBounds(456, 126, 118, 21);
+		cadastrar_2 = new JButton("Cadastrar");
+		cadastrar_2.setBounds(456, 118, 118, 21);
 		layeredPane_1.add(cadastrar_2);
 		cadastrar_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(table.getSelectedRow()!=-1){
 					try {
-//						sistema.adicionarTelefone(Integer.parseInt(tfCodigo.getText()), tfTelefone.getText());
+						if(tfNome_1.getText().equals("") || tfLogin_1.getText().equals("") || tfSalario_1.getText().equals("") || comboBox_1_1.getSelectedItem().equals("Selecione")) {      
+							JOptionPane.showMessageDialog(null, "Preencha todos os campos");
+						}else {
+							Funcionario funcionario = new Funcionario();
+							funcionario.setNome(tfNome_1.getText());
+							funcionario.setLogin(tfLogin_1.getText());
+							funcionario.setSalario(Double.parseDouble(tfSalario_1.getText()));
+							funcionario.setSenha(gerarSenhaAleatoria(8));
+							funcionario.setTipo(2);
+							funcionario.setTurno(String.valueOf(comboBox_1_1.getSelectedItem()));						
+							try {
+								sistema.adicionarFuncionario(funcionario);
+							} catch (InsertException | SelectException | JaCadastradoException e1) {
+								JOptionPane.showMessageDialog(null, e1.getMessage());
+							}
+						
+							atualizarTabela_1();
+							limpar_1();
+						}
 					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
-					}
-//					atualizarTabela_1(Integer.parseInt(tfCodigo.getText()));
-				}else JOptionPane.showMessageDialog(null, "Nenhuma usuário selecionado");
-						
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+					}	
 			}
 		});
 		cadastrar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		cadastrar_2.setBackground(SystemColor.window);
+		cadastrar_2.setBackground(UIManager.getColor("Button.darkShadow"));
 		
-		JButton alterar_2 = new JButton("Alterar");
-		alterar_2.setBounds(456, 93, 118, 21);
+		alterar_2 = new JButton("Alterar");
+		alterar_2.setEnabled(false);
+		alterar_2.setBounds(456, 89, 118, 21);
 		layeredPane_1.add(alterar_2);
 		alterar_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					if(table_1.getSelectedRow()!=-1){
-						try {
-//							sistema.alterarTelefone(Integer.parseInt(tfCodigo.getText()), tfTelefone.getText(), String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));		
-						} catch (Exception e1) {
-							JOptionPane.showMessageDialog(null, e1.getMessage());
-						}
-//						atualizarTabela_1(Integer.parseInt(tfCodigo.getText()));
-						
-					}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
-				}
+				Funcionario funcionario = new Funcionario();
+				funcionario.setId(Integer.parseInt(tfCodigo_1.getText()));
+				funcionario.setNome(tfNome_1.getText());
+				funcionario.setLogin(tfLogin_1.getText());
+				funcionario.setSalario(Double.parseDouble(tfSalario_1.getText()));
+				funcionario.setTurno(String.valueOf(comboBox_1_1.getSelectedItem()));		
+				try {
+					sistema.alterarFuncionario(funcionario);
+				} catch (UpdateException | SelectException | NaoCadastradoException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				};						
+		
+			atualizarTabela();
+			limpar();
+			}
 				
 		});
 		alterar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		alterar_2.setBackground(SystemColor.window);
+		alterar_2.setBackground(UIManager.getColor("Button.darkShadow"));
+		
+		cadatrar_asisstente = new JButton("Adicionar Assistente");
+		cadatrar_asisstente.setEnabled(false);
+		cadatrar_asisstente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			
+			}
+		});
+		cadatrar_asisstente.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		cadatrar_asisstente.setBackground(UIManager.getColor("Button.darkShadow"));
+		cadatrar_asisstente.setBounds(1032, 629, 173, 28);
+		contentPane.add(cadatrar_asisstente);
+		
+		remover_assistente = new JButton("Remover Assistente");
+		remover_assistente.setEnabled(false);
+		remover_assistente.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		remover_assistente.setBackground(UIManager.getColor("Button.darkShadow"));
+		remover_assistente.setBounds(1367, 629, 173, 28);
+		contentPane.add(remover_assistente);
 		table.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
 				try {
 					setCamposFromTabela();
 					atualizarTabela_1_1();
+					limpar_1();
+					cadatrar_asisstente.setEnabled(true);
+					remover_assistente.setEnabled(true);
+					cadastrar_1.setEnabled(false);
+					alterar.setEnabled(true);
+					excluir_1.setEnabled(true);
+//					botao_cadastrar_assistente();
+
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -592,6 +646,13 @@ public class FuncionarioView extends JFrame {
 		comboBox_1.setSelectedIndex(0);
 		table.clearSelection();
 		atualizarTabela_1();
+		cadatrar_asisstente.setEnabled(false);
+		remover_assistente.setEnabled(false);
+		cadastrar_1.setEnabled(true);
+		alterar.setEnabled(true);
+		alterar.setEnabled(false);
+		excluir_1.setEnabled(false);
+
 	}
 	
 	public void limpar_1() {
@@ -601,6 +662,9 @@ public class FuncionarioView extends JFrame {
 		tfLogin_1.setText("");
 		comboBox_1_1.setSelectedIndex(0);
 		table_1.clearSelection();
+		cadastrar_2.setEnabled(true);
+		excluir_2.setEnabled(false);
+		alterar_2.setEnabled(false);
 	}	
 
 	public static void atualizarTabela() {
@@ -630,10 +694,11 @@ public class FuncionarioView extends JFrame {
 public static void atualizarTabela_1_1() {
 		try {
 			int id_bibliotecario = Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
-			assistentes = sistema.listarAssistentesBibliotecario(id_bibliotecario);
+//			System.out.println(id_bibliotecario);
+			assistentes2 = sistema.listarAssistentesBibliotecario(id_bibliotecario);
 			DefaultTableModel model = (DefaultTableModel) table_1.getModel();
 			model.setNumRows(0);
-		for (int i=0;i!=assistentes.size();i++)model.addRow((Object[]) assistentes.get(i));
+		for (int i=0;i<assistentes2.size();i++) model.addRow((Object[]) assistentes2.get(i));
 		
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -651,11 +716,26 @@ public static void atualizarTabela_1_1() {
 	}
 	
 	public void setCamposFromTabela_1() throws NumberFormatException, SelectException {
-		tfCodigo_1.setText(String.valueOf(table_1.getValueAt(table.getSelectedRow(), 0)));
-		tfNome_1.setText(String.valueOf(table_1.getValueAt(table.getSelectedRow(), 1)));
-		tfLogin_1.setText(String.valueOf(table_1.getValueAt(table.getSelectedRow(), 2)));
-		String turno = String.valueOf(table_1.getValueAt(table.getSelectedRow(), 3));
+		tfCodigo_1.setText(String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));
+		tfNome_1.setText(String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 1)));
+		tfLogin_1.setText(String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 2)));
+		String turno = String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 3));
 		comboBox_1_1.setSelectedItem(turno);
-		tfSalario_1.setText(String.valueOf(table_1.getValueAt(table.getSelectedRow(), 4)));
+		tfSalario_1.setText(String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 4)));
 	}
+	
+	public static String gerarSenhaAleatoria(int len){
+        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-*!#@$%";
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < len; i++){
+            int randomIndex = random.nextInt(chars.length());
+            sb.append(chars.charAt(randomIndex));
+        }
+ 
+        return sb.toString();
+    }
+	
+
+
 }

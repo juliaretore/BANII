@@ -5,7 +5,7 @@ public class Funcionario {
 	private String nome;
 	private String login;
 	private String senha;
-	private double salario;
+	private Double salario;
 	private String turno;
 	private int tipo;
 	
@@ -18,6 +18,10 @@ public class Funcionario {
 		this.setTurno(turno);
 		this.setTipo(tipo);
 	}
+	public Funcionario() {
+		
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -42,10 +46,10 @@ public class Funcionario {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	public double getSalario() {
+	public Double getSalario() {
 		return salario;
 	}
-	public void setSalario(double salario) {
+	public void setSalario(Double salario) {
 		this.salario = salario;
 	}
 	public String getTurno() {
