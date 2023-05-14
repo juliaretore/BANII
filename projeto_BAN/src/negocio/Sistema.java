@@ -104,6 +104,10 @@ public class Sistema {
 		funcionarioDAO.insert_funcionario(funcionario);
 	}
 	
+	public void adicionarSupervisao(int id_assistente, int id_bibliotecario) throws InsertException, SelectException, JaCadastradoException {
+		funcionarioDAO.insert_supervisao(id_assistente, id_bibliotecario);
+	}
+	
 	public void alterarFuncionario(Funcionario funcionario) throws UpdateException, SelectException, NaoCadastradoException {
 		funcionarioDAO.update_funcionario(funcionario);
 	}
@@ -113,7 +117,7 @@ public class Sistema {
 	}
 
 	public void excluirSupervisao(int bibliotecario, int assistente) throws DeleteException, SelectException, NaoCadastradoException { 
-		funcionarioDAO.delete_funcionario(bibliotecario, assistente);
+		funcionarioDAO.delete_supervisao(bibliotecario, assistente);
 	}
 	
 }

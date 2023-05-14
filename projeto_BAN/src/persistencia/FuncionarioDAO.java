@@ -21,10 +21,9 @@ private static FuncionarioDAO instance = null;
 	
 	private PreparedStatement select_new_id_funcionario;
 	private PreparedStatement insert_funcionario;
+	private PreparedStatement insert_supervisao;
 	private PreparedStatement update_funcionario;
 	private PreparedStatement delete_funcionario;
-
-	
 	private PreparedStatement select_bibliotecarios;
 	private PreparedStatement select_assistentes;
 	private PreparedStatement select_assistentes_bibliotecario;
@@ -44,6 +43,7 @@ private static FuncionarioDAO instance = null;
 		Connection conexao = Conexao.getConexao();
 		select_new_id_funcionario = conexao.prepareStatement("select nextval('id_funcionario')");
 		insert_funcionario =  conexao.prepareStatement("insert into funcionario values (?,?,?,?,?,?,?)");
+		insert_supervisao = conexao.prepareStatement("insert into supervisao values (?,?)");
 		update_funcionario = conexao.prepareStatement("update funcionario set login=?, nome=?, salario=?, turno=? where id=?");
 		delete_funcionario = conexao.prepareStatement("delete from funcionario where id=?");
 		delete_supervisoes = conexao.prepareStatement("delete from supervisao where id_bibliotecario=?");
@@ -79,6 +79,16 @@ private static FuncionarioDAO instance = null;
 				throw new InsertException("Erro ao inserir funcionário.");
 			}		
 	}
+	
+	public void insert_supervisao(int id_assistente, int id_bibliotecario) throws InsertException, SelectException, JaCadastradoException{
+		try {
+			insert_supervisao.setInt(1, id_assistente);
+			insert_supervisao.setInt(2, id_bibliotecario);
+			insert_supervisao.executeUpdate();
+		}catch (SQLException e) {
+			throw new InsertException("Erro ao inserir supervisão.");
+		}		
+}
 
 	public void update_funcionario(Funcionario funcionario) throws UpdateException, SelectException, NaoCadastradoException{
 		try {
@@ -114,7 +124,7 @@ private static FuncionarioDAO instance = null;
 		try {	
 			delete_supervisao.setInt(1, bibliotecario);
 			delete_supervisao.setInt(2, assistente);
-			delete_supervisoes.executeUpdate();
+			delete_supervisao.executeUpdate();
 		}catch(SQLException e) {
 			throw new DeleteException("Erro ao deletar supervisão");
 		}
@@ -166,22 +176,22 @@ public List<Object> select_assistentes_bibliotecario(int id_bibliotecario) throw
 		return lista;
 	}	
 
-	
-	public  List<Object> select_adicionar_supervisao(int id_bibliotecario) throws SelectException {
-		List<Object> lista = new ArrayList<Object>();
-		try {
-			select_adicionar_supervisao.setInt(1, id_bibliotecario);
-			ResultSet rs = select_adicionar_supervisao.executeQuery();
-			if(rs.next()) {
-				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getDouble(5)};
-				lista.add(linha);	
-			}
-		}catch(SQLException e) {
-			throw new SelectException("Erro ao buscar os assistentes para supervisão");
+		
+
+public List<Object> select_adicionar_supervisao(int id_bibliotecario) throws SelectException {
+	List<Object> lista = new ArrayList<Object>();
+	try {
+		select_adicionar_supervisao.setInt(1, id_bibliotecario);
+		ResultSet rs = select_adicionar_supervisao.executeQuery();
+		while(rs.next()) {
+			Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getDouble(5)};
+			lista.add(linha);
 		}
-		return lista;
-	}		
-	
+	}catch(SQLException e) {
+		throw new SelectException("Erro ao buscar os assistentes para supervisão");
+	}
+	return lista;
+}
 
 
 

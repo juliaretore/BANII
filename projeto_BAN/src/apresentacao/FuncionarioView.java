@@ -80,7 +80,7 @@ public class FuncionarioView extends JFrame {
 	Funcionario funcionario = new Funcionario();		
 	private static Sistema sistema;
 	private JTextField tfNome;
-	private JTextField tfCodigo;
+	static JTextField tfCodigo;
 	JComboBox comboBox_1 = new JComboBox();
 	JComboBox comboBox_1_1 = new JComboBox();
 	private static JTable table = new JTable();
@@ -597,8 +597,9 @@ public class FuncionarioView extends JFrame {
 		cadatrar_asisstente.setEnabled(false);
 		cadatrar_asisstente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-			
+				AdicionarSupervisaoView frame = new AdicionarSupervisaoView();
+				frame.setVisible(true);
+				frame.setLocationRelativeTo(null);
 			}
 		});
 		cadatrar_asisstente.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
@@ -614,6 +615,8 @@ public class FuncionarioView extends JFrame {
 				} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
+				atualizarTabela_1_1();
+				limpar_1();
 			}
 		});
 		remover_assistente.setEnabled(false);
@@ -751,7 +754,6 @@ public class FuncionarioView extends JFrame {
 public static void atualizarTabela_1_1() {
 		try {
 			int id_bibliotecario = Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
-//			System.out.println(id_bibliotecario);
 			assistentes2 = sistema.listarAssistentesBibliotecario(id_bibliotecario);
 			DefaultTableModel model = (DefaultTableModel) table_1.getModel();
 			model.setNumRows(0);
