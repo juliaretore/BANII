@@ -100,6 +100,8 @@ public class FuncionarioView extends JFrame {
 	private JButton alterar_2;
 	private JButton excluir_2;
 	private JButton remover_assistente;
+	private JTextField textPNome_1;
+	private JTextField textPCodigo_1;
 
 	
 	public static void main(String[] args) {
@@ -150,7 +152,7 @@ public class FuncionarioView extends JFrame {
 		JLabel lblBusca = new JLabel("BUSCA DE BIBLIOTECÁRIOS");
 		lblBusca.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblBusca.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblBusca.setBounds(224, 0, 405, 48);
+		lblBusca.setBounds(202, 12, 405, 48);
 		contentPane.add(lblBusca);
 		
 		JLabel lblArtistasCadastrados = new JLabel("BIBLIOTECÁRIOS CADASTRADOS");
@@ -223,7 +225,7 @@ public class FuncionarioView extends JFrame {
 		scrollPane.setBounds(169, 186, 611, 431);
 		contentPane.add(scrollPane);
 		table.setSelectionBackground(SystemColor.activeCaption);
-		table.setBackground(SystemColor.window);
+		table.setBackground(UIManager.getColor("Button.light"));
 		
 
 		table.setModel(new DefaultTableModel(
@@ -270,8 +272,9 @@ public class FuncionarioView extends JFrame {
 				try {
 					setCamposFromTabela_1();
 					cadastrar_2.setEnabled(false);
-//					cadatrar_asisstente.setEnabled(true);
-//					remover_assistente.setEnabled(true);
+					if (table.getSelectedRow()!=-1) cadatrar_asisstente.setEnabled(true);
+						
+					remover_assistente.setEnabled(true);
 					excluir_2.setEnabled(true);
 					alterar_2.setEnabled(true);
 				} catch (NumberFormatException e) {
@@ -604,31 +607,83 @@ public class FuncionarioView extends JFrame {
 		contentPane.add(cadatrar_asisstente);
 		
 		remover_assistente = new JButton("Remover Assistente");
+		remover_assistente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					sistema.excluirSupervisao(Integer.parseInt(tfCodigo.getText()), Integer.parseInt(tfCodigo_1.getText()));
+				} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
+			}
+		});
 		remover_assistente.setEnabled(false);
 		remover_assistente.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		remover_assistente.setBackground(UIManager.getColor("Button.darkShadow"));
 		remover_assistente.setBounds(1367, 629, 173, 28);
 		contentPane.add(remover_assistente);
+		
+		JLabel lblBuscaDeAssistentes = new JLabel("BUSCA DE ASSISTENTES");
+		lblBuscaDeAssistentes.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblBuscaDeAssistentes.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblBuscaDeAssistentes.setBounds(997, 12, 405, 48);
+		contentPane.add(lblBuscaDeAssistentes);
+		
+		JLabel lblNome_2 = new JLabel("Nome");
+		lblNome_2.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNome_2.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblNome_2.setBounds(967, 58, 70, 20);
+		contentPane.add(lblNome_2);
+		
+		textPNome_1 = new JTextField();
+		textPNome_1.addCaretListener(new CaretListener() {
+				public void caretUpdate(CaretEvent arg0) {
+					TableRowSorter<TableModel> filtro = null;  
+					DefaultTableModel model = (DefaultTableModel) table_1.getModel();  
+					filtro = new TableRowSorter<TableModel>(model);  
+					table_1.setRowSorter(filtro); 
+					if (textPNome_1.getText().length()==0) filtro.setRowFilter(null);
+					else filtro.setRowFilter(RowFilter.regexFilter("(?i)" + textPNome_1.getText(), 1));  
+					
+				}
+		});
+		textPNome_1.setColumns(10);
+		textPNome_1.setBounds(1068, 59, 198, 20);
+		contentPane.add(textPNome_1);
+		
+		textPCodigo_1 = new JTextField();
+		textPCodigo_1.setColumns(10);
+		textPCodigo_1.setBounds(1367, 59, 198, 20);
+		textPCodigo_1.addCaretListener(new CaretListener() {
+			public void caretUpdate(CaretEvent e) {
+				TableRowSorter<TableModel> filtro = null;  
+				DefaultTableModel model = (DefaultTableModel) table_1.getModel();  
+				filtro = new TableRowSorter<TableModel>(model);  
+				table_1.setRowSorter(filtro);
+				if (textPCodigo_1.getText().length()==0) filtro.setRowFilter(null);
+				else filtro.setRowFilter(RowFilter.regexFilter(textPCodigo_1.getText(), 0));  
+			}
+		});
+		contentPane.add(textPCodigo_1);
+		
+		JLabel lblCdigo_2 = new JLabel("Código");
+		lblCdigo_2.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblCdigo_2.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblCdigo_2.setBounds(1289, 61, 70, 20);
+		contentPane.add(lblCdigo_2);
 		table.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
-				try {
-					setCamposFromTabela();
+					try {
+						setCamposFromTabela();
+					} catch (NumberFormatException | SelectException e) {
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
 					atualizarTabela_1_1();
 					limpar_1();
 					cadatrar_asisstente.setEnabled(true);
-					remover_assistente.setEnabled(true);
+					remover_assistente.setEnabled(false);
 					cadastrar_1.setEnabled(false);
 					alterar.setEnabled(true);
 					excluir_1.setEnabled(true);
-//					botao_cadastrar_assistente();
-
-				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SelectException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 		});
 
@@ -665,6 +720,8 @@ public class FuncionarioView extends JFrame {
 		cadastrar_2.setEnabled(true);
 		excluir_2.setEnabled(false);
 		alterar_2.setEnabled(false);
+		remover_assistente.setEnabled(false);
+
 	}	
 
 	public static void atualizarTabela() {
@@ -735,7 +792,4 @@ public static void atualizarTabela_1_1() {
  
         return sb.toString();
     }
-	
-
-
 }

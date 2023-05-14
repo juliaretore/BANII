@@ -103,12 +103,17 @@ public class Sistema {
 	public void adicionarFuncionario(Funcionario funcionario) throws InsertException, SelectException, JaCadastradoException {
 		funcionarioDAO.insert_funcionario(funcionario);
 	}
+	
 	public void alterarFuncionario(Funcionario funcionario) throws UpdateException, SelectException, NaoCadastradoException {
 		funcionarioDAO.update_funcionario(funcionario);
 	}
+	
 	public void excluirFuncionario(int funcionario, int op) throws DeleteException, SelectException, NaoCadastradoException {
 		funcionarioDAO.delete_funcionario(funcionario, op);
 	}
 
+	public void excluirSupervisao(int bibliotecario, int assistente) throws DeleteException, SelectException, NaoCadastradoException { 
+		funcionarioDAO.delete_funcionario(bibliotecario, assistente);
+	}
 	
 }

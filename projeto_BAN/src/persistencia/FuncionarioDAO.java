@@ -31,6 +31,7 @@ private static FuncionarioDAO instance = null;
 	private PreparedStatement select_adicionar_supervisao;
 	private PreparedStatement delete_supervisoes;
 	private PreparedStatement delete_supervisoes_a;
+	private PreparedStatement delete_supervisao;
 	
 	
 
@@ -47,7 +48,7 @@ private static FuncionarioDAO instance = null;
 		delete_funcionario = conexao.prepareStatement("delete from funcionario where id=?");
 		delete_supervisoes = conexao.prepareStatement("delete from supervisao where id_bibliotecario=?");
 		delete_supervisoes_a = conexao.prepareStatement("delete from supervisao where id_assistente=?");
-		
+		delete_supervisao = conexao.prepareStatement("delete from supervisao where id_bibliotecario=? and id_assistente=?");
 		select_bibliotecarios = conexao.prepareStatement("select id, nome, login, turno, salario from funcionario where tipo=1");
 		select_assistentes = conexao.prepareStatement("select id, nome, login, turno, salario from funcionario where tipo=2");
 		select_assistentes_bibliotecario = conexao.prepareStatement("select id, nome, login, turno, salario from funcionario where tipo=2 and id in (select id_assistente from supervisao where id_bibliotecario=?)");
@@ -106,6 +107,16 @@ private static FuncionarioDAO instance = null;
 			delete_funcionario.executeUpdate();
 		}catch(SQLException e) {
 			throw new DeleteException("Erro ao deletar funcionário");
+		}
+	}
+	
+	public void delete_supervisao(int bibliotecario, int assistente) throws DeleteException, SelectException, NaoCadastradoException{
+		try {	
+			delete_supervisao.setInt(1, bibliotecario);
+			delete_supervisao.setInt(2, assistente);
+			delete_supervisoes.executeUpdate();
+		}catch(SQLException e) {
+			throw new DeleteException("Erro ao deletar supervisão");
 		}
 	}
 	
