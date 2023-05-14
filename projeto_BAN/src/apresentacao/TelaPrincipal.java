@@ -37,6 +37,7 @@ public class TelaPrincipal extends JFrame {
 	JTextField textusuario;
 	static JTextField tfIdUsuario;
 	static JButton btnUsuario = new JButton("Gerenciamento de Usuários");
+	private JButton btnFuncionario;
 
 	public static void main(String[] args) { 
 		EventQueue.invokeLater(new Runnable() {
@@ -105,9 +106,6 @@ public class TelaPrincipal extends JFrame {
 		btnNewButton.setBounds(522, 41, 133, 31);
 		contentPane.add(btnNewButton);
 		
-
-	
-		
 		btnUsuario.setActionCommand("Gerenciamento de Usuários");
 		btnUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -116,6 +114,22 @@ public class TelaPrincipal extends JFrame {
 				objeto.setLocationRelativeTo(null);
 			}
 		});
+		
+		btnFuncionario = new JButton("Gerenciamento de Funcionário");
+		btnFuncionario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FuncionarioView objeto = FuncionarioView.getInstance();
+				objeto.setVisible(true);
+				objeto.setLocationRelativeTo(null);
+				
+			}
+		});
+		btnFuncionario.setForeground(Color.BLACK);
+		btnFuncionario.setFont(new Font("Dialog", Font.PLAIN, 14));
+		btnFuncionario.setBackground(Color.WHITE);
+		btnFuncionario.setActionCommand("Gerenciamento de Usuários");
+		btnFuncionario.setBounds(211, 342, 271, 77);
+		contentPane.add(btnFuncionario);
 		
 		
 		

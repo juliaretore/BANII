@@ -294,13 +294,13 @@ public class FuncionarioView extends JFrame {
 		layeredPane.setBounds(169, 657, 611, 221);
 		contentPane.add(layeredPane);
 		
-		JLabel lblNome_1 = new JLabel("Nome");
+		JLabel lblNome_1 = new JLabel("Nome:");
 		lblNome_1.setBounds(22, 63, 70, 20);
 		layeredPane.add(lblNome_1);
 		lblNome_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNome_1.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		
-		JLabel lblCdigo_1 = new JLabel("ID");
+		JLabel lblCdigo_1 = new JLabel("ID:");
 		lblCdigo_1.setBounds(22, 31, 70, 20);
 		layeredPane.add(lblCdigo_1);
 		lblCdigo_1.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -318,7 +318,7 @@ public class FuncionarioView extends JFrame {
 		layeredPane.add(tfNome);
 		tfNome.setColumns(10);
 		
-		JLabel lblNome_1_1 = new JLabel("Login");
+		JLabel lblNome_1_1 = new JLabel("Login:");
 		lblNome_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNome_1_1.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblNome_1_1.setBounds(22, 89, 70, 20);
@@ -329,7 +329,7 @@ public class FuncionarioView extends JFrame {
 		tfLogin.setBounds(127, 89, 282, 19);
 		layeredPane.add(tfLogin);
 		
-		JLabel btnTurno = new JLabel("Turno");
+		JLabel btnTurno = new JLabel("Turno:");
 		btnTurno.setBounds(22, 118, 70, 20);
 		layeredPane.add(btnTurno);
 		btnTurno.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -346,7 +346,7 @@ public class FuncionarioView extends JFrame {
 		tfSalario.setBounds(127, 151, 282, 19);
 		layeredPane.add(tfSalario);
 		
-		JLabel lblSalrio = new JLabel("Salário");
+		JLabel lblSalrio = new JLabel("Salário:");
 		lblSalrio.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSalrio.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblSalrio.setBounds(22, 150, 70, 20);
@@ -444,13 +444,13 @@ public class FuncionarioView extends JFrame {
 		layeredPane_1.setBounds(970, 657, 611, 221);
 		contentPane.add(layeredPane_1);
 		
-		JLabel lblNome_1_2 = new JLabel("Nome");
+		JLabel lblNome_1_2 = new JLabel("Nome:");
 		lblNome_1_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNome_1_2.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblNome_1_2.setBounds(22, 63, 70, 20);
 		layeredPane_1.add(lblNome_1_2);
 		
-		JLabel lblCdigo_1_1 = new JLabel("ID");
+		JLabel lblCdigo_1_1 = new JLabel("ID:");
 		lblCdigo_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblCdigo_1_1.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblCdigo_1_1.setBounds(22, 31, 70, 20);
@@ -468,7 +468,7 @@ public class FuncionarioView extends JFrame {
 		tfNome_1.setBounds(127, 64, 282, 19);
 		layeredPane_1.add(tfNome_1);
 		
-		JLabel lblNome_1_1_1 = new JLabel("Login");
+		JLabel lblNome_1_1_1 = new JLabel("Login:");
 		lblNome_1_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNome_1_1_1.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblNome_1_1_1.setBounds(22, 89, 70, 20);
@@ -479,7 +479,7 @@ public class FuncionarioView extends JFrame {
 		tfLogin_1.setBounds(127, 89, 282, 19);
 		layeredPane_1.add(tfLogin_1);
 		
-		JLabel btnTurno_1 = new JLabel("Turno");
+		JLabel btnTurno_1 = new JLabel("Turno:");
 		btnTurno_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		btnTurno_1.setFont(new Font("Dialog", Font.BOLD, 15));
 		btnTurno_1.setBounds(22, 118, 70, 20);
@@ -496,7 +496,7 @@ public class FuncionarioView extends JFrame {
 		tfSalario_1.setBounds(127, 151, 282, 19);
 		layeredPane_1.add(tfSalario_1);
 		
-		JLabel lblSalrio_1 = new JLabel("Salário");
+		JLabel lblSalrio_1 = new JLabel("Salário:");
 		lblSalrio_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSalrio_1.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblSalrio_1.setBounds(32, 150, 70, 20);
