@@ -1,3 +1,4 @@
+
 package apresentacao;
 
 import java.awt.Color;
@@ -35,15 +36,13 @@ import exceptions.InsertException;
 import exceptions.JaCadastradoException;
 import exceptions.NaoCadastradoException;
 import exceptions.SelectException;
-//import javazoom.jl.decoder.JavaLayerException;
-//import javazoom.jl.player.Player;
 import negocio.Sistema;
 import persistencia.*;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import javax.swing.border.MatteBorder;
 
-public class AdicionarSupervisaoView extends JFrame {
+public class AdicionarAutorLivroView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -52,13 +51,13 @@ public class AdicionarSupervisaoView extends JFrame {
 	private static JTable table;
 	private static Sistema sistema;
 
-	private static List<Object> assistentes = new ArrayList<Object>();
+	private static List<Object> autores = new ArrayList<Object>();
 		
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AdicionarSupervisaoView frame = new AdicionarSupervisaoView();
+					AdicionarAutorLivroView frame = new AdicionarAutorLivroView();
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
@@ -68,7 +67,7 @@ public class AdicionarSupervisaoView extends JFrame {
 		});
 	}
 
-	public AdicionarSupervisaoView() {
+	public AdicionarAutorLivroView() {
 		try {
 			sistema = new Sistema();
 		} catch (ClassNotFoundException | SQLException | SelectException e) {
@@ -79,13 +78,13 @@ public class AdicionarSupervisaoView extends JFrame {
 				atualizarTabela();
 				if(table.getRowCount()==0) {
 					dispose();
-					JOptionPane.showMessageDialog(null, "Sem assistentes disponíveis para adicionar!");
+					JOptionPane.showMessageDialog(null, "Sem autores disponíveis para adicionar!");
 				}
 			}
 		});
 		JLabel lblNewLabel = new JLabel("New label");
 
-		setTitle("Adicionar Supervisão");
+		setTitle("Adicionar Autores");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100,  544, 450);
@@ -100,7 +99,7 @@ public class AdicionarSupervisaoView extends JFrame {
 		lblBusca.setBounds(239, 12, 69, 20);
 		contentPane.add(lblBusca);
 		
-		JLabel lblMusicasParaAdicionae = new JLabel("ASSISTENTES PARA ADICIONAR");
+		JLabel lblMusicasParaAdicionae = new JLabel("AUTORES PARA ADICIONAR");
 		lblMusicasParaAdicionae.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		lblMusicasParaAdicionae.setBounds(142, 121, 369, 20);
 		contentPane.add(lblMusicasParaAdicionae);
@@ -128,15 +127,14 @@ public class AdicionarSupervisaoView extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nome", "Login", "Turno", "Salario"
+				"ID", "Nome", "Nacionalidade", "Area"
 			}
 		));
 		table.getColumnModel().getColumn(0).setPreferredWidth(90);
 		table.getColumnModel().getColumn(2).setPreferredWidth(100);
 		table.getColumnModel().getColumn(3).setPreferredWidth(100);
-		table.getColumnModel().getColumn(4).setPreferredWidth(100);
 		
-		JLabel label_6 = new JLabel("C\u00F3digo:");
+		JLabel label_6 = new JLabel("Código:");
 		label_6.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		label_6.setBounds(62, 40, 69, 20);
 		contentPane.add(label_6);
@@ -190,16 +188,16 @@ public class AdicionarSupervisaoView extends JFrame {
 		selecionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (table.getSelectedRow()!=-1){
-					int assistente = Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
-					int bibliotecario = Integer.parseInt(FuncionarioView.tfCodigo.getText());
+					int id_autor = Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
+					int id_livro = Integer.parseInt(LivroView.tfCodigo.getText());
 					try {
-						sistema.adicionarSupervisao(assistente, bibliotecario);
+						sistema.adicionarAutoresLivros(id_livro, id_autor);
 					} catch (InsertException | SelectException |NumberFormatException | JaCadastradoException e) {
 						JOptionPane.showMessageDialog(null, e.getMessage());
 					}
-					FuncionarioView.atualizarTabela_1_1();
+					LivroView.atualizarTabela_1();
 					dispose();  
-				}else JOptionPane.showMessageDialog(null, "Nenhum assistente selecionado!");
+				}else JOptionPane.showMessageDialog(null, "Nenhum autor selecionado!");
 			}
 		});
 		selecionar.setBackground(SystemColor.window);
@@ -217,10 +215,10 @@ public class AdicionarSupervisaoView extends JFrame {
 
 	public static void atualizarTabela() {
 		try {
-			assistentes = sistema.listarAdicionarAssistentesBibliotecario(Integer.parseInt(FuncionarioView.tfCodigo.getText()));
+			autores = sistema.listarAdiconarAutoresLivros(Integer.parseInt(LivroView.tfCodigo.getText()));
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.setNumRows(0);
-		for (int i=0;i<assistentes.size();i++) model.addRow((Object[]) assistentes.get(i));
+		for (int i=0;i<autores.size();i++) model.addRow((Object[]) autores.get(i));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}

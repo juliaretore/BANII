@@ -4,7 +4,6 @@ public class Livro {
 	private int id;
 	private String isbn;
 	private String titulo;
-	private String colecao;
 	private String editora;
 	
 	
@@ -12,11 +11,10 @@ public class Livro {
 		
 	}
 	
-	public Livro(int id, String isbn, String titulo, String colecao, String editora) {
+	public Livro(int id, String isbn, String titulo, String editora) {
 		this.setId(id);
 		this.setIsbn(isbn);
 		this.setTitulo(titulo);
-		this.setColecao(colecao);
 		this.setEditora(editora);
 	}
 
@@ -42,14 +40,6 @@ public class Livro {
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
-	}
-
-	public String getColecao() {
-		return colecao;
-	}
-
-	public void setColecao(String colecao) {
-		this.colecao = colecao;
 	}
 
 	public String getEditora() {

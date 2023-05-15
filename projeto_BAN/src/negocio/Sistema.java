@@ -24,11 +24,13 @@ public class Sistema {
 	private static LoginDAO loginDAO;
 	private static UsuarioDAO usuarioDAO;
 	private static FuncionarioDAO funcionarioDAO;
+	private static LivroDAO livroDAO;
 	
 	public Sistema() throws ClassNotFoundException, SQLException, SelectException{
 		loginDAO = LoginDAO.getInstance();
 		usuarioDAO = UsuarioDAO.getInstance();
 		funcionarioDAO = funcionarioDAO.getInstance();
+		livroDAO = livroDAO.getInstance();
 	}
 	
 	
@@ -83,7 +85,57 @@ public class Sistema {
 		usuarioDAO.update_telefone(usuario, novo_telefone, antigo_telefone);
 	}
 
-// FUNCIONARIO 
+// LIVRO 
+	public List<Object> listarLivros() throws SelectException{
+		return livroDAO.select_livros();
+	}
+	
+	public List<Object> listarAutoresLivros(int id_livro) throws SelectException{
+		return livroDAO.select_autores_livro(id_livro);
+	}
+	
+	public List<Object> listarExemplaresLivros(int id_livro) throws SelectException{
+		return livroDAO.select_exemplares_livro(id_livro); 
+	}
+
+	public List<Object> listarAdiconarAutoresLivros(int id_livro) throws SelectException{
+		return livroDAO.select_adicionar_autores_livro(id_livro); 
+	}	
+	
+	public void adicionarLivro(Livro livro) throws InsertException, SelectException, JaCadastradoException {
+		livroDAO.insert_livro(livro);
+	}
+	
+	public void adicionarExemplar(Exemplar exemplar) throws InsertException, SelectException, JaCadastradoException {
+		livroDAO.insert_exemplar(exemplar);
+	}
+		
+	public void adicionarAutoresLivros(int id_livro, int id_autor) throws InsertException, SelectException, JaCadastradoException {
+		livroDAO.insert_autores_livro(id_livro, id_autor);
+	}
+
+	public void alterarLivro(Livro livro) throws UpdateException, SelectException, NaoCadastradoException {
+		livroDAO.update_livro(livro);
+	}
+	
+	public void alterarExemplar(Exemplar exemplar) throws UpdateException, SelectException, NaoCadastradoException {
+		livroDAO.update_exemplar(exemplar);
+	}
+	
+	public void excluirLivro(int id_livro) throws DeleteException, SelectException, NaoCadastradoException {
+		livroDAO.delete_livro(id_livro);
+	}
+
+	public void excluirExemplar(int id_exemplar) throws DeleteException, SelectException, NaoCadastradoException { 
+		livroDAO.delete_exemplar(id_exemplar);
+	}
+	
+	public void excluirAutorLivro(int id_livro, int id_autor) throws DeleteException, SelectException, NaoCadastradoException { 
+		livroDAO.delete_autor_livro(id_livro, id_autor);
+	}
+	
+	
+	//FUNCIONARIO
 	public List<Object> listarBibliotecarios() throws SelectException{
 		return funcionarioDAO.select_bibliotecarios();
 	}
