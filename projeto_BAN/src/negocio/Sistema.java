@@ -25,12 +25,14 @@ public class Sistema {
 	private static UsuarioDAO usuarioDAO;
 	private static FuncionarioDAO funcionarioDAO;
 	private static LivroDAO livroDAO;
+	private static AutorDAO autorDAO;
 	
 	public Sistema() throws ClassNotFoundException, SQLException, SelectException{
 		loginDAO = LoginDAO.getInstance();
 		usuarioDAO = UsuarioDAO.getInstance();
 		funcionarioDAO = funcionarioDAO.getInstance();
 		livroDAO = livroDAO.getInstance();
+		autorDAO = autorDAO.getInstance();
 	}
 	
 	
@@ -132,8 +134,21 @@ public class Sistema {
 	
 	public void excluirAutorLivro(int id_livro, int id_autor) throws DeleteException, SelectException, NaoCadastradoException { 
 		livroDAO.delete_autor_livro(id_livro, id_autor);
+	}	
+	
+
+	//AUTOR
+	public void excluirAutor(int autor) throws DeleteException, SelectException, NaoCadastradoException { 
+		autorDAO.delete_autor(autor);
 	}
 	
+	public void alterarAutor(Autor autor) throws UpdateException, SelectException, NaoCadastradoException {
+		autorDAO.update_autor(autor);
+	}	
+	
+	public void adicionarAutor(Autor autor) throws InsertException, SelectException, JaCadastradoException {
+		autorDAO.insert_autor(autor);
+	}
 	
 	//FUNCIONARIO
 	public List<Object> listarBibliotecarios() throws SelectException{

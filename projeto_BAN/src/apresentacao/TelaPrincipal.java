@@ -30,6 +30,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.SystemColor;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.SwingConstants;
 
 public class TelaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -131,9 +132,24 @@ public class TelaPrincipal extends JFrame {
 		btnFuncionario.setBounds(211, 342, 271, 77);
 		contentPane.add(btnFuncionario);
 		
+		JButton btnLivro = new JButton("Gerenciamento de Livros");
+		btnLivro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LivroView objeto = LivroView.getInstance();
+				objeto.setVisible(true);
+				objeto.setLocationRelativeTo(null);
+			}
+		});
+		btnLivro.setForeground(Color.BLACK);
+		btnLivro.setFont(new Font("Dialog", Font.PLAIN, 14));
+		btnLivro.setBackground(Color.WHITE);
+		btnLivro.setActionCommand("");
+		btnLivro.setBounds(211, 435, 271, 77);
+		contentPane.add(btnLivro);
 		
 		
-		lblNewLabel.setBounds(0, 0, 676, 661);
+		
+		lblNewLabel.setBounds(0, 12, 676, 661);
 		contentPane.add(lblNewLabel);
 		
 
