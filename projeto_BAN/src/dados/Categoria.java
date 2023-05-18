@@ -11,13 +11,6 @@ public class Categoria {
 		
 	}
 	
-	public Categoria(int id, String nome, int tempo_empr, int qnt_max_empr) {
-		this.setId(id);
-		this.setNome(nome);
-		this.setQnt_max_empr(qnt_max_empr);
-		this.setTempo_empr(tempo_empr);
-	}
-
 	public int getId() {
 		return id;
 	}

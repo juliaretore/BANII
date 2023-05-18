@@ -104,6 +104,7 @@ create sequence id_emprestimo;
 create table emprestimo(
 	id int NOT NULL UNIQUE,
 	multa real NOT NULL,
+	pagamento_multa int NOT NULL, -- 0-> sem multa/pago   1-> multa em aberto
 	renovacoes int NOT NULL,
 	data_empr date NOT NULL,
 	data_est_entr date NOT NULL,
@@ -117,4 +118,3 @@ create table emprestimo(
 	foreign key (id_usuario) references usuario,
 	foreign key (id_funcionario) references funcionario
 );
-
