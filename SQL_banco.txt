@@ -57,14 +57,12 @@ create table usuario(
 	foreign key (endereco) references endereco
 );
 
-
 create  table telefone(
 	id_usuario int NOT NULL, 
 	numero varchar(15) NOT NULL,
 	primary key (id_usuario, numero),
 	foreign key (id_usuario) references usuario
 );
-
 
 create sequence id_exemplar;
 create table exemplar(
@@ -117,4 +115,13 @@ create table emprestimo(
 	foreign key (id_exemplar) references exemplar,
 	foreign key (id_usuario) references usuario,
 	foreign key (id_funcionario) references funcionario
+);
+
+create sequence id_reservas_livro;
+create table reservas_livro(
+	id_livro int NOT NULL,
+	id_usuario int NOT NULL,	
+	data_reserva date,
+	primary key (id_livro, id_usuario),
+	foreign key (id_usuario) references usuario
 );

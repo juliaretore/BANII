@@ -1,4 +1,3 @@
-
 ---------------------------	FUNCOES E GATILHOS  ----------------------
 ----------------------------------------------------------------------
 -- 1) Fatualizar a multa dependendo do atraso (não pode cobrar multa de professores em tempo integral)
@@ -12,16 +11,17 @@ declare nome_categoria varchar(100);
 declare turno_usuario varchar(40);
 begin
 	for item in select * from emprestimo loop
-		if(current_date > item.data_est_entr) then
-			nome_categoria := (select c.nome from categoria c join usuario u on c.id=u.id_categoria where u.id=item.id);
-			turno_usuario := (select u.turno from usuario u join emprestimo e on u.id=e.id_usuario where e.id=item.id);
-			if (turno_usuario='Integral' and (nome_categoria = 'Professor' or  nome_categoria = 'Professor Pós-Graduação'))  then
-			else
-				dias_atrasados := (select (current_date - item.data_est_entr) from emprestimo where id=item.id);
-				valor_multa := dias_atrasados * 0.5;			
-				update emprestimo set multa=valor_multa where id=item.id;
-			end if;
-		end if;
+		if(item.pagamento_multa = 1) then
+			if(current_date > item.data_est_entr) then
+				nome_categoria := (select c.nome from categoria c join usuario u on c.id=u.id_categoria where u.id=item.id);
+				turno_usuario := (select u.turno from usuario u join emprestimo e on u.id=e.id_usuario where e.id=item.id);
+				if (turno_usuario='Integral' and (nome_categoria = 'Professor' or  nome_categoria = 'Professor Pós-Graduação'))  then
+				else
+					dias_atrasados := (select (current_date - item.data_est_entr) from emprestimo where id=item.id);
+					valor_multa := dias_atrasados * 0.5;			
+					update emprestimo set multa=valor_multa where id=item.id;
+				end if;
+			end if;		
 	end loop;
 end;
 $$ language plpgsql;
@@ -38,7 +38,7 @@ $$
 declare tempo_empr_usu int;
 begin 
 	tempo_empr_usu := (select c.tempo_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=cid_usuario);
-	insert into emprestimo values ((select nextval('id_emprestimo')), 0, 0, current_date, current_date+tempo_empr_usu, NULL, cid_exemplar, cid_usuario, cid_funcionario, 0);
+	insert into emprestimo values ((select nextval('id_emprestimo')), 0, 0, 0, current_date, current_date+tempo_empr_usu, NULL, cid_exemplar, cid_usuario, cid_funcionario, 0);
 end;
 $$ language plpgsql;
 
@@ -54,7 +54,6 @@ declare esta_emprestado int;
 declare colecao_exemplar varchar(100);
 begin 
 	livros_atrasados := (select count(*) from emprestimo where situacao=0 and current_date > data_est_entr and id_usuario=new.id_usuario);
--- 	multas := (select sum(multa) from emprestimo where id_usuario=new.id_usuario);
 	multas := (select count(*) from emprestimo where id_usuario=new.id_usuario and pagamento_multa=1);
 	nmr_max_est := (select c.qnt_max_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=new.id_usuario);
 	nmr_emprestimos := (select count(*) from emprestimo where situacao=0 and id_usuario=new.id_usuario);
@@ -66,7 +65,7 @@ begin
 		if(multas = 0 or multas is not distinct from NULL) then
 			if(nmr_emprestimos < nmr_max_est) then	
 				if(esta_emprestado is not distinct from NULL) then
-					if(esta_reservado is not distinct from NULL) then
+					if(esta_reservado is null) then
 						if (colecao_exemplar != 'Reserva') then
 							return new;
 						else
@@ -111,15 +110,22 @@ end;
 $$ language plpgsql;
 
 ---------------------------------------------------------------------------------------------
--- 4) cancelar a reserva caso passe do tempo limite (10 dias)
+-- 4) cancelar a reserva caso passe do tempo limite de 7 dias (se tiver, passar para o proximo da fila de reservas)
 
 create or replace function verifica_datas_reservas() returns void as
 $$
 declare item record;
+declare proximo_fila int;
 begin
 for item in select * from exemplar loop
-		if(current_date-item.data_reserva>10) then
-			update exemplar set id_usuario_reserva=NULL, data_reserva=NULL where id=1;
+		if(current_date-item.data_reserva>7) then
+			proximo_fila := (select proximo_fila_reserva(item.id_livro));
+			if proximo_fila is null then
+				update exemplar set id_usuario_reserva=NULL, data_reserva=NULL where id=item.id;
+			else
+				update exemplar set id_usuario_reserva=proximo_fila, data_reserva=current_date where id=item.id;
+				delete from reservas_livro where id_livro=item.id_livro and id_usuario=proximo_fila;	
+			end if;
 		end if;
 	end loop;
 end;
@@ -128,8 +134,48 @@ $$ language plpgsql;
 select verifica_datas_reservas()
 
 ---------------------------------------------------------------------------------------------
--- 5) ao mudar a situacao de um emprestimo para 1, mudar a data real de entrega para a data atual 
+-- 5) Função que retorna o o próximo da fila de reserva para determinado livro
+
+create or replace function proximo_fila_reserva(livro int) returns int as
+$$
+declare usuario_reserva int;
+begin
+	usuario_reserva := (select id_usuario from reservas_livro where id_livro=livro order by data_reserva limit 1);
+	return usuario_reserva;
+end;
+$$ language plpgsql;
 
 ---------------------------------------------------------------------------------------------
--- 6) ao realizar um emprestimo para o usuario que havia reservado o exemplar, mudar os campos 
--- de reserva do exemplar para NULL
+-- 6) Função de Devolução:
+-- Mudar a situacao do emprestimo para 1, mudar a data_real_entr para a data atual 
+-- Verificar se alguem reservou esse livro, se sim, reserva para o usuário.
+
+create or replace function devolucao_emprestimo(id_emprestimo int) returns void as
+$$
+declare item record;
+declare usuario_reserva int;
+declare livro int;
+declare exemplar_emprestimo int;
+begin
+	update emprestimo set situacao=1, data_real_entr=current_date where id=id_emprestimo;
+	exemplar_emprestimo := (select id_exemplar from emprestimo where id=id_emprestimo);
+	livro := (select id_livro from exemplar where id=exemplar_emprestimo);
+	usuario_reserva := (select proximo_fila_reserva(livro));
+	if usuario_reserva is not null then
+		update exemplar set id_usuario_reserva=usuario_reserva, data_reserva=current_date where id=exemplar_emprestimo;
+		delete from reservas_livro where id_livro=livro and id_usuario=usuario_reserva;
+	end if;
+end;
+$$ language plpgsql;
+
+---------------------------------------------------------------------------------------------
+-- 7) Função Empréstimo de Livro Reservado:
+-- ao realizar um emprestimo para o usuario que havia reservado o exemplar, mudar os campos de reserva do exemplar para NULL
+-- e inserir o emprestimo;
+create or replace function cadastro_emprestimo_reserva(cid_exemplar int, cid_usuario int, cid_funcionario int) returns void as
+$$
+begin 
+	update exemplar set id_usuario_reserva=NULL, data_reserva=NULL where id=cid_exemplar;
+	perform (cadastro_emprestimo(cid_exemplar, cid_usuario, cid_funcionario));
+end;
+$$ language plpgsql;

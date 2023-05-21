@@ -1,0 +1,50 @@
+insert into categoria values(1, 'Aluno Graduação', 15, 6);
+insert into categoria values(2, 'Aluno Pós-Graduação', 30, 8);
+insert into categoria values(3, 'Professor', 30, 10);
+insert into categoria values(4, 'Professor Pós-Graduação', 90, 10);
+
+insert into autor values((select nextval('id_autor')), 'Canadense', 'Matemática', 'James Stewart');
+insert into autor values((select nextval('id_autor')), 'Norte Americano', 'Computação', 'James Stewart');
+
+insert into livro values((select nextval('id_livro')), '978-34-83943-01-3', 'Cálculo I', 'cengage');
+insert into livro values((select nextval('id_livro')), '934-54-82548-41-4', 'Cálculo II', 'cengage');
+insert into livro values((select nextval('id_livro')), '902-34-44484-78-1', 'Cálculo III', 'cengage');
+insert into livro values((select nextval('id_livro')), '865-54-53859-54-3', 'Introdução à Teoria da Computação', 'cengage');  
+insert into livro values((select nextval('id_livro')), '345-45-23534-08-3', 'Cálculo', 'cengage');
+
+insert into autores_livro values(1,1);
+insert into autores_livro values(2,1);
+insert into autores_livro values(3,1);
+insert into autores_livro values(4,2);
+
+insert into endereco values ((select nextval('id_endereco')), 'SC', 'Joinville', 'Zona Industrial Norte', 'Rua Paulo Malschitzki', 100, '');
+insert into usuario values((select nextval('id_usuario')), 'Julia Retore', 1, 'Integral', 1);
+insert into telefone values(1, '49 991346459');
+insert into telefone values(1, '49 991081563');
+
+insert into endereco values ((select nextval('id_endereco')), 'SC', 'Joinville', 'Zona Industrial Norte', 'Rua Paulo Malschitzki', 80, '');
+insert into usuario values((select nextval('id_usuario')), 'Giovana Correa', 2, 'Integral', 1);
+insert into telefone values(2, '47 991836492');
+
+insert into endereco values ((select nextval('id_endereco')), 'SC', 'Florianopolis', 'Agronômica', 'Rua Central', 39, '');
+insert into usuario values((select nextval('id_usuario')), 'João Barros', 3, 'Integral', 3);
+insert into telefone values(3, '49 999273848');
+
+insert into exemplar values((select nextval('id_exemplar')), 1, 5, 1, 'Permanente' );
+insert into exemplar values((select nextval('id_exemplar')), 1, 5, 1, 'Permanente' );
+insert into exemplar values((select nextval('id_exemplar')), 1, 5, 1, 'Permanente' );
+insert into exemplar values((select nextval('id_exemplar')), 2, 5, 1, 'Permanente' );
+insert into exemplar values((select nextval('id_exemplar')), 2, 5, 1, 'Permanente' );
+insert into exemplar values((select nextval('id_exemplar')), 3, 5, 1, 'Permanente' );
+insert into exemplar values((select nextval('id_exemplar')), 3, 5, 1, 'Permanente' );
+insert into exemplar values((select nextval('id_exemplar')), 4, 6, 3, 'Permanente' );
+insert into exemplar values((select nextval('id_exemplar')), 4, 6, 3, 'Permanente' );
+insert into exemplar values((select nextval('id_exemplar')), 8, 2, 5, 'Reserva' );
+
+insert into funcionario values((select nextval('id_funcionario')), 'ana.lucia', '123', 'Ana Lucia', 3200, 'Vespertino', 1);
+insert into funcionario values((select nextval('id_funcionario')), 'fernando', '123', 'Fernando', 3200, 'Matutino', 1);
+insert into funcionario values((select nextval('id_funcionario')), 'ana.maria', '123', 'Ana Maria', 2000, 'Vespertino', 2);
+insert into funcionario values((select nextval('id_funcionario')), 'liliane', '123', 'Liliane', 2000, 'Matutino', 2);
+
+insert into supervisao values (3,1);
+insert into supervisao values (4,2);
