@@ -82,11 +82,11 @@ public class NovoEmprestimoReservaView extends JFrame {
 	private JTextField tfLivro;
 	private JTextField tfExemplar;
 	static JTextField tfData;
-	private JButton cadastrar_2;
-	private JButton remover_assistente;
+	private JButton Cadastrar;
 	private JTextField textPCodigo_1;
 	private static JTable table_2;
 	static JTextField tfUsuario;
+	JButton Reservar;
 
 	
 	public static void main(String[] args) {
@@ -200,7 +200,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 		contentPane.add(separator_2_1_1);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(1015, 226, 614, 442);
+		scrollPane_1.setBounds(1015, 226, 530, 442);
 		contentPane.add(scrollPane_1);
 		
 		table_1 = new JTable();
@@ -318,13 +318,13 @@ public class NovoEmprestimoReservaView extends JFrame {
 		});
 		limpar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		limpar_2.setBackground(UIManager.getColor("Button.darkShadow"));
-		limpar_2.setBounds(371, 152, 83, 21);
+		limpar_2.setBounds(490, 62, 83, 21);
 		layeredPane_1.add(limpar_2);
 		
-		cadastrar_2 = new JButton("Cadastrar");
-		cadastrar_2.setBounds(172, 152, 118, 21);
-		layeredPane_1.add(cadastrar_2);
-		cadastrar_2.addActionListener(new ActionListener() {
+		Cadastrar = new JButton("Cadastrar");
+		Cadastrar.setBounds(172, 152, 118, 21);
+		layeredPane_1.add(Cadastrar);
+		Cadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					try {
 						if(tfLivro.getText().equals("") || tfExemplar.getText().equals("") || tfUsuario.getText().equals("")) {      
@@ -347,8 +347,8 @@ public class NovoEmprestimoReservaView extends JFrame {
 					}	
 			}
 		});
-		cadastrar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		cadastrar_2.setBackground(UIManager.getColor("Button.darkShadow"));
+		Cadastrar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		Cadastrar.setBackground(UIManager.getColor("Button.darkShadow"));
 		
 		tfUsuario = new JTextField();
 		tfUsuario.setEditable(false);
@@ -357,33 +357,47 @@ public class NovoEmprestimoReservaView extends JFrame {
 		tfUsuario.setBounds(172, 31, 282, 19);
 		layeredPane_1.add(tfUsuario);
 		
-		remover_assistente = new JButton("Remover Assistente");
-		remover_assistente.addActionListener(new ActionListener() {
+		Reservar = new JButton("Reservar");
+		Reservar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				try {
-//					sistema.excluirSupervisao(Integer.parseInt(tfCodigo.getText()), Integer.parseInt(tfCodigo_1.getText()));
-//				} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
-//					JOptionPane.showMessageDialog(null, e1.getMessage());
-//				}
-				atualizarTabela_1();
-				limpar();
+				try {
+					if(tfLivro.getText().equals("") || tfExemplar.getText().equals("") || tfUsuario.getText().equals("")) {      
+						JOptionPane.showMessageDialog(null, "Preencha todos os campos");
+					}else {					
+						try {
+							int livro = Integer.parseInt(String.valueOf((table_2.getValueAt(table_2.getSelectedRow(), 0))));
+							int usuario = Integer.parseInt(tfCodigo.getText());
+							sistema.inserirReserva(livro, usuario);
+						} catch (InsertException | SelectException | JaCadastradoException e1) {
+							JOptionPane.showMessageDialog(null, e1.getMessage());
+						}
+					
+						atualizarTabela_1();
+						limpar();
+					}
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}	
+
 			}
 		});
-		remover_assistente.setEnabled(false);
-		remover_assistente.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		remover_assistente.setBackground(UIManager.getColor("Button.darkShadow"));
-		remover_assistente.setBounds(1340, 748, 173, 28);
-		contentPane.add(remover_assistente);
+//		inserirReserva(int cid_livro, int cid_usuario)
+		Reservar.setEnabled(false);
+		Reservar.setActionCommand("Reservar");
+		Reservar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		Reservar.setBackground(UIManager.getColor("Button.darkShadow"));
+		Reservar.setBounds(336, 150, 118, 21);
+		layeredPane_1.add(Reservar);
 		
 		JLabel lblBuscaDeAssistentes = new JLabel("BUSCA DE EXEMPLARES");
 		lblBuscaDeAssistentes.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblBuscaDeAssistentes.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblBuscaDeAssistentes.setBounds(1026, 43, 405, 48);
+		lblBuscaDeAssistentes.setBounds(947, 43, 405, 48);
 		contentPane.add(lblBuscaDeAssistentes);
 		
 		textPCodigo_1 = new JTextField();
 		textPCodigo_1.setColumns(10);
-		textPCodigo_1.setBounds(1254, 103, 198, 20);
+		textPCodigo_1.setBounds(1186, 103, 198, 20);
 		textPCodigo_1.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
 				TableRowSorter<TableModel> filtro = null;  
@@ -399,7 +413,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 		JLabel lblCdigo_2 = new JLabel("Código:");
 		lblCdigo_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblCdigo_2.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblCdigo_2.setBounds(1182, 102, 70, 20);
+		lblCdigo_2.setBounds(1102, 102, 70, 20);
 		contentPane.add(lblCdigo_2);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
@@ -425,7 +439,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 		
 		JLabel lblExemplares = new JLabel("EXEMPLARES");
 		lblExemplares.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblExemplares.setBounds(1254, 180, 272, 20);
+		lblExemplares.setBounds(1200, 180, 272, 20);
 		contentPane.add(lblExemplares);
 
 		table_2.addMouseListener(new MouseAdapter() {
@@ -433,9 +447,14 @@ public class NovoEmprestimoReservaView extends JFrame {
 					atualizarTabela_1();
 					tfLivro.setText(String.valueOf(table_2.getValueAt(table_2.getSelectedRow(), 2)));
 					if (exemplares.isEmpty()) {
-						System.out.println("sa");
+						Reservar.setEnabled(true);
+						Cadastrar.setEnabled(false);
+						tfExemplar.setText("Sem exemplares no momento.");
+					}else {
+						Reservar.setEnabled(false);
+						Cadastrar.setEnabled(true);
+						tfExemplar.setText("");
 					}
-					remover_assistente.setEnabled(false);
 			}
 		});
 		
@@ -453,8 +472,8 @@ public class NovoEmprestimoReservaView extends JFrame {
 		tfExemplar.setText("");
 		table_1.clearSelection();
 		table_2.clearSelection();
-		cadastrar_2.setEnabled(true);
-		remover_assistente.setEnabled(false);
+		Cadastrar.setEnabled(true);
+		Reservar.setEnabled(false);
 
 	}
 
