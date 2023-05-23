@@ -39,6 +39,7 @@ private static LivroDAO instance = null;
 	private PreparedStatement select_exemplares_livro;
 	private PreparedStatement select_adicionar_autores_livro;
 	private PreparedStatement select_exemplar_emprestado;
+	private PreparedStatement select_exemplares_livro_disponiveis;
 
 	
 	
@@ -64,6 +65,7 @@ private static LivroDAO instance = null;
 		select_livros = conexao.prepareStatement("select id, isbn, titulo, editora from livro");
 		select_autores_livro = conexao.prepareStatement("select a.id, a.nome, a.nacionalidade, a.area from autor a join autores_livro al on a.id=al.id_autor where id_livro=?");
 		select_exemplares_livro = conexao.prepareStatement("select id, prateleira, estante, colecao, id_usuario_reserva from exemplar where id_livro=?");
+		select_exemplares_livro_disponiveis = conexao.prepareStatement("select id, prateleira, estante, colecao from exemplar where id_livro=? and id_usuario_reserva is null and id not in (select id_exemplar from emprestimo where situacao=0)");
 		select_exemplar_emprestado = conexao.prepareStatement("select count(*) from emprestimo e where id_exemplar=? and situacao=0");
 		select_adicionar_autores_livro = conexao.prepareStatement("select id, nome, nacionalidade, area from autor where id not in (select a.id a from autor a join autores_livro al on a.id=al.id_autor where al.id_livro=?)");
 	}
@@ -234,6 +236,23 @@ private static LivroDAO instance = null;
 		}
 		return lista;
 	}
+	
+	public List<Object> select_exemplares_livro_disponiveis(int id_livro) throws SelectException {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			select_exemplares_livro_disponiveis.setInt(1, id_livro);
+			ResultSet rs = select_exemplares_livro_disponiveis.executeQuery();
+			while(rs.next()) {
+				Object[] linha  = { rs.getInt(1), rs.getInt(2), rs.getInt(3),rs.getString(4)};
+				lista.add(linha);
+			}
+		}catch(SQLException e) {
+			throw new SelectException("Erro ao buscar dados para preencher a tabela de exemplares disponiveis");
+		}
+		return lista;
+	}
+	
+	
 	
 	
 	

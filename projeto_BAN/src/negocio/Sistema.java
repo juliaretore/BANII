@@ -26,6 +26,7 @@ public class Sistema {
 	private static FuncionarioDAO funcionarioDAO;
 	private static LivroDAO livroDAO;
 	private static AutorDAO autorDAO;
+	private static EmprestimoDAO emprestimoDAO;
 	
 	public Sistema() throws ClassNotFoundException, SQLException, SelectException{
 		loginDAO = LoginDAO.getInstance();
@@ -33,6 +34,7 @@ public class Sistema {
 		funcionarioDAO = funcionarioDAO.getInstance();
 		livroDAO = livroDAO.getInstance();
 		autorDAO = autorDAO.getInstance();
+		emprestimoDAO = emprestimoDAO.getInstance();
 	}
 	
 	
@@ -86,6 +88,11 @@ public class Sistema {
 	public void alterarTelefone(int usuario, String novo_telefone,  String antigo_telefone) throws UpdateException {
 		usuarioDAO.update_telefone(usuario, novo_telefone, antigo_telefone);
 	}
+	
+	public List<Object> listarUsuariosEmprestimo() throws SelectException{
+		return usuarioDAO.select_table_emprestimos();
+	}
+	
 
 // LIVRO 
 	public List<Object> listarLivros() throws SelectException{
@@ -98,6 +105,10 @@ public class Sistema {
 	
 	public List<Object> listarExemplaresLivros(int id_livro) throws SelectException{
 		return livroDAO.select_exemplares_livro(id_livro); 
+	}
+	
+	public List<Object> listarExemplaresLivrosDisponiveis(int id_livro) throws SelectException{
+		return livroDAO.select_exemplares_livro_disponiveis(id_livro); 
 	}
 
 	public List<Object> listarAdiconarAutoresLivros(int id_livro) throws SelectException{
@@ -185,6 +196,40 @@ public class Sistema {
 
 	public void excluirSupervisao(int bibliotecario, int assistente) throws DeleteException, SelectException, NaoCadastradoException { 
 		funcionarioDAO.delete_supervisao(bibliotecario, assistente);
+	}
+	
+	
+	//EMPRESTIMO
+	public void inserirEmprestimo(int cid_exemplar, int cid_usuario, int cid_funcionario) throws DeleteException, SelectException, NaoCadastradoException, InsertException, JaCadastradoException { 
+		emprestimoDAO.insert_emprestimo(cid_exemplar, cid_usuario, cid_funcionario);
+	}
+	
+	public void inserirEmprestimoPorReserva(int cid_exemplar, int cid_usuario, int cid_funcionario) throws InsertException, SelectException, JaCadastradoException {
+		emprestimoDAO.insert_emprestimo_reserva(cid_exemplar, cid_usuario, cid_funcionario);
+	}
+	
+	public void devolucaoEmprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException {
+		emprestimoDAO.devolucao_emprestimo(cid_emprestimo);
+	}
+	
+	public void renovarEmprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException {
+		emprestimoDAO.renovar_emprestimo(cid_emprestimo);
+	}
+	
+	public void inserirReserva(int cid_livro, int cid_usuario) throws InsertException, SelectException, JaCadastradoException {
+		emprestimoDAO.insert_reserva(cid_livro, cid_usuario);	
+	}
+	
+	public void deletarReserva(int cid_livro, int cid_usuario) throws InsertException, SelectException, JaCadastradoException {
+		emprestimoDAO.delete_reserva(cid_livro, cid_usuario);
+	}
+	
+	public void pagarMulta(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException {
+		emprestimoDAO.pagar_multa(cid_emprestimo);
+	}
+	
+	public String dataEmprestimo(int cid_usuario) throws InsertException {
+		return emprestimoDAO.select_data_emprestimo(cid_usuario);
 	}
 	
 }

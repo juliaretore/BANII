@@ -11,7 +11,7 @@ declare nome_categoria varchar(100);
 declare turno_usuario varchar(40);
 begin
 	for item in select * from emprestimo loop
-		if(item.pagamento_multa = 1) then
+		if(data_real_entr is null) then
 			if(current_date > item.data_est_entr) then
 				nome_categoria := (select c.nome from categoria c join usuario u on c.id=u.id_categoria where u.id=item.id);
 				turno_usuario := (select u.turno from usuario u join emprestimo e on u.id=e.id_usuario where e.id=item.id);
@@ -19,9 +19,11 @@ begin
 				else
 					dias_atrasados := (select (current_date - item.data_est_entr) from emprestimo where id=item.id);
 					valor_multa := dias_atrasados * 0.5;			
-					update emprestimo set multa=valor_multa where id=item.id;
+					update emprestimo set multa=valor_multa, pagamento_multa=1  where id=item.id;
+					
 				end if;
-			end if;		
+			end if;	
+		end if;
 	end loop;
 end;
 $$ language plpgsql;
@@ -92,6 +94,7 @@ $$ language plpgsql;
 
 create trigger cadastro_emprestimo  before insert on emprestimo for each row execute procedure cadastro_emprestimo();
 
+
 ---------------------------------------------------------------------------------------------
 -- 3) permitir a renovação no máximo 3 vezes e ao aumentar a renovação, aumentar a data_est_entrega
 
@@ -108,6 +111,7 @@ begin
 	end if;
 end;
 $$ language plpgsql;
+
 
 ---------------------------------------------------------------------------------------------
 -- 4) cancelar a reserva caso passe do tempo limite de 7 dias (se tiver, passar para o proximo da fila de reservas)
@@ -133,6 +137,7 @@ $$ language plpgsql;
 
 select verifica_datas_reservas()
 
+
 ---------------------------------------------------------------------------------------------
 -- 5) Função que retorna o o próximo da fila de reserva para determinado livro
 
@@ -144,6 +149,7 @@ begin
 	return usuario_reserva;
 end;
 $$ language plpgsql;
+
 
 ---------------------------------------------------------------------------------------------
 -- 6) Função de Devolução:
@@ -168,6 +174,7 @@ begin
 end;
 $$ language plpgsql;
 
+
 ---------------------------------------------------------------------------------------------
 -- 7) Função Empréstimo de Livro Reservado:
 -- ao realizar um emprestimo para o usuario que havia reservado o exemplar, mudar os campos de reserva do exemplar para NULL
@@ -177,5 +184,30 @@ $$
 begin 
 	update exemplar set id_usuario_reserva=NULL, data_reserva=NULL where id=cid_exemplar;
 	perform (cadastro_emprestimo(cid_exemplar, cid_usuario, cid_funcionario));
+end;
+$$ language plpgsql;
+
+
+---------------------------------------------------------------------------------------------
+-- 8) Trigger para colocar a data corrente no registro de cadastro
+
+create or replace function cadastro_reserva() returns trigger as
+$$
+begin 
+	new.data_reserva = current_date;
+	return new;
+end;
+$$ language plpgsql;
+
+create trigger cadastro_reserva  before insert on reservas_livro for each row execute procedure cadastro_reserva();
+
+
+---------------------------------------------------------------------------------------------
+-- 9) Pagamento de Multa
+
+create or replace function pagamento_multas(cid_emprestimo int) returns void as
+$$
+begin 
+	update emprestimo set pagamento_multa=0 where id=cid_emprestimo;
 end;
 $$ language plpgsql;

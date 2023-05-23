@@ -39,6 +39,7 @@ public class TelaPrincipal extends JFrame {
 	static JTextField tfIdUsuario;
 	static JButton btnUsuario = new JButton("Gerenciamento de Usuários");
 	private JButton btnFuncionario;
+	private JButton btnEmprestimo;
 
 	public static void main(String[] args) { 
 		EventQueue.invokeLater(new Runnable() {
@@ -151,6 +152,21 @@ public class TelaPrincipal extends JFrame {
 		
 		lblNewLabel.setBounds(0, 12, 676, 661);
 		contentPane.add(lblNewLabel);
+		
+		btnEmprestimo = new JButton("Novo Emprestimo");
+		btnEmprestimo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				NovoEmprestimoReservaView objeto = NovoEmprestimoReservaView.getInstance();				
+				objeto.setVisible(true);
+				objeto.setLocationRelativeTo(null);
+			}
+		});
+		btnEmprestimo.setForeground(Color.BLACK);
+		btnEmprestimo.setFont(new Font("Dialog", Font.PLAIN, 14));
+		btnEmprestimo.setBackground(Color.WHITE);
+		btnEmprestimo.setActionCommand("");
+		btnEmprestimo.setBounds(211, 524, 271, 77);
+		contentPane.add(btnEmprestimo);
 		
 
 	}

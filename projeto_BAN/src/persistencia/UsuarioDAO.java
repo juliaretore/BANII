@@ -34,6 +34,7 @@ private static UsuarioDAO instance = null;
 	private PreparedStatement delete_usuario;
 	private PreparedStatement delete_endereco;
 	private PreparedStatement delete_telefone;
+	private PreparedStatement select_table_emprestimos;
 	
 
 	public static UsuarioDAO getInstance() throws ClassNotFoundException, SQLException, SelectException{
@@ -57,6 +58,8 @@ private static UsuarioDAO instance = null;
 		delete_usuario = conexao.prepareStatement("delete from usuario where id=?");
 		delete_endereco = conexao.prepareStatement("delete from endereco where id=?");
 		delete_telefone = conexao.prepareStatement("delete from telefone where id_usuario=? and numero=?");
+		select_table_emprestimos = conexao.prepareStatement("select u.id, u.nome, c.nome, u.turno from usuario u join categoria c on u.id_categoria=c.id");
+
 	}
 	
 	private int select_new_id_usuario() throws SelectException{
@@ -202,6 +205,20 @@ private static UsuarioDAO instance = null;
 			ResultSet rs = select_table.executeQuery();
 			while(rs.next()) {
 				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), select_endereco(rs.getInt(5)).endereco_completo(), rs.getInt(5)};
+				lista.add(linha);
+			}
+		}catch(SQLException e) {
+			throw new SelectException("Erro ao buscar dados para preencher a tabela");
+		}
+		return lista;
+	}
+	
+	public List<Object> select_table_emprestimos() throws SelectException {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			ResultSet rs = select_table_emprestimos.executeQuery();
+			while(rs.next()) {
+				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4)};
 				lista.add(linha);
 			}
 		}catch(SQLException e) {
