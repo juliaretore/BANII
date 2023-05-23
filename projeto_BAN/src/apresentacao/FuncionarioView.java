@@ -172,7 +172,7 @@ public class FuncionarioView extends JFrame {
 		contentPane.add(sair);
 		
 		
-		JLabel lblCdigo = new JLabel("Código");
+		JLabel lblCdigo = new JLabel("ID:");
 		lblCdigo.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		lblCdigo.setBounds(500, 58, 70, 20);
 		contentPane.add(lblCdigo);
@@ -209,7 +209,7 @@ public class FuncionarioView extends JFrame {
 		});
 		textPNome.setColumns(10);
 		
-		JLabel lblNome = new JLabel("Nome");
+		JLabel lblNome = new JLabel("Nome:");
 		lblNome.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		lblNome.setBounds(151, 58, 70, 20);
 		contentPane.add(lblNome);
@@ -631,7 +631,7 @@ public class FuncionarioView extends JFrame {
 		lblBuscaDeAssistentes.setBounds(997, 12, 405, 48);
 		contentPane.add(lblBuscaDeAssistentes);
 		
-		JLabel lblNome_2 = new JLabel("Nome");
+		JLabel lblNome_2 = new JLabel("Nome:");
 		lblNome_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNome_2.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblNome_2.setBounds(967, 58, 70, 20);
@@ -668,7 +668,7 @@ public class FuncionarioView extends JFrame {
 		});
 		contentPane.add(textPCodigo_1);
 		
-		JLabel lblCdigo_2 = new JLabel("Código");
+		JLabel lblCdigo_2 = new JLabel("ID:");
 		lblCdigo_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblCdigo_2.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblCdigo_2.setBounds(1289, 61, 70, 20);

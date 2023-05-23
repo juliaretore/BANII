@@ -410,7 +410,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 		});
 		contentPane.add(textPCodigo_1);
 		
-		JLabel lblCdigo_2 = new JLabel("Código:");
+		JLabel lblCdigo_2 = new JLabel("ID:");
 		lblCdigo_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblCdigo_2.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblCdigo_2.setBounds(1102, 102, 70, 20);

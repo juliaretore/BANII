@@ -111,12 +111,12 @@ public class AdicionarAutorLivroView extends JFrame {
 		JLabel lblBusca = new JLabel("BUSCA");
 		lblBusca.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		lblBusca.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblBusca.setBounds(290, 12, 69, 20);
+		lblBusca.setBounds(291, 12, 69, 20);
 		contentPane.add(lblBusca);
 		
 		JLabel lblMusicasParaAdicionae = new JLabel("AUTORES PARA ADICIONAR");
 		lblMusicasParaAdicionae.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblMusicasParaAdicionae.setBounds(211, 121, 369, 20);
+		lblMusicasParaAdicionae.setBounds(226, 118, 369, 20);
 		contentPane.add(lblMusicasParaAdicionae);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -150,11 +150,11 @@ public class AdicionarAutorLivroView extends JFrame {
 					
 			}
 		});
-		JLabel label_6 = new JLabel("Código:");
-		label_6.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		label_6.setBounds(128, 40, 69, 20);
-		contentPane.add(label_6);
-		label_6.setHorizontalAlignment(SwingConstants.RIGHT);
+		JLabel lblId = new JLabel("ID:");
+		lblId.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
+		lblId.setBounds(128, 40, 69, 20);
+		contentPane.add(lblId);
+		lblId.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		textPCodigo = new JTextField();
 		textPCodigo.setBounds(215, 41, 305, 20);
@@ -223,11 +223,6 @@ public class AdicionarAutorLivroView extends JFrame {
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBounds(30, 414, 611, 141);
 		contentPane.add(layeredPane);
-		
-		JLabel lblAdicionarNovoAutor = new JLabel("EDITAR AUTORES");
-		lblAdicionarNovoAutor.setBounds(205, -1, 369, 20);
-		layeredPane.add(lblAdicionarNovoAutor);
-		lblAdicionarNovoAutor.setFont(new Font("Dialog", Font.BOLD, 15));
 		
 		JLabel Aa = new JLabel("Nome:");
 		Aa.setHorizontalAlignment(SwingConstants.RIGHT);

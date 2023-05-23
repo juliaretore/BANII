@@ -129,11 +129,11 @@ public class AdicionarUsuarioEmprestimoView extends JFrame {
 		table.getColumnModel().getColumn(2).setPreferredWidth(100);
 		table.getColumnModel().getColumn(3).setPreferredWidth(100);
 		
-		JLabel label_6 = new JLabel("Código:");
-		label_6.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		label_6.setBounds(62, 40, 69, 20);
-		contentPane.add(label_6);
-		label_6.setHorizontalAlignment(SwingConstants.RIGHT);
+		JLabel lblId = new JLabel("ID:");
+		lblId.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
+		lblId.setBounds(62, 40, 69, 20);
+		contentPane.add(lblId);
+		lblId.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		textPCodigo = new JTextField();
 		textPCodigo.setBounds(149, 41, 305, 20);

@@ -123,11 +123,11 @@ public class HistoricoEmprestimosLivroView extends JFrame {
 		table.getColumnModel().getColumn(5).setPreferredWidth(70);
 		table.getColumnModel().getColumn(6).setPreferredWidth(60);
 		
-		JLabel label_6 = new JLabel("Código:");
-		label_6.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		label_6.setBounds(65, 72, 69, 20);
-		contentPane.add(label_6);
-		label_6.setHorizontalAlignment(SwingConstants.RIGHT);
+		JLabel lblId = new JLabel("ID:");
+		lblId.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
+		lblId.setBounds(65, 72, 69, 20);
+		contentPane.add(lblId);
+		lblId.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		textPCodigo = new JTextField();
 		textPCodigo.setBounds(152, 73, 305, 20);

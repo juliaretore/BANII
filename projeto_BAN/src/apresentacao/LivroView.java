@@ -103,6 +103,7 @@ public class LivroView extends JFrame {
 	private static JTable table_2;
 	private JComboBox comboBox;
 	private JButton historico;
+	private JTextField tfPTitulo;
 	
 
 	
@@ -173,14 +174,14 @@ public class LivroView extends JFrame {
 		contentPane.add(sair);
 		
 		
-		JLabel lblCdigo = new JLabel("Código:");
+		JLabel lblCdigo = new JLabel("ISBN:");
 		lblCdigo.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		lblCdigo.setBounds(500, 58, 70, 20);
 		contentPane.add(lblCdigo);
 		lblCdigo.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		textPCodigo = new JTextField();
-		textPCodigo.setBounds(582, 59, 198, 20);
+		textPCodigo.setBounds(239, 59, 198, 20);
 		contentPane.add(textPCodigo);
 		textPCodigo.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
@@ -195,7 +196,7 @@ public class LivroView extends JFrame {
 		textPCodigo.setColumns(10);
 		
 		textPNome = new JTextField();
-		textPNome.setBounds(234, 60, 198, 20);
+		textPNome.setBounds(582, 59, 198, 20);
 		contentPane.add(textPNome);
 		textPNome.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
@@ -210,7 +211,7 @@ public class LivroView extends JFrame {
 		});
 		textPNome.setColumns(10);
 		
-		JLabel lblNome = new JLabel("Nome:");
+		JLabel lblNome = new JLabel("ID:");
 		lblNome.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		lblNome.setBounds(151, 58, 70, 20);
 		contentPane.add(lblNome);
@@ -668,6 +669,27 @@ public class LivroView extends JFrame {
 		historico.setBackground(UIManager.getColor("Button.darkShadow"));
 		historico.setBounds(1143, 718, 246, 20);
 		contentPane.add(historico);
+		
+		tfPTitulo = new JTextField();
+		tfPTitulo.setColumns(10);
+		tfPTitulo.setBounds(239, 90, 198, 20);
+		contentPane.add(tfPTitulo);
+		tfPTitulo.addCaretListener(new CaretListener() {
+			public void caretUpdate(CaretEvent e) {
+				TableRowSorter<TableModel> filtro = null;  
+				DefaultTableModel model = (DefaultTableModel) table.getModel();  
+				filtro = new TableRowSorter<TableModel>(model);  
+				table.setRowSorter(filtro);
+				if (tfPTitulo.getText().length()==0) filtro.setRowFilter(null);
+				else filtro.setRowFilter(RowFilter.regexFilter(tfPTitulo.getText(), 2));  
+			}
+		});
+		
+		JLabel lblTitulo = new JLabel("Titulo:");
+		lblTitulo.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTitulo.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblTitulo.setBounds(151, 90, 70, 20);
+		contentPane.add(lblTitulo);
 		table.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
 					try {

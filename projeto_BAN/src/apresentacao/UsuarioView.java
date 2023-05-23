@@ -161,7 +161,7 @@ public class UsuarioView extends JFrame {
 		contentPane.add(sair);
 		
 		
-		JLabel lblCdigo = new JLabel("C\u00F3digo");
+		JLabel lblCdigo = new JLabel("ID:");
 		lblCdigo.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		lblCdigo.setBounds(166, 90, 70, 20);
 		contentPane.add(lblCdigo);
@@ -198,7 +198,7 @@ public class UsuarioView extends JFrame {
 		});
 		textPNome.setColumns(10);
 		
-		JLabel lblNome = new JLabel("Nome");
+		JLabel lblNome = new JLabel("Nome:");
 		lblNome.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		lblNome.setBounds(166, 58, 70, 20);
 		contentPane.add(lblNome);
