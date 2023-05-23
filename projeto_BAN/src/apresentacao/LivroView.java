@@ -88,7 +88,7 @@ public class LivroView extends JFrame {
 	private static JTable table_1;
 	private JTextField tfTitulo;
 	private JTextField tfEditora;
-	private JTextField tfCodigo_1;
+	static JTextField tfCodigo_1;
 	private JTextField tfPrateleira;
 	private JTextField tfEstante;
 	private JButton cadastrar_2;
@@ -102,6 +102,8 @@ public class LivroView extends JFrame {
 	private JTextField textPCodigo_1;
 	private static JTable table_2;
 	private JComboBox comboBox;
+	private JButton historico;
+	
 
 	
 	public static void main(String[] args) {
@@ -138,7 +140,7 @@ public class LivroView extends JFrame {
 //		setIconImage(imagemTituloJanela.getImage());
 
 
-		setTitle("Gerenciar Funcionaários");
+		setTitle("Gerenciar Livros");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(200, 2000,  1800, 1000);
@@ -221,7 +223,7 @@ public class LivroView extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(169, 186, 611, 541);
+		scrollPane.setBounds(169, 186, 611, 515);
 		contentPane.add(scrollPane);
 		table.setSelectionBackground(SystemColor.activeCaption);
 		table.setBackground(UIManager.getColor("Button.light"));
@@ -268,6 +270,8 @@ public class LivroView extends JFrame {
 			public void mousePressed(MouseEvent arg0) {
 					if (table.getSelectedRow()!=-1) cadatrar_autor.setEnabled(true);
 					remover_autor.setEnabled(true);
+					historico.setEnabled(false);
+
 			}
 		});
 		
@@ -279,7 +283,7 @@ public class LivroView extends JFrame {
 		contentPane.add(lblTelefones);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(169, 739, 611, 156);
+		layeredPane.setBounds(179, 750, 611, 156);
 		contentPane.add(layeredPane);
 		
 		JLabel Aa = new JLabel("ISBN:");
@@ -414,7 +418,7 @@ public class LivroView extends JFrame {
 		limpar.setBackground(UIManager.getColor("Button.focus"));
 		
 		JLayeredPane layeredPane_1 = new JLayeredPane();
-		layeredPane_1.setBounds(970, 739, 611, 156);
+		layeredPane_1.setBounds(967, 750, 611, 156);
 		contentPane.add(layeredPane_1);
 		
 		JLabel lblNome_1_2 = new JLabel("Prateleira:");
@@ -612,7 +616,7 @@ public class LivroView extends JFrame {
 		contentPane.add(lblCdigo_2);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(967, 445, 614, 282);
+		scrollPane_2.setBounds(967, 445, 614, 256);
 		contentPane.add(scrollPane_2);
 		
 		table_2 = new JTable();
@@ -620,9 +624,13 @@ public class LivroView extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Prateleira", "Estante", "Cole\u00E7\u00E3o", "Situa\u00E7\u00E3o"
+				"ID", "Prateleira", "Estante", "Cole\u00E7\u00E3o", "Situa\u00E7\u00E3o", "Usuario"
 			}
 		));
+		table_2.getColumnModel().getColumn(0).setPreferredWidth(15);
+		table_2.getColumnModel().getColumn(0).setMinWidth(10);
+		table_2.getColumnModel().getColumn(1).setPreferredWidth(20);
+		table_2.getColumnModel().getColumn(2).setPreferredWidth(20);
 		scrollPane_2.setViewportView(table_2);
 		table_2.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
@@ -631,6 +639,8 @@ public class LivroView extends JFrame {
 						cadastrar_2.setEnabled(false);
 						excluir_2.setEnabled(true);
 						alterar_2.setEnabled(true);
+						historico.setEnabled(true);
+
 					} catch (NumberFormatException | SelectException e) {
 						JOptionPane.showMessageDialog(null, e.getMessage());
 					}
@@ -642,6 +652,22 @@ public class LivroView extends JFrame {
 		lblExemplaresDoLivro.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblExemplaresDoLivro.setBounds(1189, 413, 203, 20);
 		contentPane.add(lblExemplaresDoLivro);
+		
+		historico = new JButton("Ver histórico de empréstimo");
+		historico.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HistoricoEmprestimosLivroView frame = new HistoricoEmprestimosLivroView();
+				frame.setVisible(true);
+				frame.setLocationRelativeTo(null);
+				
+				
+			}
+		});
+		historico.setEnabled(false);
+		historico.setBorder(new LineBorder(new Color(0, 0, 0)));
+		historico.setBackground(UIManager.getColor("Button.darkShadow"));
+		historico.setBounds(1143, 718, 246, 20);
+		contentPane.add(historico);
 		table.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
 					try {
@@ -683,6 +709,7 @@ public class LivroView extends JFrame {
 		alterar.setEnabled(false);
 		excluir_1.setEnabled(false);
 		cadastrar_2.setEnabled(false);
+		historico.setEnabled(false);
 
 	}
 	
@@ -695,6 +722,8 @@ public class LivroView extends JFrame {
 		excluir_2.setEnabled(false);
 		alterar_2.setEnabled(false);
 		comboBox.setSelectedIndex(0);
+		historico.setEnabled(false);
+
 	}	
 
 	public static void atualizarTabela() {

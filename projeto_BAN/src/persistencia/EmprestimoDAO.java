@@ -31,6 +31,7 @@ private static EmprestimoDAO instance = null;
 	private PreparedStatement delete_reserva;
 	private PreparedStatement pagar_multa;
 	private PreparedStatement select_data_emprestimo;
+	private PreparedStatement select_historico_exemplar;
 	
 	public static EmprestimoDAO getInstance() throws ClassNotFoundException, SQLException, SelectException{
 		if(instance==null) instance=new EmprestimoDAO();
@@ -49,6 +50,7 @@ private static EmprestimoDAO instance = null;
 		delete_reserva = conexao.prepareStatement("delete from reservas_livro where id_livro=? and id_usuario=?");
 		pagar_multa = conexao.prepareStatement("select pagamento_multas(?)");
 		select_data_emprestimo = conexao.prepareStatement("select ((select c.tempo_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=?)+current_date)");
+		select_historico_exemplar = conexao.prepareStatement("select e.id,  u.nome, e.data_empr, e.data_est_entr, e.data_real_entr, e.situacao, e.multa, e.pagamento_multa from emprestimo e join usuario u on u.id=e.id_usuario where id_exemplar=?");
 	}
 	
 	public void insert_emprestimo(int cid_exemplar, int cid_usuario, int cid_funcionario) throws InsertException, SelectException, JaCadastradoException{
@@ -148,5 +150,31 @@ private static EmprestimoDAO instance = null;
 		}
 		
 	}
+	
+	public List<Object> select_historico_exemplar(int id_exemplar) throws SelectException {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			select_historico_exemplar.setInt(1, id_exemplar);
+			ResultSet rs = select_historico_exemplar.executeQuery();
+			while(rs.next()) {
+				String situacao = "";
+				String pagamento_multa = "";
+
+				if(rs.getInt(6) == 0) situacao="Não devolvido";
+				else situacao="Devolvido";
+				
+				if(rs.getInt(8) == 1) pagamento_multa="Em aberto";
+				else pagamento_multa = "Pago";
+				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4),rs.getString(5), situacao, rs.getDouble(7), pagamento_multa};
+				lista.add(linha);
+			}
+		}catch(SQLException e) {
+			throw new SelectException("Erro ao buscar historico para adicionar");
+		}
+		return lista;
+	}	
+	
+		
+	
 }
 	

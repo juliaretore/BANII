@@ -40,6 +40,7 @@ private static LivroDAO instance = null;
 	private PreparedStatement select_adicionar_autores_livro;
 	private PreparedStatement select_exemplar_emprestado;
 	private PreparedStatement select_exemplares_livro_disponiveis;
+	private PreparedStatement select_usuario;
 
 	
 	
@@ -65,8 +66,9 @@ private static LivroDAO instance = null;
 		select_livros = conexao.prepareStatement("select id, isbn, titulo, editora from livro");
 		select_autores_livro = conexao.prepareStatement("select a.id, a.nome, a.nacionalidade, a.area from autor a join autores_livro al on a.id=al.id_autor where id_livro=?");
 		select_exemplares_livro = conexao.prepareStatement("select id, prateleira, estante, colecao, id_usuario_reserva from exemplar where id_livro=?");
+		select_usuario = conexao.prepareStatement("select nome from usuario where id=?");
 		select_exemplares_livro_disponiveis = conexao.prepareStatement("select id, prateleira, estante, colecao from exemplar where id_livro=? and id_usuario_reserva is null and id not in (select id_exemplar from emprestimo where situacao=0)");
-		select_exemplar_emprestado = conexao.prepareStatement("select count(*) from emprestimo e where id_exemplar=? and situacao=0");
+		select_exemplar_emprestado = conexao.prepareStatement("select id_usuario from emprestimo where id_exemplar=? and situacao=0");
 		select_adicionar_autores_livro = conexao.prepareStatement("select id, nome, nacionalidade, area from autor where id not in (select a.id a from autor a join autores_livro al on a.id=al.id_autor where al.id_livro=?)");
 	}
 	
@@ -207,6 +209,17 @@ private static LivroDAO instance = null;
 		}
 		return lista;
 	}
+	
+	public String select_usuario(int id_usuario) throws SelectException {
+		try {
+			select_usuario.setInt(1, id_usuario);
+			ResultSet rs = select_usuario.executeQuery();
+			rs.next();
+			return rs.getString(1);
+		}catch(SQLException e) {
+			throw new SelectException("Erro ao buscar usuario");
+		}
+	}
 
 	public List<Object> select_exemplares_livro(int id_livro) throws SelectException {
 		List<Object> lista = new ArrayList<Object>();
@@ -216,19 +229,22 @@ private static LivroDAO instance = null;
 			while(rs.next()) {
 				int id_exemplar = rs.getInt(1);
 				int usuario = rs.getInt(5);
-				
+				String nome = "";
+				String situacao="Disponível"; // Disponível, Em empréstimo ou Reservado
+
 				select_exemplar_emprestado.setInt(1, id_exemplar);
 				ResultSet rs2 = select_exemplar_emprestado.executeQuery();
-				int emprestado = 0;
-				rs2.next();
-				emprestado = rs2.getInt(1);
-				String situacao="Disponível"; //Disponível, Em empréstimo ou Reservado
-				if(usuario!=0) {
-					situacao = "Reservado";
-				}else if(emprestado==1){
-					situacao = "Em empréstimo"; 
-				}
-				Object[] linha  = {id_exemplar, rs.getInt(2), rs.getInt(3),rs.getString(4), situacao};
+				 if(rs2.next()==false) { // Não está emprestado
+				      if(usuario != 0) {// Está reservado
+							situacao = "Reservado";
+							nome = select_usuario(usuario);
+				      }
+				 }else { // Está emprestado
+					  situacao = "Em empréstimo"; 
+					  nome = select_usuario(rs2.getInt(1));
+				 }
+				
+				Object[] linha  = {id_exemplar, rs.getInt(2), rs.getInt(3),rs.getString(4), situacao, nome};
 				lista.add(linha);
 			}
 		}catch(SQLException e) {
@@ -252,10 +268,6 @@ private static LivroDAO instance = null;
 		return lista;
 	}
 	
-	
-	
-	
-	
 	public List<Object> select_adicionar_autores_livro(int id_livro) throws SelectException {
 		List<Object> lista = new ArrayList<Object>();
 		try {
@@ -271,11 +283,5 @@ private static LivroDAO instance = null;
 		return lista;
 	}	
 	
-
-
-
-
-
-
 }
 	

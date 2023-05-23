@@ -232,4 +232,8 @@ public class Sistema {
 		return emprestimoDAO.select_data_emprestimo(cid_usuario);
 	}
 	
+	public List<Object> HistoricoExemplar(int id_exemplar) throws SelectException{
+		return emprestimoDAO.select_historico_exemplar(id_exemplar);
+	}
+	
 }
