@@ -52,6 +52,7 @@ create table usuario(
 	endereco int NOT NULL,
 	turno varchar(40) NOT NULL, -- Vespertino, Matutino, Notuno, Integral
 	id_categoria int NOT NULL,
+	email varchar(50) NOT NULL,
 	primary key (id),
 	foreign key (id_categoria) references categoria,
 	foreign key (endereco) references endereco
@@ -87,6 +88,7 @@ create table funcionario(
 	salario real NOT NULL,
 	turno varchar(40) NOT NULL, -- Vespertino, Matutino, Notuno, Integral
 	tipo int NOT NULL,          -- 1 -> bibliotecario  2->assistente
+	email varchar(50) NOT NULL,
 	primary key (id)
 );
 

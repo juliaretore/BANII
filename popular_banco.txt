@@ -18,16 +18,16 @@ insert into autores_livro values(3,1);
 insert into autores_livro values(4,2);
 
 insert into endereco values ((select nextval('id_endereco')), 'SC', 'Joinville', 'Zona Industrial Norte', 'Rua Paulo Malschitzki', 100, '');
-insert into usuario values((select nextval('id_usuario')), 'Julia Retore', 1, 'Integral', 1);
+insert into usuario values((select nextval('id_usuario')), 'Julia Retore', 1, 'Integral', 1, 'juliaretore@gmail.com');
 insert into telefone values(1, '49 991346459');
 insert into telefone values(1, '49 991081563');
 
 insert into endereco values ((select nextval('id_endereco')), 'SC', 'Joinville', 'Zona Industrial Norte', 'Rua Paulo Malschitzki', 80, '');
-insert into usuario values((select nextval('id_usuario')), 'Giovana Correa', 2, 'Integral', 1);
+insert into usuario values((select nextval('id_usuario')), 'Giovana Correa', 2, 'Integral', 1, 'giovana@gmail.com');
 insert into telefone values(2, '47 991836492');
 
 insert into endereco values ((select nextval('id_endereco')), 'SC', 'Florianopolis', 'Agronômica', 'Rua Central', 39, '');
-insert into usuario values((select nextval('id_usuario')), 'João Barros', 3, 'Integral', 3);
+insert into usuario values((select nextval('id_usuario')), 'João Barros', 3, 'Integral', 3, 'joaobarros@gmail.com');
 insert into telefone values(3, '49 999273848');
 
 insert into exemplar values((select nextval('id_exemplar')), 1, 5, 1, 'Permanente' );
@@ -41,10 +41,10 @@ insert into exemplar values((select nextval('id_exemplar')), 4, 6, 3, 'Permanent
 insert into exemplar values((select nextval('id_exemplar')), 4, 6, 3, 'Permanente' );
 insert into exemplar values((select nextval('id_exemplar')), 8, 2, 5, 'Reserva' );
 
-insert into funcionario values((select nextval('id_funcionario')), 'ana.lucia', '123', 'Ana Lucia', 3200, 'Vespertino', 1);
-insert into funcionario values((select nextval('id_funcionario')), 'fernando', '123', 'Fernando', 3200, 'Matutino', 1);
-insert into funcionario values((select nextval('id_funcionario')), 'ana.maria', '123', 'Ana Maria', 2000, 'Vespertino', 2);
-insert into funcionario values((select nextval('id_funcionario')), 'liliane', '123', 'Liliane', 2000, 'Matutino', 2);
+insert into funcionario values((select nextval('id_funcionario')), 'ana.lucia', '123', 'Ana Lucia', 3200, 'Vespertino', 1, 'analucia@gmail.com');
+insert into funcionario values((select nextval('id_funcionario')), 'fernando', '123', 'Fernando', 3200, 'Matutino', 1, 'fernandoasf@gmail.com');
+insert into funcionario values((select nextval('id_funcionario')), 'ana.maria', '123', 'Ana Maria', 2000, 'Vespertino', 2, 'anamaria@gmail.com');
+insert into funcionario values((select nextval('id_funcionario')), 'liliane', '123', 'Liliane', 2000, 'Matutino', 2, 'liliane@gmail.com');
 
 insert into supervisao values (3,1);
 insert into supervisao values (4,2);

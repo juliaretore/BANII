@@ -91,6 +91,7 @@ public class UsuarioView extends JFrame {
 	private JButton alterar_2;
 	private JButton excluir_2;
 	private JButton cadastrar_2;
+	private JTextField tfemail;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -211,7 +212,7 @@ public class UsuarioView extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(169, 186, 1049, 308);
+		scrollPane.setBounds(169, 186, 1194, 308);
 		contentPane.add(scrollPane);
 		table.setSelectionBackground(SystemColor.activeCaption);
 		table.setBackground(SystemColor.window);
@@ -221,11 +222,11 @@ public class UsuarioView extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nome", "Categoria", "Turno", "Endereco", "ID endereco"
+				"ID", "Nome", "Categoria", "Turno", "Endereco", "ID endereco", "email"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false, true
+				false, false, false, false, false, true, true
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -236,10 +237,11 @@ public class UsuarioView extends JFrame {
 		table.getColumnModel().getColumn(2).setPreferredWidth(70);
 		table.getColumnModel().getColumn(4).setPreferredWidth(400);
 		table.getColumnModel().getColumn(5).setPreferredWidth(15);
+		table.getColumnModel().getColumn(6).setPreferredWidth(105);
 		scrollPane.setViewportView(table);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(1369, 186, 232, 308);
+		scrollPane_1.setBounds(1463, 186, 232, 308);
 		contentPane.add(scrollPane_1);
 		
 		table_1 = new JTable();
@@ -268,7 +270,7 @@ public class UsuarioView extends JFrame {
 		
 		JLabel lblTelefones = new JLabel("TELEFONES");
 		lblTelefones.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblTelefones.setBounds(1429, 154, 232, 20);
+		lblTelefones.setBounds(1532, 154, 232, 20);
 		contentPane.add(lblTelefones);
 		
 		tfCodigoEndereco = new JTextField();
@@ -280,7 +282,7 @@ public class UsuarioView extends JFrame {
 		contentPane.add(tfCodigoEndereco);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(176, 534, 640, 346);
+		layeredPane.setBounds(176, 534, 640, 413);
 		contentPane.add(layeredPane);
 		
 		tfNome = new JTextField();
@@ -333,10 +335,10 @@ public class UsuarioView extends JFrame {
 		lblCargo.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		
 		JSeparator separator_2_1_1_1 = new JSeparator();
-		separator_2_1_1_1.setBounds(38, 144, 371, 20);
+		separator_2_1_1_1.setBounds(49, 177, 371, 20);
 		layeredPane.add(separator_2_1_1_1);
 		separator_2_1_1_1.setForeground(Color.LIGHT_GRAY);
-		comboBox_2.setBounds(126, 154, 283, 21);
+		comboBox_2.setBounds(126, 196, 283, 21);
 		layeredPane.add(comboBox_2);
 		
 		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"Selecione", "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"}));
@@ -344,63 +346,63 @@ public class UsuarioView extends JFrame {
 		comboBox_2.setBackground(SystemColor.window);
 		
 		tfCidade = new JTextField();
-		tfCidade.setBounds(127, 187, 282, 19);
+		tfCidade.setBounds(127, 229, 282, 19);
 		layeredPane.add(tfCidade);
 		tfCidade.setColumns(10);
 		
 		tfBairro = new JTextField();
-		tfBairro.setBounds(127, 218, 282, 19);
+		tfBairro.setBounds(127, 260, 282, 19);
 		layeredPane.add(tfBairro);
 		tfBairro.setColumns(10);
 		
 		JLabel lblEstado = new JLabel("Estado:");
-		lblEstado.setBounds(38, 154, 70, 20);
+		lblEstado.setBounds(39, 196, 70, 20);
 		layeredPane.add(lblEstado);
 		lblEstado.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblEstado.setFont(new Font("Dialog", Font.BOLD, 15));
 		
 		JLabel lblCidade = new JLabel("Cidade:");
-		lblCidade.setBounds(49, 186, 70, 20);
+		lblCidade.setBounds(48, 228, 70, 20);
 		layeredPane.add(lblCidade);
 		lblCidade.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblCidade.setFont(new Font("Dialog", Font.BOLD, 15));
 		
 		JLabel lblBairro = new JLabel("Bairro:");
-		lblBairro.setBounds(49, 217, 70, 20);
+		lblBairro.setBounds(49, 259, 70, 20);
 		layeredPane.add(lblBairro);
 		lblBairro.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblBairro.setFont(new Font("Dialog", Font.BOLD, 15));
 		
 		tfRua = new JTextField();
-		tfRua.setBounds(127, 247, 282, 19);
+		tfRua.setBounds(127, 291, 282, 19);
 		layeredPane.add(tfRua);
 		tfRua.setColumns(10);
 		
 		tfNumero = new JTextField();
-		tfNumero.setBounds(127, 276, 282, 19);
+		tfNumero.setBounds(127, 322, 282, 19);
 		layeredPane.add(tfNumero);
 		tfNumero.setColumns(10);
 		
 		JLabel lblRua = new JLabel("Rua:");
-		lblRua.setBounds(49, 247, 70, 20);
+		lblRua.setBounds(48, 290, 70, 20);
 		layeredPane.add(lblRua);
 		lblRua.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblRua.setFont(new Font("Dialog", Font.BOLD, 15));
 		
 		JLabel lblNumero = new JLabel("Numero:");
-		lblNumero.setBounds(43, 275, 76, 20);
+		lblNumero.setBounds(39, 321, 76, 20);
 		layeredPane.add(lblNumero);
 		lblNumero.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNumero.setFont(new Font("Dialog", Font.BOLD, 15));
 		
 		JLabel lblComplemento = new JLabel("Complemento:");
-		lblComplemento.setBounds(-30, 307, 149, 20);
+		lblComplemento.setBounds(-30, 352, 149, 20);
 		layeredPane.add(lblComplemento);
 		lblComplemento.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblComplemento.setFont(new Font("Dialog", Font.BOLD, 15));
 		
 		tfComplemento = new JTextField();
-		tfComplemento.setBounds(127, 307, 282, 19);
+		tfComplemento.setBounds(127, 353, 282, 19);
 		layeredPane.add(tfComplemento);
 		tfComplemento.setColumns(10);
 		
@@ -426,6 +428,7 @@ public class UsuarioView extends JFrame {
 
 						usuario.setNome(nome);
 						usuario.setTurno(turno);
+						usuario.setEmail(tfemail.getText());
 						Categoria c = new Categoria();
 						c.setId(categoria);
 						usuario.setCategoria(c);
@@ -477,29 +480,32 @@ public class UsuarioView extends JFrame {
 						if(!(turno.equals("Selecione"))) {
 							String estado = String.valueOf(comboBox_2.getSelectedItem());
 							if(!(estado.equals("Selecione"))) {
-								try {
-									usuario.setId(Integer.parseInt(tfCodigo.getText()));	
-									usuario.setNome(tfNome.getText());
-									usuario.setTurno(turno);
-									Categoria c = new Categoria();
-									c.setId(categoria);
-									
-									usuario.setCategoria(c);
-									
-									Endereco endereco = new Endereco();
-									endereco.setEstado(estado);
-									endereco.setCidade(tfCidade.getText());
-									endereco.setBairro(tfBairro.getText());
-									endereco.setRua(tfRua.getText());
-									endereco.setComplemento(tfComplemento.getText());
-									endereco.setId(Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 5))));
-									endereco.setNumero(Integer.parseInt(tfNumero.getText()));
-									usuario.setEndereco(endereco);
-									sistema.alterarUsuario(usuario);						
-								} catch (Exception e1) {
-									JOptionPane.showMessageDialog(null, e1.getMessage());
-								}
-								atualizarTabela();
+								if(!(tfemail.getText().equals(""))) {
+									try {
+										usuario.setId(Integer.parseInt(tfCodigo.getText()));	
+										usuario.setNome(tfNome.getText());
+										usuario.setTurno(turno);
+										usuario.setEmail(tfemail.getText());
+										Categoria c = new Categoria();
+										c.setId(categoria);
+										usuario.setCategoria(c);
+										
+										Endereco endereco = new Endereco();
+										endereco.setEstado(estado);
+										endereco.setCidade(tfCidade.getText());
+										endereco.setBairro(tfBairro.getText());
+										endereco.setRua(tfRua.getText());
+										endereco.setComplemento(tfComplemento.getText());
+										endereco.setId(Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 5))));
+										endereco.setNumero(Integer.parseInt(tfNumero.getText()));
+										usuario.setEndereco(endereco);
+										sistema.alterarUsuario(usuario);						
+									} catch (Exception e1) {
+										JOptionPane.showMessageDialog(null, e1.getMessage());
+									}
+									atualizarTabela();
+									limpar();
+								}else JOptionPane.showMessageDialog(null, "É necessário atribuir um email ao endereço do usuário!");
 							}else JOptionPane.showMessageDialog(null, "É necessário atribuir um estado ao endereço do usuário!");
 						}else JOptionPane.showMessageDialog(null, "É necessário atribuir um turno ao usuário!");
 					}else JOptionPane.showMessageDialog(null, "É necessário atribuir uma categoria ao usuário!");
@@ -532,8 +538,19 @@ public class UsuarioView extends JFrame {
 		});
 		excluir_1.setBackground(UIManager.getColor("Button.darkShadow"));
 		
+		tfemail = new JTextField();
+		tfemail.setBounds(127, 144, 282, 19);
+		layeredPane.add(tfemail);
+		tfemail.setColumns(10);
+		
+		JLabel lblEmail = new JLabel("Email:");
+		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblEmail.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblEmail.setBounds(39, 145, 70, 20);
+		layeredPane.add(lblEmail);
+		
 		JLayeredPane layeredPane_1 = new JLayeredPane();
-		layeredPane_1.setBounds(1340, 534, 299, 150);
+		layeredPane_1.setBounds(1440, 527, 299, 150);
 		contentPane.add(layeredPane_1);
 		
 		tfTelefone = new JTextField();
@@ -658,7 +675,7 @@ public class UsuarioView extends JFrame {
 		alterar_2.setEnabled(false);
 		cadastrar_2.setEnabled(false);
 		cadastrar_1.setEnabled(true);
-
+		tfemail.setText("");
 		table.clearSelection();
 	}
 	
@@ -703,6 +720,7 @@ public class UsuarioView extends JFrame {
 		tfRua.setText(e.getRua());
 		tfComplemento.setText(e.getComplemento());
 		tfNumero.setText(String.valueOf(e.getNumero()));
+		tfemail.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 6)));
 	}
 	
 	

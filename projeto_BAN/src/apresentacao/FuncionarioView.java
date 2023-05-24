@@ -102,6 +102,8 @@ public class FuncionarioView extends JFrame {
 	private JButton remover_assistente;
 	private JTextField textPNome_1;
 	private JTextField textPCodigo_1;
+	private JTextField tfemail;
+	private JTextField tfemail_2;
 
 	
 	public static void main(String[] args) {
@@ -232,11 +234,11 @@ public class FuncionarioView extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nome", "Login", "Turno", "Sal\u00E1rio"
+				"ID", "Nome", "Login", "Turno", "Sal\u00E1rio", "Email"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, true
+				false, false, false, false, true, true
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -244,9 +246,10 @@ public class FuncionarioView extends JFrame {
 		});
 		table.getColumnModel().getColumn(0).setPreferredWidth(20);
 		table.getColumnModel().getColumn(1).setPreferredWidth(90);
-		table.getColumnModel().getColumn(2).setPreferredWidth(100);
-		table.getColumnModel().getColumn(3).setPreferredWidth(100);
-		table.getColumnModel().getColumn(4).setPreferredWidth(100);
+		table.getColumnModel().getColumn(2).setPreferredWidth(80);
+		table.getColumnModel().getColumn(3).setPreferredWidth(80);
+		table.getColumnModel().getColumn(4).setPreferredWidth(80);
+		table.getColumnModel().getColumn(5).setPreferredWidth(140);
 		scrollPane.setViewportView(table);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -258,14 +261,15 @@ public class FuncionarioView extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nome", "Login", "Turno", "Salario"
+				"ID", "Nome", "Login", "Turno", "Salario", "Email"
 			}
 		));
 		table_1.getColumnModel().getColumn(0).setPreferredWidth(20);
 		table_1.getColumnModel().getColumn(1).setPreferredWidth(90);
-		table_1.getColumnModel().getColumn(2).setPreferredWidth(100);
-		table_1.getColumnModel().getColumn(3).setPreferredWidth(100);
-		table_1.getColumnModel().getColumn(4).setPreferredWidth(100);
+		table_1.getColumnModel().getColumn(2).setPreferredWidth(80);
+		table_1.getColumnModel().getColumn(3).setPreferredWidth(80);
+		table_1.getColumnModel().getColumn(4).setPreferredWidth(80);
+		table_1.getColumnModel().getColumn(5).setPreferredWidth(140);
 		scrollPane_1.setViewportView(table_1);
 		table_1.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
@@ -367,7 +371,8 @@ public class FuncionarioView extends JFrame {
 						funcionario.setSalario(Double.parseDouble(tfSalario.getText()));
 						funcionario.setSenha(gerarSenhaAleatoria(8));
 						funcionario.setTipo(1);
-						funcionario.setTurno(String.valueOf(comboBox_1.getSelectedItem()));						
+						funcionario.setTurno(String.valueOf(comboBox_1.getSelectedItem()));	
+						funcionario.setEmail(tfemail.getText());
 						try {
 							sistema.adicionarFuncionario(funcionario);
 						} catch (InsertException | SelectException | JaCadastradoException e1) {
@@ -394,7 +399,8 @@ public class FuncionarioView extends JFrame {
 					funcionario.setNome(tfNome.getText());
 					funcionario.setLogin(tfLogin.getText());
 					funcionario.setSalario(Double.parseDouble(tfSalario.getText()));
-					funcionario.setTurno(String.valueOf(comboBox_1.getSelectedItem()));		
+					funcionario.setTurno(String.valueOf(comboBox_1.getSelectedItem()));	
+					funcionario.setEmail(tfemail.getText());
 					try {
 						sistema.alterarFuncionario(funcionario);
 					} catch (UpdateException | SelectException | NaoCadastradoException e1) {
@@ -439,6 +445,17 @@ public class FuncionarioView extends JFrame {
 			}
 		});
 		limpar.setBackground(UIManager.getColor("Button.focus"));
+		
+		tfemail = new JTextField();
+		tfemail.setColumns(10);
+		tfemail.setBounds(127, 182, 282, 19);
+		layeredPane.add(tfemail);
+		
+		JLabel lblEmail = new JLabel("Email:");
+		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblEmail.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblEmail.setBounds(22, 182, 70, 20);
+		layeredPane.add(lblEmail);
 		
 		JLayeredPane layeredPane_1 = new JLayeredPane();
 		layeredPane_1.setBounds(970, 657, 611, 221);
@@ -549,7 +566,8 @@ public class FuncionarioView extends JFrame {
 							funcionario.setSalario(Double.parseDouble(tfSalario_1.getText()));
 							funcionario.setSenha(gerarSenhaAleatoria(8));
 							funcionario.setTipo(2);
-							funcionario.setTurno(String.valueOf(comboBox_1_1.getSelectedItem()));						
+							funcionario.setTurno(String.valueOf(comboBox_1_1.getSelectedItem()));	
+							funcionario.setEmail(tfemail_2.getText());
 							try {
 								sistema.adicionarFuncionario(funcionario);
 							} catch (InsertException | SelectException | JaCadastradoException e1) {
@@ -578,7 +596,8 @@ public class FuncionarioView extends JFrame {
 				funcionario.setNome(tfNome_1.getText());
 				funcionario.setLogin(tfLogin_1.getText());
 				funcionario.setSalario(Double.parseDouble(tfSalario_1.getText()));
-				funcionario.setTurno(String.valueOf(comboBox_1_1.getSelectedItem()));		
+				funcionario.setTurno(String.valueOf(comboBox_1_1.getSelectedItem()));	
+				funcionario.setEmail(tfemail_2.getText());
 				try {
 					sistema.alterarFuncionario(funcionario);
 				} catch (UpdateException | SelectException | NaoCadastradoException e1) {
@@ -592,6 +611,17 @@ public class FuncionarioView extends JFrame {
 		});
 		alterar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		alterar_2.setBackground(UIManager.getColor("Button.darkShadow"));
+		
+		tfemail_2 = new JTextField();
+		tfemail_2.setColumns(10);
+		tfemail_2.setBounds(127, 182, 282, 19);
+		layeredPane_1.add(tfemail_2);
+		
+		JLabel lblEmail_1 = new JLabel("Email:");
+		lblEmail_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblEmail_1.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblEmail_1.setBounds(22, 181, 70, 20);
+		layeredPane_1.add(lblEmail_1);
 		
 		cadatrar_asisstente = new JButton("Adicionar Assistente");
 		cadatrar_asisstente.setEnabled(false);
@@ -710,6 +740,7 @@ public class FuncionarioView extends JFrame {
 		alterar.setEnabled(true);
 		alterar.setEnabled(false);
 		excluir_1.setEnabled(false);
+		tfemail.setText("");
 
 	}
 	
@@ -724,7 +755,7 @@ public class FuncionarioView extends JFrame {
 		excluir_2.setEnabled(false);
 		alterar_2.setEnabled(false);
 		remover_assistente.setEnabled(false);
-
+		tfemail_2.setText("");
 	}	
 
 	public static void atualizarTabela() {
@@ -771,6 +802,7 @@ public static void atualizarTabela_1_1() {
 		String turno = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
 		comboBox_1.setSelectedItem(turno);
 		tfSalario.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 4)));
+		tfemail.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 5)));
 
 	}
 	
@@ -781,6 +813,7 @@ public static void atualizarTabela_1_1() {
 		String turno = String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 3));
 		comboBox_1_1.setSelectedItem(turno);
 		tfSalario_1.setText(String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 4)));
+		tfemail_2.setText(String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 5)));
 	}
 	
 	public static String gerarSenhaAleatoria(int len){

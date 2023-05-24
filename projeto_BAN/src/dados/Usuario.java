@@ -6,19 +6,21 @@ public class Usuario {
 	private String turno;
 	private Endereco endereco;
 	private Categoria categoria;
+	private String email;
 	
-	public Usuario(int id, String nome, String turno, Endereco endereco, Categoria categoria) {
-		this.setId(id);
-		this.setNome(nome);
-		this.setTurno(turno);
-		this.setEndereco(endereco);
-		this.setCategoria(categoria);
-	}
 
 	public Usuario() {
 		
 	}
 
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	public String getNome() {
 		return nome;

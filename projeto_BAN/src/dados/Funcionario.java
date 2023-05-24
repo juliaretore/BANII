@@ -8,6 +8,7 @@ public class Funcionario {
 	private Double salario;
 	private String turno;
 	private int tipo;
+	private String email;
 	
 	public Funcionario(int id, String nome, String login, String senha, double salario, String turno, int tipo) {
 		this.setId(id);
@@ -65,6 +66,13 @@ public class Funcionario {
 		this.tipo = tipo;
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	
 	
 }

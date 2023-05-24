@@ -128,13 +128,14 @@ public class AdicionarSupervisaoView extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nome", "Login", "Turno", "Salario"
+				"ID", "Nome", "Login", "Turno", "Salario", "Email"
 			}
 		));
 		table.getColumnModel().getColumn(0).setPreferredWidth(90);
-		table.getColumnModel().getColumn(2).setPreferredWidth(100);
-		table.getColumnModel().getColumn(3).setPreferredWidth(100);
-		table.getColumnModel().getColumn(4).setPreferredWidth(100);
+		table.getColumnModel().getColumn(2).setPreferredWidth(80);
+		table.getColumnModel().getColumn(3).setPreferredWidth(80);
+		table.getColumnModel().getColumn(4).setPreferredWidth(80);
+		table.getColumnModel().getColumn(5).setPreferredWidth(140);
 		
 		JLabel lblId = new JLabel("ID:");
 		lblId.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));

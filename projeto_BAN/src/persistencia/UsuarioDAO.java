@@ -47,13 +47,13 @@ private static UsuarioDAO instance = null;
 		select_new_id_usuario = conexao.prepareStatement("select nextval('id_usuario')");
 		select_new_id_endereco = conexao.prepareStatement("select nextval('id_endereco')");
 		insert_endereco =  conexao.prepareStatement("insert into endereco values (?,?,?,?,?,?,?)");
-		insert_usuario =  conexao.prepareStatement("insert into usuario values (?,?,?,?,?)");
+		insert_usuario =  conexao.prepareStatement("insert into usuario values (?,?,?,?,?,?)");
 		insert_telefone = conexao.prepareStatement("insert into telefone values (?,?)");
-		update_usuario = conexao.prepareStatement("update usuario set nome=?, turno=?, id_categoria=?, endereco=? where id=?");
+		update_usuario = conexao.prepareStatement("update usuario set nome=?, turno=?, id_categoria=?, endereco=?, email=? where id=?");
 		update_endereco = conexao.prepareStatement("update endereco set estado=?, cidade=?, bairro=?, rua=?, numero=?, complemento=? where id=?");
 		update_telefone = conexao.prepareStatement("update telefone set numero=? where numero=? and id_usuario=?");
 		select_endereco = conexao.prepareStatement("select * from endereco where id=?");
-		select_table = conexao.prepareStatement("select u.id, u.nome, c.nome, u.turno, endereco from usuario u join categoria c on u.id_categoria=c.id");
+		select_table = conexao.prepareStatement("select u.id, u.nome, c.nome, u.turno, endereco, u.email from usuario u join categoria c on u.id_categoria=c.id");
 		select_telefones = conexao.prepareStatement("select numero from telefone where id_usuario=?");
 		delete_usuario = conexao.prepareStatement("delete from usuario where id=?");
 		delete_endereco = conexao.prepareStatement("delete from endereco where id=?");
@@ -90,6 +90,7 @@ private static UsuarioDAO instance = null;
 				insert_usuario.setInt(3, id_endereco);
 				insert_usuario.setString(4, usuario.getTurno());
 				insert_usuario.setInt(5, usuario.getCategoria().getId());
+				insert_usuario.setString(6, usuario.getEmail());
 				insert_usuario.executeUpdate();
 			}catch (SQLException e) {
 				throw new InsertException("Erro ao inserir usuário.");
@@ -131,7 +132,8 @@ private static UsuarioDAO instance = null;
 			update_usuario.setString(2, usuario.getTurno());
 			update_usuario.setInt(3, usuario.getCategoria().getId());
 			update_usuario.setInt(4, usuario.getEndereco().getId());
-			update_usuario.setInt(5, usuario.getId());
+			update_usuario.setString(5, usuario.getEmail());
+			update_usuario.setInt(6, usuario.getId());
 			update_usuario.executeUpdate();
 		}catch (SQLException e) {
 			throw new UpdateException("Erro ao atualizar usuário.");
@@ -204,7 +206,7 @@ private static UsuarioDAO instance = null;
 		try {
 			ResultSet rs = select_table.executeQuery();
 			while(rs.next()) {
-				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), select_endereco(rs.getInt(5)).endereco_completo(), rs.getInt(5)};
+				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), select_endereco(rs.getInt(5)).endereco_completo(), rs.getInt(5), rs.getString(6)};
 				lista.add(linha);
 			}
 		}catch(SQLException e) {
