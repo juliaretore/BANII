@@ -141,13 +141,11 @@ public class FuncionarioView extends JFrame {
 		});
 		
 		
-		setTitle("Gerenciar Funcionaários");
+		setTitle("Gerenciar Funcionários");
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(0, 0,  1842, 1080);
-
-//		setBounds(200, 1920,  1080, 0);
-//		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		
+		setBounds(0, 0,  1930, 1080);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setEnabled(false);
 		setContentPane(contentPane);
@@ -156,18 +154,12 @@ public class FuncionarioView extends JFrame {
 		//		ImageIcon imagemTituloJanela = new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpg"));
 		//		setIconImage(imagemTituloJanela.getImage());
 		JLabel lblNewLabel = new JLabel("New label");
-//		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
-								
-		
-		JLabel lblBusca = new JLabel("BUSCA DE BIBLIOTECÁRIOS");
-		lblBusca.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblBusca.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblBusca.setBounds(202, 12, 405, 48);
-		contentPane.add(lblBusca);
+		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
 		
 		JLabel lblArtistasCadastrados = new JLabel("BIBLIOTECÁRIOS CADASTRADOS");
-		lblArtistasCadastrados.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblArtistasCadastrados.setBounds(326, 154, 337, 20);
+		lblArtistasCadastrados.setForeground(new Color(85, 97, 120));
+		lblArtistasCadastrados.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblArtistasCadastrados.setBounds(411, 154, 337, 20);
 		contentPane.add(lblArtistasCadastrados);
 		
 		JButton sair = new JButton("Sair");
@@ -177,19 +169,12 @@ public class FuncionarioView extends JFrame {
 				sair();
 			}
 		});
-		sair.setBackground(UIManager.getColor("Button.darkShadow"));
-		sair.setBounds(784, 931, 173, 20);
+		sair.setBackground(Color.WHITE);
+		sair.setBounds(856, 932, 173, 20);
 		contentPane.add(sair);
 		
-		
-		JLabel lblCdigo = new JLabel("ID:");
-		lblCdigo.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblCdigo.setBounds(500, 58, 70, 20);
-		contentPane.add(lblCdigo);
-		lblCdigo.setHorizontalAlignment(SwingConstants.RIGHT);
-		
 		textPCodigo = new JTextField();
-		textPCodigo.setBounds(582, 59, 198, 20);
+		textPCodigo.setBounds(593, 60, 198, 20);
 		contentPane.add(textPCodigo);
 		textPCodigo.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
@@ -204,7 +189,7 @@ public class FuncionarioView extends JFrame {
 		textPCodigo.setColumns(10);
 		
 		textPNome = new JTextField();
-		textPNome.setBounds(234, 60, 198, 20);
+		textPNome.setBounds(363, 60, 173, 20);
 		contentPane.add(textPNome);
 		textPNome.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
@@ -219,25 +204,17 @@ public class FuncionarioView extends JFrame {
 		});
 		textPNome.setColumns(10);
 		
-		JLabel lblNome = new JLabel("Nome:");
-		lblNome.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblNome.setBounds(151, 58, 70, 20);
-		contentPane.add(lblNome);
-		lblNome.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-		JSeparator separator_2_1_1 = new JSeparator();
-		separator_2_1_1.setForeground(Color.LIGHT_GRAY);
-		separator_2_1_1.setBounds(12, 122, 1788, 20);
-		contentPane.add(separator_2_1_1);
-		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setForeground(new Color(0, 0, 255));
+		scrollPane.setOpaque(false);
 		scrollPane.setBackground(new Color(255, 255, 255));
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(169, 186, 611, 431);
+		scrollPane.setBounds(243, 186, 611, 431);
 		contentPane.add(scrollPane);
-		table.setSelectionBackground(UIManager.getColor("Button.focus"));
+		table.setSelectionBackground(new Color(212, 226, 250));
 		table.setBackground(Color.WHITE);
-		
+
+
 
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -262,10 +239,11 @@ public class FuncionarioView extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(967, 186, 614, 431);
+		scrollPane_1.setBounds(1035, 186, 614, 431);
 		contentPane.add(scrollPane_1);
 		
 		table_1 = new JTable();
+		table_1.setSelectionBackground(new Color(212, 226, 250));
 		table_1.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -298,26 +276,9 @@ public class FuncionarioView extends JFrame {
 			}
 		});
 		
-		JLabel lblTelefones = new JLabel("ASSISTENTES CADASTRADOS");
-		lblTelefones.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblTelefones.setBounds(1154, 154, 272, 20);
-		contentPane.add(lblTelefones);
-		
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(169, 657, 611, 221);
+		layeredPane.setBounds(243, 657, 611, 221);
 		contentPane.add(layeredPane);
-		
-		JLabel lblNome_1 = new JLabel("Nome:");
-		lblNome_1.setBounds(22, 63, 70, 20);
-		layeredPane.add(lblNome_1);
-		lblNome_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNome_1.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		
-		JLabel lblCdigo_1 = new JLabel("ID:");
-		lblCdigo_1.setBounds(22, 31, 70, 20);
-		layeredPane.add(lblCdigo_1);
-		lblCdigo_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCdigo_1.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		
 		tfCodigo = new JTextField();
 		tfCodigo.setBounds(127, 31, 33, 19);
@@ -331,39 +292,21 @@ public class FuncionarioView extends JFrame {
 		layeredPane.add(tfNome);
 		tfNome.setColumns(10);
 		
-		JLabel lblNome_1_1 = new JLabel("Login:");
-		lblNome_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNome_1_1.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblNome_1_1.setBounds(22, 89, 70, 20);
-		layeredPane.add(lblNome_1_1);
-		
 		tfLogin = new JTextField();
 		tfLogin.setColumns(10);
 		tfLogin.setBounds(127, 89, 282, 19);
 		layeredPane.add(tfLogin);
-		
-		JLabel btnTurno = new JLabel("Turno:");
-		btnTurno.setBounds(22, 118, 70, 20);
-		layeredPane.add(btnTurno);
-		btnTurno.setHorizontalAlignment(SwingConstants.RIGHT);
-		btnTurno.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		comboBox_1.setBounds(127, 118, 283, 21);
 		layeredPane.add(comboBox_1);
 		
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Selecione", "Vespertino", "Matutino", "Noturno", "Integral"}));
 		comboBox_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		comboBox_1.setBackground(SystemColor.window);
+		comboBox_1.setBackground(Color.WHITE);
 		
 		tfSalario = new JTextField();
 		tfSalario.setColumns(10);
 		tfSalario.setBounds(127, 151, 282, 19);
 		layeredPane.add(tfSalario);
-		
-		JLabel lblSalrio = new JLabel("Salário:");
-		lblSalrio.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblSalrio.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblSalrio.setBounds(22, 150, 70, 20);
-		layeredPane.add(lblSalrio);
 		
 		cadastrar_1 = new JButton("Cadastrar");
 		cadastrar_1.setBounds(456, 118, 118, 21);
@@ -394,7 +337,7 @@ public class FuncionarioView extends JFrame {
 			}
 			
 		});
-		cadastrar_1.setBackground(UIManager.getColor("Button.darkShadow"));
+		cadastrar_1.setBackground(Color.WHITE);
 		
 		alterar = new JButton("Alterar");
 		alterar.setEnabled(false);
@@ -420,7 +363,7 @@ public class FuncionarioView extends JFrame {
 				limpar();
 			}
 		});
-		alterar.setBackground(UIManager.getColor("Button.darkShadow"));
+		alterar.setBackground(Color.WHITE);
 		
 	
 		
@@ -442,7 +385,7 @@ public class FuncionarioView extends JFrame {
 					limpar_1();				
 			}
 		});
-		excluir_1.setBackground(UIManager.getColor("Button.darkShadow"));
+		excluir_1.setBackground(Color.WHITE);
 		
 		JButton limpar = new JButton("Limpar");
 		limpar.setBounds(456, 62, 118, 21);
@@ -453,34 +396,52 @@ public class FuncionarioView extends JFrame {
 				limpar();
 			}
 		});
-		limpar.setBackground(UIManager.getColor("Button.focus"));
+		limpar.setBackground(Color.WHITE);
 		
 		tfemail = new JTextField();
 		tfemail.setColumns(10);
 		tfemail.setBounds(127, 182, 282, 19);
 		layeredPane.add(tfemail);
 		
-		JLabel lblEmail = new JLabel("Email:");
-		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblEmail.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblEmail.setBounds(22, 182, 70, 20);
-		layeredPane.add(lblEmail);
+		JLabel lblBuscaDeAssistentes_1_1_2_1 = new JLabel("Nome:");
+		lblBuscaDeAssistentes_1_1_2_1.setBounds(45, 63, 81, 20);
+		layeredPane.add(lblBuscaDeAssistentes_1_1_2_1);
+		lblBuscaDeAssistentes_1_1_2_1.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_2_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		
+		JLabel lblBuscaDeAssistentes_1_1_2_1_2 = new JLabel("ID:");
+		lblBuscaDeAssistentes_1_1_2_1_2.setBounds(71, 31, 81, 20);
+		layeredPane.add(lblBuscaDeAssistentes_1_1_2_1_2);
+		lblBuscaDeAssistentes_1_1_2_1_2.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_2_1_2.setFont(new Font("Lato Black", Font.BOLD, 15));
+		
+		JLabel lblBuscaDeAssistentes_1_1_2_1_3 = new JLabel("Login:");
+		lblBuscaDeAssistentes_1_1_2_1_3.setBounds(45, 89, 81, 20);
+		layeredPane.add(lblBuscaDeAssistentes_1_1_2_1_3);
+		lblBuscaDeAssistentes_1_1_2_1_3.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_2_1_3.setFont(new Font("Lato Black", Font.BOLD, 15));
+		
+		JLabel lblBuscaDeAssistentes_1_1_2_1_3_1 = new JLabel("Turno:");
+		lblBuscaDeAssistentes_1_1_2_1_3_1.setBounds(45, 119, 81, 20);
+		layeredPane.add(lblBuscaDeAssistentes_1_1_2_1_3_1);
+		lblBuscaDeAssistentes_1_1_2_1_3_1.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_2_1_3_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		
+		JLabel lblBuscaDeAssistentes_1_1_2_1_3_1_1 = new JLabel("Salário:");
+		lblBuscaDeAssistentes_1_1_2_1_3_1_1.setBounds(45, 151, 81, 20);
+		layeredPane.add(lblBuscaDeAssistentes_1_1_2_1_3_1_1);
+		lblBuscaDeAssistentes_1_1_2_1_3_1_1.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_2_1_3_1_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		
+		JLabel lblBuscaDeAssistentes_1_1_2_1_3_1_2 = new JLabel("Email:");
+		lblBuscaDeAssistentes_1_1_2_1_3_1_2.setBounds(45, 182, 81, 20);
+		layeredPane.add(lblBuscaDeAssistentes_1_1_2_1_3_1_2);
+		lblBuscaDeAssistentes_1_1_2_1_3_1_2.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_2_1_3_1_2.setFont(new Font("Lato Black", Font.BOLD, 15));
 		
 		JLayeredPane layeredPane_1 = new JLayeredPane();
-		layeredPane_1.setBounds(970, 657, 611, 221);
+		layeredPane_1.setBounds(1038, 657, 611, 221);
 		contentPane.add(layeredPane_1);
-		
-		JLabel lblNome_1_2 = new JLabel("Nome:");
-		lblNome_1_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNome_1_2.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblNome_1_2.setBounds(22, 63, 70, 20);
-		layeredPane_1.add(lblNome_1_2);
-		
-		JLabel lblCdigo_1_1 = new JLabel("ID:");
-		lblCdigo_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCdigo_1_1.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblCdigo_1_1.setBounds(22, 31, 70, 20);
-		layeredPane_1.add(lblCdigo_1_1);
 		
 		tfCodigo_1 = new JTextField();
 		tfCodigo_1.setEditable(false);
@@ -494,26 +455,14 @@ public class FuncionarioView extends JFrame {
 		tfNome_1.setBounds(127, 64, 282, 19);
 		layeredPane_1.add(tfNome_1);
 		
-		JLabel lblNome_1_1_1 = new JLabel("Login:");
-		lblNome_1_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNome_1_1_1.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblNome_1_1_1.setBounds(22, 89, 70, 20);
-		layeredPane_1.add(lblNome_1_1_1);
-		
 		tfLogin_1 = new JTextField();
 		tfLogin_1.setColumns(10);
 		tfLogin_1.setBounds(127, 89, 282, 19);
 		layeredPane_1.add(tfLogin_1);
 		
-		JLabel btnTurno_1 = new JLabel("Turno:");
-		btnTurno_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		btnTurno_1.setFont(new Font("Dialog", Font.BOLD, 15));
-		btnTurno_1.setBounds(22, 118, 70, 20);
-		layeredPane_1.add(btnTurno_1);
-		
 		comboBox_1_1.setModel(new DefaultComboBoxModel(new String[] {"Selecione", "Vespertino", "Matutino", "Noturno", "Integral"}));
 		comboBox_1_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		comboBox_1_1.setBackground(SystemColor.window);
+		comboBox_1_1.setBackground(Color.WHITE);
 		comboBox_1_1.setBounds(127, 118, 283, 21);
 		layeredPane_1.add(comboBox_1_1);
 		
@@ -522,12 +471,6 @@ public class FuncionarioView extends JFrame {
 		tfSalario_1.setBounds(127, 151, 282, 19);
 		layeredPane_1.add(tfSalario_1);
 		
-		JLabel lblSalrio_1 = new JLabel("Salário:");
-		lblSalrio_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblSalrio_1.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblSalrio_1.setBounds(32, 150, 70, 20);
-		layeredPane_1.add(lblSalrio_1);
-		
 		JButton limpar_2 = new JButton("Limpar");
 		limpar_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -535,7 +478,7 @@ public class FuncionarioView extends JFrame {
 			}
 		});
 		limpar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		limpar_2.setBackground(UIManager.getColor("Button.darkShadow"));
+		limpar_2.setBackground(Color.WHITE);
 		limpar_2.setBounds(456, 63, 118, 21);
 		layeredPane_1.add(limpar_2);
 		
@@ -558,7 +501,7 @@ public class FuncionarioView extends JFrame {
 			}
 		});
 		excluir_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		excluir_2.setBackground(UIManager.getColor("Button.darkShadow"));
+		excluir_2.setBackground(Color.WHITE);
 		
 		cadastrar_2 = new JButton("Cadastrar");
 		cadastrar_2.setBounds(456, 118, 118, 21);
@@ -592,7 +535,7 @@ public class FuncionarioView extends JFrame {
 			}
 		});
 		cadastrar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		cadastrar_2.setBackground(UIManager.getColor("Button.darkShadow"));
+		cadastrar_2.setBackground(Color.WHITE);
 		
 		alterar_2 = new JButton("Alterar");
 		alterar_2.setEnabled(false);
@@ -619,18 +562,48 @@ public class FuncionarioView extends JFrame {
 				
 		});
 		alterar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		alterar_2.setBackground(UIManager.getColor("Button.darkShadow"));
+		alterar_2.setBackground(Color.WHITE);
 		
 		tfemail_2 = new JTextField();
 		tfemail_2.setColumns(10);
 		tfemail_2.setBounds(127, 182, 282, 19);
 		layeredPane_1.add(tfemail_2);
 		
-		JLabel lblEmail_1 = new JLabel("Email:");
-		lblEmail_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblEmail_1.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblEmail_1.setBounds(22, 181, 70, 20);
-		layeredPane_1.add(lblEmail_1);
+		JLabel lblBuscaDeAssistentes_1_1_2_1_1 = new JLabel("Nome:");
+		lblBuscaDeAssistentes_1_1_2_1_1.setBounds(42, 65, 81, 20);
+		layeredPane_1.add(lblBuscaDeAssistentes_1_1_2_1_1);
+		lblBuscaDeAssistentes_1_1_2_1_1.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_2_1_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		
+		JLabel lblBuscaDeAssistentes_1_1_2_1_2_1 = new JLabel("ID:");
+		lblBuscaDeAssistentes_1_1_2_1_2_1.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_2_1_2_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblBuscaDeAssistentes_1_1_2_1_2_1.setBounds(59, 31, 81, 20);
+		layeredPane_1.add(lblBuscaDeAssistentes_1_1_2_1_2_1);
+		
+		JLabel lblBuscaDeAssistentes_1_1_2_1_1_1 = new JLabel("Login:");
+		lblBuscaDeAssistentes_1_1_2_1_1_1.setBounds(42, 89, 81, 20);
+		layeredPane_1.add(lblBuscaDeAssistentes_1_1_2_1_1_1);
+		lblBuscaDeAssistentes_1_1_2_1_1_1.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_2_1_1_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		
+		JLabel lblBuscaDeAssistentes_1_1_2_1_1_2 = new JLabel("Turno:");
+		lblBuscaDeAssistentes_1_1_2_1_1_2.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_2_1_1_2.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblBuscaDeAssistentes_1_1_2_1_1_2.setBounds(42, 119, 81, 20);
+		layeredPane_1.add(lblBuscaDeAssistentes_1_1_2_1_1_2);
+		
+		JLabel lblBuscaDeAssistentes_1_1_2_1_1_3 = new JLabel("Salário:");
+		lblBuscaDeAssistentes_1_1_2_1_1_3.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_2_1_1_3.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblBuscaDeAssistentes_1_1_2_1_1_3.setBounds(42, 151, 81, 20);
+		layeredPane_1.add(lblBuscaDeAssistentes_1_1_2_1_1_3);
+		
+		JLabel lblBuscaDeAssistentes_1_1_2_1_1_4 = new JLabel("Email:");
+		lblBuscaDeAssistentes_1_1_2_1_1_4.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_2_1_1_4.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblBuscaDeAssistentes_1_1_2_1_1_4.setBounds(42, 182, 81, 20);
+		layeredPane_1.add(lblBuscaDeAssistentes_1_1_2_1_1_4);
 		
 		cadatrar_asisstente = new JButton("Adicionar Assistente");
 		cadatrar_asisstente.setEnabled(false);
@@ -642,8 +615,8 @@ public class FuncionarioView extends JFrame {
 			}
 		});
 		cadatrar_asisstente.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		cadatrar_asisstente.setBackground(UIManager.getColor("Button.darkShadow"));
-		cadatrar_asisstente.setBounds(1032, 629, 173, 28);
+		cadatrar_asisstente.setBackground(Color.WHITE);
+		cadatrar_asisstente.setBounds(1121, 630, 173, 28);
 		contentPane.add(cadatrar_asisstente);
 		
 		remover_assistente = new JButton("Remover Assistente");
@@ -660,21 +633,9 @@ public class FuncionarioView extends JFrame {
 		});
 		remover_assistente.setEnabled(false);
 		remover_assistente.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		remover_assistente.setBackground(UIManager.getColor("Button.darkShadow"));
-		remover_assistente.setBounds(1367, 629, 173, 28);
+		remover_assistente.setBackground(Color.WHITE);
+		remover_assistente.setBounds(1389, 630, 173, 28);
 		contentPane.add(remover_assistente);
-		
-		JLabel lblBuscaDeAssistentes = new JLabel("BUSCA DE ASSISTENTES");
-		lblBuscaDeAssistentes.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblBuscaDeAssistentes.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblBuscaDeAssistentes.setBounds(997, 12, 405, 48);
-		contentPane.add(lblBuscaDeAssistentes);
-		
-		JLabel lblNome_2 = new JLabel("Nome:");
-		lblNome_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNome_2.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblNome_2.setBounds(967, 58, 70, 20);
-		contentPane.add(lblNome_2);
 		
 		textPNome_1 = new JTextField();
 		textPNome_1.addCaretListener(new CaretListener() {
@@ -689,12 +650,12 @@ public class FuncionarioView extends JFrame {
 				}
 		});
 		textPNome_1.setColumns(10);
-		textPNome_1.setBounds(1068, 59, 198, 20);
+		textPNome_1.setBounds(1121, 59, 173, 20);
 		contentPane.add(textPNome_1);
 		
 		textPCodigo_1 = new JTextField();
 		textPCodigo_1.setColumns(10);
-		textPCodigo_1.setBounds(1367, 59, 198, 20);
+		textPCodigo_1.setBounds(1342, 59, 198, 20);
 		textPCodigo_1.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
 				TableRowSorter<TableModel> filtro = null;  
@@ -706,12 +667,6 @@ public class FuncionarioView extends JFrame {
 			}
 		});
 		contentPane.add(textPCodigo_1);
-		
-		JLabel lblCdigo_2 = new JLabel("ID:");
-		lblCdigo_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCdigo_2.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblCdigo_2.setBounds(1289, 61, 70, 20);
-		contentPane.add(lblCdigo_2);
 		table.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
 					try {
@@ -733,7 +688,7 @@ public class FuncionarioView extends JFrame {
 		textusuario.setBackground(SystemColor.window);
 		textusuario.setDisabledTextColor(new Color(0, 0, 0));
 		textusuario.setEditable(false);
-		textusuario.setBounds(1532, 12, 86, 29);
+		textusuario.setBounds(1543, 12, 86, 29);
 		contentPane.add(textusuario);
 		textusuario.setColumns(10);
 		
@@ -742,7 +697,7 @@ public class FuncionarioView extends JFrame {
 		tfIdUsuario.setBackground(SystemColor.window);
 		tfIdUsuario.setEditable(false);
 		tfIdUsuario.setColumns(10);
-		tfIdUsuario.setBounds(1509, 12, 29, 29);
+		tfIdUsuario.setBounds(1511, 12, 29, 29);
 		contentPane.add(tfIdUsuario);
 		
 		JButton btnNewButton = new JButton("Deslogar");
@@ -757,11 +712,61 @@ public class FuncionarioView extends JFrame {
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btnNewButton.setBounds(1630, 12, 133, 31);
+		btnNewButton.setBounds(1658, 12, 133, 31);
 		contentPane.add(btnNewButton);
 		
-		lblNewLabel.setBounds(12, -16, 1843, 1047);
+		JLabel lblArtistasCadastrados_1 = new JLabel("ASSISTENTES CADASTRADOS");
+		lblArtistasCadastrados_1.setForeground(new Color(85, 97, 120));
+		lblArtistasCadastrados_1.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblArtistasCadastrados_1.setBounds(1217, 154, 337, 20);
+		contentPane.add(lblArtistasCadastrados_1);
+		
+		JLabel lblBuscaDeBibliotecrios = new JLabel("BUSCA DE BIBLIOTECÁRIOS ");
+		lblBuscaDeBibliotecrios.setForeground(new Color(85, 97, 120));
+		lblBuscaDeBibliotecrios.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblBuscaDeBibliotecrios.setBounds(411, 28, 337, 20);
+		contentPane.add(lblBuscaDeBibliotecrios);
+		
+		JLabel lblBuscaDeAssistentes_1 = new JLabel("BUSCA DE ASSISTENTES ");
+		lblBuscaDeAssistentes_1.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblBuscaDeAssistentes_1.setBounds(1228, 26, 337, 20);
+		contentPane.add(lblBuscaDeAssistentes_1);
+		
+		JLabel lblBuscaDeAssistentes_1_1 = new JLabel("Nome:");
+		lblBuscaDeAssistentes_1_1.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblBuscaDeAssistentes_1_1.setBounds(1063, 59, 81, 20);
+		contentPane.add(lblBuscaDeAssistentes_1_1);
+		
+		JLabel lblBuscaDeAssistentes_1_1_1 = new JLabel("ID:");
+		lblBuscaDeAssistentes_1_1_1.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblBuscaDeAssistentes_1_1_1.setBounds(1312, 59, 337, 20);
+		contentPane.add(lblBuscaDeAssistentes_1_1_1);
+		
+		JLabel lblBuscaDeAssistentes_1_1_2 = new JLabel("Nome:");
+		lblBuscaDeAssistentes_1_1_2.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_2.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblBuscaDeAssistentes_1_1_2.setBounds(303, 59, 81, 20);
+		contentPane.add(lblBuscaDeAssistentes_1_1_2);
+		
+		JLabel lblBuscaDeAssistentes_1_1_1_1 = new JLabel("ID:");
+		lblBuscaDeAssistentes_1_1_1_1.setForeground(new Color(85, 97, 120));
+		lblBuscaDeAssistentes_1_1_1_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblBuscaDeAssistentes_1_1_1_1.setBounds(554, 60, 52, 20);
+		contentPane.add(lblBuscaDeAssistentes_1_1_1_1);
+		
+		lblNewLabel.setBounds(12, 0, 1898, 1047);
 		contentPane.add(lblNewLabel);
+		
+		
+		table.getTableHeader().setOpaque(false);
+		table.getTableHeader().setBackground(new Color(225, 235, 252));
+		table.setFillsViewportHeight(true);
+		table_1.getTableHeader().setOpaque(false);
+		table_1.getTableHeader().setBackground(new Color(225, 235, 252));
+		table_1.setFillsViewportHeight(true);
 
 	}
 
