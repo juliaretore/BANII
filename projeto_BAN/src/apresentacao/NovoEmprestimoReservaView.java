@@ -87,6 +87,9 @@ public class NovoEmprestimoReservaView extends JFrame {
 	private static JTable table_2;
 	static JTextField tfUsuario;
 	JButton Reservar;
+	static JTextField textusuario;
+	static JTextField tfIdUsuario;
+	
 
 	
 	public static void main(String[] args) {
@@ -126,7 +129,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 		setTitle("Cadastrar Empréstimo e Reserva");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(200, 2000,  1800, 1000);
+//		setBounds(200, 2000,  1800, 1000);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setEnabled(false);
@@ -458,10 +461,46 @@ public class NovoEmprestimoReservaView extends JFrame {
 			}
 		});
 		
+		textusuario = new JTextField();
+		textusuario.setBackground(SystemColor.window);
+		textusuario.setDisabledTextColor(new Color(0, 0, 0));
+		textusuario.setEditable(false);
+		textusuario.setBounds(1532, 12, 86, 29);
+		contentPane.add(textusuario);
+		textusuario.setColumns(10);
+		
+		
+		tfIdUsuario = new JTextField();
+		tfIdUsuario.setBackground(SystemColor.window);
+		tfIdUsuario.setEditable(false);
+		tfIdUsuario.setColumns(10);
+		tfIdUsuario.setBounds(1509, 12, 29, 29);
+		contentPane.add(tfIdUsuario);
+		
+		JButton btnNewButton = new JButton("Deslogar");
+		btnNewButton.setBackground(Color.WHITE);
+		btnNewButton.setForeground(Color.BLACK);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				LoginView frame = new LoginView();
+				frame.setVisible(true);
+				frame.setLocationRelativeTo(null);
+			}
+		});
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnNewButton.setBounds(1630, 12, 133, 31);
+		contentPane.add(btnNewButton);
+		
 	}
 
 	public void sair() {
 		dispose();
+		TelaPrincipal frame = new TelaPrincipal();
+		TelaPrincipal.tfIdUsuario.setText(tfIdUsuario.getText());
+		TelaPrincipal.textusuario.setText(textusuario.getText());
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
 	}
 
 	public void limpar() {

@@ -104,6 +104,8 @@ public class FuncionarioView extends JFrame {
 	private JTextField textPCodigo_1;
 	private JTextField tfemail;
 	private JTextField tfemail_2;
+	static JTextField textusuario;
+	static JTextField tfIdUsuario;
 
 	
 	public static void main(String[] args) {
@@ -137,19 +139,25 @@ public class FuncionarioView extends JFrame {
 				atualizarTabela_1();
 			}
 		});
-//		ImageIcon imagemTituloJanela = new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpg"));
-//		setIconImage(imagemTituloJanela.getImage());
-
-
+		
+		
 		setTitle("Gerenciar Funcionaários");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(200, 2000,  1800, 1000);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setBounds(0, 0,  1842, 1080);
+
+//		setBounds(200, 1920,  1080, 0);
+//		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setEnabled(false);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		//		ImageIcon imagemTituloJanela = new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpg"));
+		//		setIconImage(imagemTituloJanela.getImage());
+		JLabel lblNewLabel = new JLabel("New label");
+//		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
+								
 		
 		JLabel lblBusca = new JLabel("BUSCA DE BIBLIOTECÁRIOS");
 		lblBusca.setFont(new Font("Dialog", Font.BOLD, 15));
@@ -223,11 +231,12 @@ public class FuncionarioView extends JFrame {
 		contentPane.add(separator_2_1_1);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(new Color(255, 255, 255));
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(169, 186, 611, 431);
 		contentPane.add(scrollPane);
-		table.setSelectionBackground(SystemColor.activeCaption);
-		table.setBackground(UIManager.getColor("Button.light"));
+		table.setSelectionBackground(UIManager.getColor("Button.focus"));
+		table.setBackground(Color.WHITE);
 		
 
 		table.setModel(new DefaultTableModel(
@@ -719,11 +728,50 @@ public class FuncionarioView extends JFrame {
 					excluir_1.setEnabled(true);
 			}
 		});
+		
+		textusuario = new JTextField();
+		textusuario.setBackground(SystemColor.window);
+		textusuario.setDisabledTextColor(new Color(0, 0, 0));
+		textusuario.setEditable(false);
+		textusuario.setBounds(1532, 12, 86, 29);
+		contentPane.add(textusuario);
+		textusuario.setColumns(10);
+		
+		
+		tfIdUsuario = new JTextField();
+		tfIdUsuario.setBackground(SystemColor.window);
+		tfIdUsuario.setEditable(false);
+		tfIdUsuario.setColumns(10);
+		tfIdUsuario.setBounds(1509, 12, 29, 29);
+		contentPane.add(tfIdUsuario);
+		
+		JButton btnNewButton = new JButton("Deslogar");
+		btnNewButton.setBackground(Color.WHITE);
+		btnNewButton.setForeground(Color.BLACK);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				LoginView frame = new LoginView();
+				frame.setVisible(true);
+				frame.setLocationRelativeTo(null);
+			}
+		});
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnNewButton.setBounds(1630, 12, 133, 31);
+		contentPane.add(btnNewButton);
+		
+		lblNewLabel.setBounds(12, -16, 1843, 1047);
+		contentPane.add(lblNewLabel);
 
 	}
 
 	public void sair() {
 		dispose();
+		TelaPrincipal frame = new TelaPrincipal();
+		TelaPrincipal.tfIdUsuario.setText(tfIdUsuario.getText());
+		TelaPrincipal.textusuario.setText(textusuario.getText());
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
 	}
 
 	public void limpar() {

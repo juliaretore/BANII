@@ -35,7 +35,7 @@ import javax.swing.SwingConstants;
 public class TelaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	JTextField textusuario;
+	static JTextField textusuario;
 	static JTextField tfIdUsuario;
 	static JButton btnUsuario = new JButton("Gerenciamento de Usuários");
 	private JButton btnFuncionario;
@@ -65,7 +65,8 @@ public class TelaPrincipal extends JFrame {
 		
 		setTitle("Menu");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100,  692, 700);
+//		setBounds(200, 2000,  1800, 1000);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -77,11 +78,13 @@ public class TelaPrincipal extends JFrame {
 		btnUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnUsuario.setBounds(211, 253, 271, 77);
 		contentPane.add(btnUsuario);
+		
+		
 		textusuario = new JTextField();
 		textusuario.setBackground(SystemColor.window);
 		textusuario.setDisabledTextColor(new Color(0, 0, 0));
 		textusuario.setEditable(false);
-		textusuario.setBounds(429, 42, 86, 29);
+		textusuario.setBounds(1532, 12, 86, 29);
 		contentPane.add(textusuario);
 		textusuario.setColumns(10);
 		
@@ -90,7 +93,7 @@ public class TelaPrincipal extends JFrame {
 		tfIdUsuario.setBackground(SystemColor.window);
 		tfIdUsuario.setEditable(false);
 		tfIdUsuario.setColumns(10);
-		tfIdUsuario.setBounds(402, 42, 29, 29);
+		tfIdUsuario.setBounds(1509, 12, 29, 29);
 		contentPane.add(tfIdUsuario);
 		
 		JButton btnNewButton = new JButton("Deslogar");
@@ -105,15 +108,18 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btnNewButton.setBounds(522, 41, 133, 31);
+		btnNewButton.setBounds(1630, 12, 133, 31);
 		contentPane.add(btnNewButton);
 		
 		btnUsuario.setActionCommand("Gerenciamento de Usuários");
 		btnUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UsuarioView objeto = UsuarioView.getInstance();
+				UsuarioView.tfIdUsuario.setText(tfIdUsuario.getText());
+				UsuarioView.textusuario.setText(textusuario.getText());
 				objeto.setVisible(true);
 				objeto.setLocationRelativeTo(null);
+				dispose();
 			}
 		});
 		
@@ -121,6 +127,9 @@ public class TelaPrincipal extends JFrame {
 		btnFuncionario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FuncionarioView objeto = FuncionarioView.getInstance();
+				FuncionarioView.tfIdUsuario.setText(tfIdUsuario.getText());
+				FuncionarioView.textusuario.setText(textusuario.getText());
+				dispose();
 				objeto.setVisible(true);
 				objeto.setLocationRelativeTo(null);
 				
@@ -137,6 +146,9 @@ public class TelaPrincipal extends JFrame {
 		btnLivro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				LivroView objeto = LivroView.getInstance();
+				LivroView.tfIdUsuario.setText(tfIdUsuario.getText());
+				LivroView.textusuario.setText(textusuario.getText());
+				dispose();
 				objeto.setVisible(true);
 				objeto.setLocationRelativeTo(null);
 			}
@@ -150,13 +162,16 @@ public class TelaPrincipal extends JFrame {
 		
 		
 		
-		lblNewLabel.setBounds(0, 12, 676, 661);
+		lblNewLabel.setBounds(179, 155, 676, 661);
 		contentPane.add(lblNewLabel);
 		
 		btnEmprestimo = new JButton("Novo Emprestimo");
 		btnEmprestimo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				NovoEmprestimoReservaView objeto = NovoEmprestimoReservaView.getInstance();				
+				NovoEmprestimoReservaView objeto = NovoEmprestimoReservaView.getInstance();	
+				NovoEmprestimoReservaView.tfIdUsuario.setText(tfIdUsuario.getText());
+				NovoEmprestimoReservaView.textusuario.setText(textusuario.getText());
+				dispose();
 				objeto.setVisible(true);
 				objeto.setLocationRelativeTo(null);
 			}
