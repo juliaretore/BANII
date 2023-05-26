@@ -265,7 +265,7 @@ public class FuncionarioView extends JFrame {
 					cadastrar_2.setEnabled(false);
 					if (table.getSelectedRow()!=-1) cadatrar_asisstente.setEnabled(true);
 						
-					remover_assistente.setEnabled(true);
+					if (table.getSelectedRow()!=-1)remover_assistente.setEnabled(true);
 					excluir_2.setEnabled(true);
 					alterar_2.setEnabled(true);
 				} catch (NumberFormatException e) {

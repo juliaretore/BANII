@@ -67,7 +67,7 @@ private static LivroDAO instance = null;
 		select_autores_livro = conexao.prepareStatement("select a.id, a.nome, a.nacionalidade, a.area from autor a join autores_livro al on a.id=al.id_autor where id_livro=?");
 		select_exemplares_livro = conexao.prepareStatement("select id, prateleira, estante, colecao, id_usuario_reserva from exemplar where id_livro=?");
 		select_usuario = conexao.prepareStatement("select nome from usuario where id=?");
-		select_exemplares_livro_disponiveis = conexao.prepareStatement("select id, prateleira, estante, colecao from exemplar where id_livro=? and id_usuario_reserva is null and id not in (select id_exemplar from emprestimo where situacao=0)");
+		select_exemplares_livro_disponiveis = conexao.prepareStatement("select id, prateleira, estante, colecao from exemplar where id_livro=? and id_usuario_reserva is null and colecao!='Reserva' and id not in (select id_exemplar from emprestimo where situacao=0)");
 		select_exemplar_emprestado = conexao.prepareStatement("select id_usuario from emprestimo where id_exemplar=? and situacao=0");
 		select_adicionar_autores_livro = conexao.prepareStatement("select id, nome, nacionalidade, area from autor where id not in (select a.id a from autor a join autores_livro al on a.id=al.id_autor where al.id_livro=?)");
 	}

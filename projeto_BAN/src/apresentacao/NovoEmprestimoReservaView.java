@@ -202,19 +202,6 @@ public class NovoEmprestimoReservaView extends JFrame {
 		table_1.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
 				tfExemplar.setText(String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));
-//				try {
-//					setCamposFromTabela_1();
-//					cadastrar_2.setEnabled(false);
-//					if (table.getSelectedRow()!=-1) cadatrar_asisstente.setEnabled(true);
-//						
-//					remover_assistente.setEnabled(true);
-//					excluir_2.setEnabled(true);
-//					alterar_2.setEnabled(true);
-//				} catch (NumberFormatException e) {
-//					e.printStackTrace();
-//				} catch (SelectException e) {
-//					e.printStackTrace();
-//				}
 			}
 		});
 		
@@ -335,7 +322,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 
 			}
 		});
-//		inserirReserva(int cid_livro, int cid_usuario)
+
 		Reservar.setEnabled(false);
 		Reservar.setActionCommand("Reservar");
 		Reservar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
@@ -518,7 +505,8 @@ public class NovoEmprestimoReservaView extends JFrame {
 		table_2.clearSelection();
 		Cadastrar.setEnabled(true);
 		Reservar.setEnabled(false);
-
+		DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+		model.setNumRows(0);
 	}
 
 	
@@ -546,16 +534,5 @@ public static void atualizarTabela_1() {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
-	
-	public void setCamposFromTabela() throws NumberFormatException, SelectException {
 
-	}
-	
-	public void setCamposFromTabela_1() throws NumberFormatException, SelectException {
-		tfCodigo.setText(String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));
-		tfLivro.setText(String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 1)));
-		tfExemplar.setText(String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 2)));
-		String turno = String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 3));
-		tfData.setText(String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 4)));
-	}
 }
