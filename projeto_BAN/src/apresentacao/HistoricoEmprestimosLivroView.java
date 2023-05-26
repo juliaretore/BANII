@@ -80,8 +80,7 @@ public class HistoricoEmprestimosLivroView extends JFrame {
 				atualizarTabela();
 			}
 		});
-		JLabel lblNewLabel = new JLabel("New label");
-
+		
 		setTitle("Histórico de empréstimos do exemplar");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -91,24 +90,17 @@ public class HistoricoEmprestimosLivroView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblBusca = new JLabel("BUSCA");
-		lblBusca.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblBusca.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblBusca.setBounds(497, 12, 69, 20);
-		contentPane.add(lblBusca);
 		
-		JLabel lblMusicasParaAdicionae = new JLabel("EMPRÉSTIMOS");
-		lblMusicasParaAdicionae.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblMusicasParaAdicionae.setBounds(485, 155, 369, 20);
-		contentPane.add(lblMusicasParaAdicionae);
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(29, 200, 1045, 390);
+		scrollPane.setBounds(29, 157, 1045, 433);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
-		table.setBackground(SystemColor.window);
-		table.setSelectionBackground(SystemColor.activeCaption);
+		table.setBackground(Color.WHITE);
+		table.setSelectionBackground(new Color(212, 226, 250));
 		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -123,14 +115,8 @@ public class HistoricoEmprestimosLivroView extends JFrame {
 		table.getColumnModel().getColumn(5).setPreferredWidth(70);
 		table.getColumnModel().getColumn(6).setPreferredWidth(60);
 		
-		JLabel lblId = new JLabel("ID:");
-		lblId.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblId.setBounds(65, 72, 69, 20);
-		contentPane.add(lblId);
-		lblId.setHorizontalAlignment(SwingConstants.RIGHT);
-		
 		textPCodigo = new JTextField();
-		textPCodigo.setBounds(152, 73, 305, 20);
+		textPCodigo.setBounds(397, 41, 305, 20);
 		contentPane.add(textPCodigo);
 		textPCodigo.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {			
@@ -146,7 +132,7 @@ public class HistoricoEmprestimosLivroView extends JFrame {
 		textPCodigo.setColumns(10);
 		
 		textPNome = new JTextField();
-		textPNome.setBounds(691, 73, 305, 20);
+		textPNome.setBounds(397, 63, 305, 20);
 		contentPane.add(textPNome);
 		textPNome.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {			
@@ -161,19 +147,47 @@ public class HistoricoEmprestimosLivroView extends JFrame {
 		});
 		textPNome.setColumns(10);
 		
+		JLabel lblBusca_1 = new JLabel("BUSCA");
+		lblBusca_1.setForeground(new Color(85, 97, 120));
+		lblBusca_1.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblBusca_1.setBounds(514, 12, 69, 20);
+		contentPane.add(lblBusca_1);
+		
+		JLabel lblid = new JLabel("ID:");
+		lblid.setForeground(new Color(85, 97, 120));
+		lblid.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblid.setBounds(355, 41, 52, 20);
+		contentPane.add(lblid);
+		
 		JLabel lblUsurio = new JLabel("Usuário:");
-		lblUsurio.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblUsurio.setBounds(555, 72, 118, 20);
+		lblUsurio.setForeground(new Color(85, 97, 120));
+		lblUsurio.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblUsurio.setBounds(318, 63, 146, 20);
 		contentPane.add(lblUsurio);
-		lblUsurio.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		JSeparator separator = new JSeparator();
-		separator.setForeground(Color.LIGHT_GRAY);
-		separator.setBounds(12, 127, 1062, 20);
-		contentPane.add(separator);
+		JLabel lblBusca_1_1 = new JLabel("EMPRÉSTIMOS");
+		lblBusca_1_1.setForeground(new Color(85, 97, 120));
+		lblBusca_1_1.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblBusca_1_1.setBounds(484, 116, 158, 20);
+		contentPane.add(lblBusca_1_1);
 		
-		lblNewLabel.setBounds(142, 215, 369, 490);
+		JButton sair_1 = new JButton("Sair");
+		sair_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		sair_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		sair_1.setBackground(Color.WHITE);
+		sair_1.setBounds(491, 613, 92, 23);
+		contentPane.add(sair_1);
+		
+		lblNewLabel.setBounds(-53, -29, 1898, 1047);
 		contentPane.add(lblNewLabel);
+		
+		table.getTableHeader().setOpaque(false);
+		table.getTableHeader().setBackground(new Color(225, 235, 252));
+		table.setFillsViewportHeight(true);
 	}
 
 

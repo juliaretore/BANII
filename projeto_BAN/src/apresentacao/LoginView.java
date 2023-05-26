@@ -64,14 +64,17 @@ public class LoginView extends JFrame {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
 		
-		lblNewLabel = new JLabel("New label");
+//		lblNewLabel = new JLabel("New label");
 //		ImageIcon img = new javax.swing.ImageIcon(getClass().getResource("/img/login.jpg"));  
 //		lblNewLabel.setIcon(img);
 //        img.setImage(img.getImage().getScaledInstance(445, 250, 100));
 		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background3.png")));
+		
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 256);
+		setBounds(100, 100, 750, 522);
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -80,37 +83,20 @@ public class LoginView extends JFrame {
 		
 		
 		tflogin = new JTextField();
+		tflogin.setFont(new Font("Dialog", Font.PLAIN, 22));
 		tflogin.setBorder(UIManager.getBorder("Tree.editorBorder"));
-		tflogin.setBounds(78, 44, 133, 23);
+		tflogin.setBounds(253, 144, 310, 57);
 		contentPane.add(tflogin);
 		tflogin.setColumns(10);
 		
-		
-		JButton btnSair = new JButton("Sair");
-		btnSair.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		btnSair.setForeground(Color.BLACK);
-		btnSair.setBackground(Color.WHITE);
-		btnSair.setBounds(314, 183, 110, 23);
-		contentPane.add(btnSair);
-		
 		tfsenha = new JPasswordField();
+		tfsenha.setFont(new Font("Dialog", Font.PLAIN, 22));
 		tfsenha.setBorder(new LineBorder(new Color(0, 0, 0)));
-		tfsenha.setBounds(78, 79, 133, 22);
+		tfsenha.setBounds(253, 298, 300, 57);
 		contentPane.add(tfsenha);
-
-		
-		JLabel lblSenha_1 = new JLabel("Senha");
-		lblSenha_1.setForeground(new Color(255, 102, 51));
-		lblSenha_1.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
-		lblSenha_1.setBackground(Color.WHITE);
-		lblSenha_1.setBounds(29, 75, 89, 23);
-		contentPane.add(lblSenha_1);
 		
 		JButton btlogin = new JButton("logar");
+		btlogin.setFont(new Font("Lato Black", Font.BOLD, 20));
 		btlogin.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		btlogin.setBackground(Color.WHITE);
 		btlogin.setForeground(Color.BLACK);
@@ -150,18 +136,23 @@ public class LoginView extends JFrame {
 			}			
 		
 		});
-		btlogin.setBounds(88, 122, 110, 23);
+		btlogin.setBounds(322, 385, 143, 45);
 		contentPane.add(btlogin);
 		
-		JLabel lblLogin = new JLabel("Login");
-		lblLogin.setBackground(Color.WHITE);
-		lblLogin.setForeground(new Color(255, 102, 51));
-		lblLogin.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
-		lblLogin.setBounds(29, 41, 89, 23);
+		JLabel lblLogin = new JLabel("LOGIN");
+		lblLogin.setForeground(new Color(85, 97, 120));
+		lblLogin.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblLogin.setBounds(366, 127, 337, 20);
 		contentPane.add(lblLogin);
 		
+		JLabel lblSenha = new JLabel("SENHA");
+		lblSenha.setForeground(new Color(85, 97, 120));
+		lblSenha.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblSenha.setBounds(366, 278, 337, 20);
+		contentPane.add(lblSenha);
+		
 
-		lblNewLabel.setBounds(0, 0, 434, 237);
+		lblNewLabel.setBounds(0, -33, 771, 528);
 		contentPane.add(lblNewLabel);
 		
 

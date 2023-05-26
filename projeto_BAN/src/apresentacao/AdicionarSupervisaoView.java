@@ -83,7 +83,6 @@ public class AdicionarSupervisaoView extends JFrame {
 				}
 			}
 		});
-		JLabel lblNewLabel = new JLabel("New label");
 
 		setTitle("Adicionar Supervisão");
 		setResizable(false);
@@ -94,16 +93,8 @@ public class AdicionarSupervisaoView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblBusca = new JLabel("BUSCA");
-		lblBusca.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblBusca.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblBusca.setBounds(239, 12, 69, 20);
-		contentPane.add(lblBusca);
-		
-		JLabel lblMusicasParaAdicionae = new JLabel("ASSISTENTES PARA ADICIONAR");
-		lblMusicasParaAdicionae.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblMusicasParaAdicionae.setBounds(142, 121, 369, 20);
-		contentPane.add(lblMusicasParaAdicionae);
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
 		
 		JButton sair = new JButton("Sair");
 		sair.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
@@ -112,7 +103,7 @@ public class AdicionarSupervisaoView extends JFrame {
 				sair();
 			}
 		});
-		sair.setBackground(SystemColor.window);
+		sair.setBackground(Color.WHITE);
 		sair.setBounds(348, 354, 92, 23);
 		contentPane.add(sair);
 		
@@ -121,8 +112,8 @@ public class AdicionarSupervisaoView extends JFrame {
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
-		table.setBackground(SystemColor.window);
-		table.setSelectionBackground(SystemColor.activeCaption);
+		table.setBackground(Color.WHITE);
+		table.setSelectionBackground(new Color(212, 226, 250));
 		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -137,14 +128,8 @@ public class AdicionarSupervisaoView extends JFrame {
 		table.getColumnModel().getColumn(4).setPreferredWidth(80);
 		table.getColumnModel().getColumn(5).setPreferredWidth(140);
 		
-		JLabel lblId = new JLabel("ID:");
-		lblId.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblId.setBounds(62, 40, 69, 20);
-		contentPane.add(lblId);
-		lblId.setHorizontalAlignment(SwingConstants.RIGHT);
-		
 		textPCodigo = new JTextField();
-		textPCodigo.setBounds(149, 41, 305, 20);
+		textPCodigo.setBounds(142, 30, 305, 20);
 		contentPane.add(textPCodigo);
 		textPCodigo.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {			
@@ -160,7 +145,7 @@ public class AdicionarSupervisaoView extends JFrame {
 		textPCodigo.setColumns(10);
 		
 		textPNome = new JTextField();
-		textPNome.setBounds(149, 73, 305, 20);
+		textPNome.setBounds(142, 58, 305, 20);
 		contentPane.add(textPNome);
 		textPNome.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {			
@@ -174,17 +159,6 @@ public class AdicionarSupervisaoView extends JFrame {
 			}
 		});
 		textPNome.setColumns(10);
-		
-		JLabel label_7 = new JLabel("Nome:");
-		label_7.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		label_7.setBounds(72, 72, 59, 20);
-		contentPane.add(label_7);
-		label_7.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-		JSeparator separator = new JSeparator();
-		separator.setForeground(Color.LIGHT_GRAY);
-		separator.setBounds(5, 104, 384, 2);
-		contentPane.add(separator);
 		
 		JButton selecionar = new JButton("Selecionar");
 		selecionar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
@@ -203,12 +177,41 @@ public class AdicionarSupervisaoView extends JFrame {
 				}else JOptionPane.showMessageDialog(null, "Nenhum assistente selecionado!");
 			}
 		});
-		selecionar.setBackground(SystemColor.window);
+		selecionar.setBackground(Color.WHITE);
 		selecionar.setBounds(127, 354, 99, 23);
 		contentPane.add(selecionar);
 		
-		lblNewLabel.setBounds(142, 215, 369, 490);
+		JLabel lblAssistentesParaAdicionar = new JLabel("ASSISTENTES PARA ADICIONAR NA SUPERVISÃO");
+		lblAssistentesParaAdicionar.setForeground(new Color(85, 97, 120));
+		lblAssistentesParaAdicionar.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblAssistentesParaAdicionar.setBounds(67, 117, 412, 20);
+		contentPane.add(lblAssistentesParaAdicionar);
+		
+		JLabel lblBusca_1 = new JLabel("BUSCA");
+		lblBusca_1.setForeground(new Color(85, 97, 120));
+		lblBusca_1.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblBusca_1.setBounds(244, 12, 337, 20);
+		contentPane.add(lblBusca_1);
+		
+		JLabel lblid = new JLabel("ID:");
+		lblid.setForeground(new Color(85, 97, 120));
+		lblid.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblid.setBounds(108, 30, 52, 20);
+		contentPane.add(lblid);
+		
+		JLabel lblNome = new JLabel("Nome:");
+		lblNome.setForeground(new Color(85, 97, 120));
+		lblNome.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblNome.setBounds(84, 58, 52, 20);
+		contentPane.add(lblNome);
+
+		
+		lblNewLabel.setBounds(-53, -29, 1898, 1047);
 		contentPane.add(lblNewLabel);
+		
+		table.getTableHeader().setOpaque(false);
+		table.getTableHeader().setBackground(new Color(225, 235, 252));
+		table.setFillsViewportHeight(true);
 	}
 
 	public void sair() {

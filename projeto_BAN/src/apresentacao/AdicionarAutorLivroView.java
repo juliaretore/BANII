@@ -1,4 +1,3 @@
-
 package apresentacao;
 
 import java.awt.Color;
@@ -108,24 +107,16 @@ public class AdicionarAutorLivroView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblBusca = new JLabel("BUSCA");
-		lblBusca.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblBusca.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblBusca.setBounds(291, 12, 69, 20);
-		contentPane.add(lblBusca);
-		
-		JLabel lblMusicasParaAdicionae = new JLabel("AUTORES PARA ADICIONAR");
-		lblMusicasParaAdicionae.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblMusicasParaAdicionae.setBounds(226, 118, 369, 20);
-		contentPane.add(lblMusicasParaAdicionae);
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(105, 153, 453, 189);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
-		table.setBackground(SystemColor.window);
-		table.setSelectionBackground(SystemColor.activeCaption);
+		table.setBackground(Color.WHITE);
+		table.setSelectionBackground(new Color(212, 226, 250));
 		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -150,14 +141,9 @@ public class AdicionarAutorLivroView extends JFrame {
 					
 			}
 		});
-		JLabel lblId = new JLabel("ID:");
-		lblId.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblId.setBounds(128, 40, 69, 20);
-		contentPane.add(lblId);
-		lblId.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		textPCodigo = new JTextField();
-		textPCodigo.setBounds(215, 41, 305, 20);
+		textPCodigo.setBounds(180, 27, 305, 20);
 		contentPane.add(textPCodigo);
 		textPCodigo.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {			
@@ -173,7 +159,7 @@ public class AdicionarAutorLivroView extends JFrame {
 		textPCodigo.setColumns(10);
 		
 		textPNome = new JTextField();
-		textPNome.setBounds(215, 73, 305, 20);
+		textPNome.setBounds(180, 63, 305, 20);
 		contentPane.add(textPNome);
 		textPNome.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {			
@@ -187,17 +173,6 @@ public class AdicionarAutorLivroView extends JFrame {
 			}
 		});
 		textPNome.setColumns(10);
-		
-		JLabel label_7 = new JLabel("Nome:");
-		label_7.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		label_7.setBounds(138, 72, 59, 20);
-		contentPane.add(label_7);
-		label_7.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-		JSeparator separator = new JSeparator();
-		separator.setForeground(Color.LIGHT_GRAY);
-		separator.setBounds(12, 105, 629, 1);
-		contentPane.add(separator);
 		
 		JButton selecionar = new JButton("Selecionar");
 		selecionar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
@@ -216,25 +191,13 @@ public class AdicionarAutorLivroView extends JFrame {
 				}else JOptionPane.showMessageDialog(null, "Nenhum autor selecionado!");
 			}
 		});
-		selecionar.setBackground(SystemColor.window);
+		selecionar.setBackground(Color.WHITE);
 		selecionar.setBounds(291, 354, 99, 23);
 		contentPane.add(selecionar);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBounds(30, 414, 611, 141);
 		contentPane.add(layeredPane);
-		
-		JLabel Aa = new JLabel("Nome:");
-		Aa.setHorizontalAlignment(SwingConstants.RIGHT);
-		Aa.setFont(new Font("Dialog", Font.BOLD, 15));
-		Aa.setBounds(55, 63, 70, 20);
-		layeredPane.add(Aa);
-		
-		JLabel lblCdigo_1 = new JLabel("ID:");
-		lblCdigo_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCdigo_1.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblCdigo_1.setBounds(55, 30, 70, 20);
-		layeredPane.add(lblCdigo_1);
 		
 		tfCodigo = new JTextField();
 		tfCodigo.setEditable(false);
@@ -248,12 +211,6 @@ public class AdicionarAutorLivroView extends JFrame {
 		tfNome.setBounds(127, 64, 282, 19);
 		layeredPane.add(tfNome);
 		
-		JLabel lblNome_1_1 = new JLabel("Nacionalidade:");
-		lblNome_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNome_1_1.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblNome_1_1.setBounds(-38, 88, 163, 20);
-		layeredPane.add(lblNome_1_1);
-		
 		tfNacionalidade = new JTextField();
 		tfNacionalidade.setColumns(10);
 		tfNacionalidade.setBounds(127, 89, 282, 19);
@@ -263,12 +220,6 @@ public class AdicionarAutorLivroView extends JFrame {
 		tfArea.setColumns(10);
 		tfArea.setBounds(127, 119, 282, 19);
 		layeredPane.add(tfArea);
-		
-		JLabel lblSalrio = new JLabel("Area:");
-		lblSalrio.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblSalrio.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblSalrio.setBounds(55, 118, 70, 20);
-		layeredPane.add(lblSalrio);
 		
 		cadastrar = new JButton("Cadastrar");
 		cadastrar.addActionListener(new ActionListener() {
@@ -293,7 +244,7 @@ public class AdicionarAutorLivroView extends JFrame {
 			}
 		});
 		cadastrar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		cadastrar.setBackground(UIManager.getColor("Button.darkShadow"));
+		cadastrar.setBackground(Color.WHITE);
 		cadastrar.setBounds(456, 89, 118, 21);
 		layeredPane.add(cadastrar);
 		
@@ -321,7 +272,7 @@ public class AdicionarAutorLivroView extends JFrame {
 		});
 		alterar.setEnabled(false);
 		alterar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		alterar.setBackground(UIManager.getColor("Button.darkShadow"));
+		alterar.setBackground(Color.WHITE);
 		alterar.setBounds(456, 63, 118, 21);
 		layeredPane.add(alterar);
 		
@@ -339,7 +290,7 @@ public class AdicionarAutorLivroView extends JFrame {
 		});
 		excluir.setEnabled(false);
 		excluir.setBorder(new LineBorder(new Color(0, 0, 0)));
-		excluir.setBackground(UIManager.getColor("Button.darkShadow"));
+		excluir.setBackground(Color.WHITE);
 		excluir.setBounds(456, 118, 118, 21);
 		layeredPane.add(excluir);
 		
@@ -350,9 +301,33 @@ public class AdicionarAutorLivroView extends JFrame {
 			}
 		});
 		limpar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		limpar.setBackground(UIManager.getColor("Button.focus"));
+		limpar.setBackground(Color.WHITE);
 		limpar.setBounds(456, 31, 118, 21);
 		layeredPane.add(limpar);
+		
+		JLabel lblid_1 = new JLabel("ID:");
+		lblid_1.setForeground(new Color(85, 97, 120));
+		lblid_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblid_1.setBounds(91, 31, 52, 20);
+		layeredPane.add(lblid_1);
+		
+		JLabel lblNome_1 = new JLabel("Nome:");
+		lblNome_1.setForeground(new Color(85, 97, 120));
+		lblNome_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblNome_1.setBounds(73, 64, 52, 20);
+		layeredPane.add(lblNome_1);
+		
+		JLabel lblNome_1_2 = new JLabel("Nacionalidade:");
+		lblNome_1_2.setForeground(new Color(85, 97, 120));
+		lblNome_1_2.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblNome_1_2.setBounds(12, 89, 113, 20);
+		layeredPane.add(lblNome_1_2);
+		
+		JLabel lblNome_1_2_1 = new JLabel("Área:");
+		lblNome_1_2_1.setForeground(new Color(85, 97, 120));
+		lblNome_1_2_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblNome_1_2_1.setBounds(81, 119, 113, 20);
+		layeredPane.add(lblNome_1_2_1);
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(Color.LIGHT_GRAY);
@@ -366,9 +341,41 @@ public class AdicionarAutorLivroView extends JFrame {
 			}
 		});
 		sair_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		sair_1.setBackground(SystemColor.window);
+		sair_1.setBackground(Color.WHITE);
 		sair_1.setBounds(276, 567, 92, 23);
 		contentPane.add(sair_1);
+		
+		JLabel lblBusca_1 = new JLabel("BUSCA");
+		lblBusca_1.setForeground(new Color(85, 97, 120));
+		lblBusca_1.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblBusca_1.setBounds(301, 9, 69, 20);
+		contentPane.add(lblBusca_1);
+		
+		JLabel lblBusca_1_1 = new JLabel("AUTORES PARA ADICIONAR");
+		lblBusca_1_1.setForeground(new Color(85, 97, 120));
+		lblBusca_1_1.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblBusca_1_1.setBounds(215, 120, 318, 20);
+		contentPane.add(lblBusca_1_1);
+		
+		JLabel lblid = new JLabel("ID:");
+		lblid.setForeground(new Color(85, 97, 120));
+		lblid.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblid.setBounds(150, 27, 52, 20);
+		contentPane.add(lblid);
+		
+		JLabel lblNome = new JLabel("Nome:");
+		lblNome.setForeground(new Color(85, 97, 120));
+		lblNome.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblNome.setBounds(127, 63, 52, 20);
+		contentPane.add(lblNome);
+		
+		
+		lblNewLabel.setBounds(-53, -29, 1898, 1047);
+		contentPane.add(lblNewLabel);
+		
+		table.getTableHeader().setOpaque(false);
+		table.getTableHeader().setBackground(new Color(225, 235, 252));
+		table.setFillsViewportHeight(true);
 	}
 
 

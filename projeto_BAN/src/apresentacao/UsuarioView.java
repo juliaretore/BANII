@@ -133,7 +133,7 @@ public class UsuarioView extends JFrame {
 		setTitle("Gerenciar Usuários");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//		setBounds(200, 2000,  1800, 1000);
+		setBounds(0, 0,  1930, 1080);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setEnabled(false);
@@ -141,16 +141,8 @@ public class UsuarioView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblBusca = new JLabel("BUSCA DE USUÁRIOS");
-		lblBusca.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblBusca.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblBusca.setBounds(224, 0, 224, 48);
-		contentPane.add(lblBusca);
-		
-		JLabel lblArtistasCadastrados = new JLabel("USUÁRIOS CADASTRADOS");
-		lblArtistasCadastrados.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblArtistasCadastrados.setBounds(584, 154, 232, 20);
-		contentPane.add(lblArtistasCadastrados);
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
 		
 		JButton sair = new JButton("Sair");
 		sair.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -159,19 +151,12 @@ public class UsuarioView extends JFrame {
 				sair();
 			}
 		});
-		sair.setBackground(UIManager.getColor("Button.darkShadow"));
-		sair.setBounds(886, 927, 173, 20);
+		sair.setBackground(Color.WHITE);
+		sair.setBounds(899, 959, 173, 20);
 		contentPane.add(sair);
 		
-		
-		JLabel lblCdigo = new JLabel("ID:");
-		lblCdigo.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblCdigo.setBounds(166, 90, 70, 20);
-		contentPane.add(lblCdigo);
-		lblCdigo.setHorizontalAlignment(SwingConstants.RIGHT);
-		
 		textPCodigo = new JTextField();
-		textPCodigo.setBounds(254, 91, 198, 20);
+		textPCodigo.setBounds(552, 61, 182, 20);
 		contentPane.add(textPCodigo);
 		textPCodigo.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
@@ -186,7 +171,7 @@ public class UsuarioView extends JFrame {
 		textPCodigo.setColumns(10);
 		
 		textPNome = new JTextField();
-		textPNome.setBounds(254, 59, 198, 20);
+		textPNome.setBounds(834, 61, 198, 20);
 		contentPane.add(textPNome);
 		textPNome.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
@@ -201,23 +186,12 @@ public class UsuarioView extends JFrame {
 		});
 		textPNome.setColumns(10);
 		
-		JLabel lblNome = new JLabel("Nome:");
-		lblNome.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblNome.setBounds(166, 58, 70, 20);
-		contentPane.add(lblNome);
-		lblNome.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-		JSeparator separator_2_1_1 = new JSeparator();
-		separator_2_1_1.setForeground(Color.LIGHT_GRAY);
-		separator_2_1_1.setBounds(12, 122, 1788, 20);
-		contentPane.add(separator_2_1_1);
-		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(169, 186, 1194, 308);
+		scrollPane.setBounds(169, 186, 1194, 442);
 		contentPane.add(scrollPane);
-		table.setSelectionBackground(SystemColor.activeCaption);
-		table.setBackground(SystemColor.window);
+		table.setSelectionBackground(new Color(212, 226, 250));
+		table.setBackground(Color.WHITE);
 		
 
 		table.setModel(new DefaultTableModel(
@@ -243,10 +217,11 @@ public class UsuarioView extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(1463, 186, 232, 308);
+		scrollPane_1.setBounds(1463, 186, 232, 442);
 		contentPane.add(scrollPane_1);
 		
 		table_1 = new JTable();
+		table_1.setSelectionBackground(new Color(212, 226, 250));
 		table_1.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -270,11 +245,6 @@ public class UsuarioView extends JFrame {
 			}
 		});
 		
-		JLabel lblTelefones = new JLabel("TELEFONES");
-		lblTelefones.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblTelefones.setBounds(1532, 154, 232, 20);
-		contentPane.add(lblTelefones);
-		
 		tfCodigoEndereco = new JTextField();
 		tfCodigoEndereco.setVisible(false);
 		tfCodigoEndereco.setEditable(false);
@@ -284,7 +254,7 @@ public class UsuarioView extends JFrame {
 		contentPane.add(tfCodigoEndereco);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(176, 534, 640, 413);
+		layeredPane.setBounds(227, 662, 640, 268);
 		contentPane.add(layeredPane);
 		
 		tfNome = new JTextField();
@@ -298,247 +268,19 @@ public class UsuarioView extends JFrame {
 		tfCodigo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		tfCodigo.setEditable(false);
 		tfCodigo.setColumns(10);
-		
-		JLabel lblCdigo_1 = new JLabel("ID:");
-		lblCdigo_1.setBounds(69, 15, 40, 20);
-		layeredPane.add(lblCdigo_1);
-		lblCdigo_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCdigo_1.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		
-		JLabel lblNome_1 = new JLabel("Nome:");
-		lblNome_1.setBounds(39, 46, 70, 20);
-		layeredPane.add(lblNome_1);
-		lblNome_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNome_1.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
 		comboBox_1.setBounds(126, 78, 283, 21);
 		layeredPane.add(comboBox_1);
 		
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Selecione", "Vespertino", "Matutino", "Noturno", "Integral"}));
 		comboBox_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		comboBox_1.setBackground(SystemColor.window);
-		
-		JLabel btnTurno = new JLabel("Turno:");
-		btnTurno.setBounds(38, 78, 70, 20);
-		layeredPane.add(btnTurno);
-		btnTurno.setHorizontalAlignment(SwingConstants.RIGHT);
-		btnTurno.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
+		comboBox_1.setBackground(Color.WHITE);
 		comboBox.setBounds(126, 111, 283, 21);
 		layeredPane.add(comboBox);
-		comboBox.setBackground(SystemColor.window);
+		comboBox.setBackground(Color.WHITE);
 		comboBox.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		
 
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Selecione", "Aluno Graduação", "Aluno Pós-Graduação", "Professor", "Prefessor Pós-Graduação"}));
-		
-		JLabel lblCargo = new JLabel("Cargo:");
-		lblCargo.setBounds(38, 110, 70, 20);
-		layeredPane.add(lblCargo);
-		lblCargo.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCargo.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		
-		JSeparator separator_2_1_1_1 = new JSeparator();
-		separator_2_1_1_1.setBounds(49, 177, 371, 20);
-		layeredPane.add(separator_2_1_1_1);
-		separator_2_1_1_1.setForeground(Color.LIGHT_GRAY);
-		comboBox_2.setBounds(126, 196, 283, 21);
-		layeredPane.add(comboBox_2);
-		
-		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"Selecione", "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"}));
-		comboBox_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		comboBox_2.setBackground(SystemColor.window);
-		
-		tfCidade = new JTextField();
-		tfCidade.setBounds(127, 229, 282, 19);
-		layeredPane.add(tfCidade);
-		tfCidade.setColumns(10);
-		
-		tfBairro = new JTextField();
-		tfBairro.setBounds(127, 260, 282, 19);
-		layeredPane.add(tfBairro);
-		tfBairro.setColumns(10);
-		
-		JLabel lblEstado = new JLabel("Estado:");
-		lblEstado.setBounds(39, 196, 70, 20);
-		layeredPane.add(lblEstado);
-		lblEstado.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblEstado.setFont(new Font("Dialog", Font.BOLD, 15));
-		
-		JLabel lblCidade = new JLabel("Cidade:");
-		lblCidade.setBounds(48, 228, 70, 20);
-		layeredPane.add(lblCidade);
-		lblCidade.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCidade.setFont(new Font("Dialog", Font.BOLD, 15));
-		
-		JLabel lblBairro = new JLabel("Bairro:");
-		lblBairro.setBounds(49, 259, 70, 20);
-		layeredPane.add(lblBairro);
-		lblBairro.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblBairro.setFont(new Font("Dialog", Font.BOLD, 15));
-		
-		tfRua = new JTextField();
-		tfRua.setBounds(127, 291, 282, 19);
-		layeredPane.add(tfRua);
-		tfRua.setColumns(10);
-		
-		tfNumero = new JTextField();
-		tfNumero.setBounds(127, 322, 282, 19);
-		layeredPane.add(tfNumero);
-		tfNumero.setColumns(10);
-		
-		JLabel lblRua = new JLabel("Rua:");
-		lblRua.setBounds(48, 290, 70, 20);
-		layeredPane.add(lblRua);
-		lblRua.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblRua.setFont(new Font("Dialog", Font.BOLD, 15));
-		
-		JLabel lblNumero = new JLabel("Numero:");
-		lblNumero.setBounds(39, 321, 76, 20);
-		layeredPane.add(lblNumero);
-		lblNumero.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNumero.setFont(new Font("Dialog", Font.BOLD, 15));
-		
-		JLabel lblComplemento = new JLabel("Complemento:");
-		lblComplemento.setBounds(-30, 352, 149, 20);
-		layeredPane.add(lblComplemento);
-		lblComplemento.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblComplemento.setFont(new Font("Dialog", Font.BOLD, 15));
-		
-		tfComplemento = new JTextField();
-		tfComplemento.setBounds(127, 353, 282, 19);
-		layeredPane.add(tfComplemento);
-		tfComplemento.setColumns(10);
-		
-		cadastrar_1 = new JButton("Cadastrar");
-		cadastrar_1.setBounds(451, 176, 118, 21);
-		layeredPane.add(cadastrar_1);
-		cadastrar_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		cadastrar_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					if(tfNome.getText().equals("") || tfCidade.getText().equals("") || tfBairro.getText().equals("") || tfRua.getText().equals("") || tfNumero.getText().equals("") || comboBox.getSelectedItem().equals("Selecione") || comboBox_1.getSelectedItem().equals("Selecione") || comboBox_2.getSelectedItem().equals("Selecione")) {      
-						JOptionPane.showMessageDialog(null, "Preencha todos os campos");
-					}else {
-
-						String nome = tfNome.getText();
-						String estado = String.valueOf(comboBox_2.getSelectedItem());	
-						String cidade = tfCidade.getText();
-						String bairro = tfBairro.getText();
-						String rua = tfRua.getText();
-						String complemento = tfComplemento.getText();
-						int numero = Integer.parseInt(tfNumero.getText());
-						int categoria = comboBox.getSelectedIndex();
-						String turno = String.valueOf(comboBox_1.getSelectedItem());				
-
-						usuario.setNome(nome);
-						usuario.setTurno(turno);
-						usuario.setEmail(tfemail.getText());
-						Categoria c = new Categoria();
-						c.setId(categoria);
-						usuario.setCategoria(c);
-						Endereco endereco = new Endereco();
-						endereco.setEstado(estado);
-						endereco.setCidade(cidade);
-						endereco.setBairro(bairro);
-						endereco.setRua(rua);
-						endereco.setComplemento(complemento);
-						endereco.setNumero(numero);
-						usuario.setEndereco(endereco);
-						try {
-							sistema.adicionarUsuario(usuario);
-						} catch (InsertException | SelectException | JaCadastradoException e1) {
-							JOptionPane.showMessageDialog(null, e1.getMessage());
-						}
-						
-						atualizarTabela();
-						limpar();
-
-					}	
-			}
-			
-		});
-		cadastrar_1.setBackground(UIManager.getColor("Button.darkShadow"));
-		
-		JButton cadastrar_1_1_1 = new JButton("Limpar");
-		cadastrar_1_1_1.setBounds(451, 111, 118, 21);
-		layeredPane.add(cadastrar_1_1_1);
-		cadastrar_1_1_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		cadastrar_1_1_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				limpar();
-			}
-		});
-		cadastrar_1_1_1.setBackground(UIManager.getColor("Button.darkShadow"));
-		
-		alterar_1 = new JButton("Alterar");
-		alterar_1.setEnabled(false);
-		alterar_1.setBounds(451, 143, 118, 21);
-		layeredPane.add(alterar_1);
-		alterar_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		alterar_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (table.getSelectedRow()!=-1){
-					int categoria = comboBox.getSelectedIndex();
-					if(categoria!=0) {
-						String turno = String.valueOf(comboBox_1.getSelectedItem());
-						if(!(turno.equals("Selecione"))) {
-							String estado = String.valueOf(comboBox_2.getSelectedItem());
-							if(!(estado.equals("Selecione"))) {
-								if(!(tfemail.getText().equals(""))) {
-									try {
-										usuario.setId(Integer.parseInt(tfCodigo.getText()));	
-										usuario.setNome(tfNome.getText());
-										usuario.setTurno(turno);
-										usuario.setEmail(tfemail.getText());
-										Categoria c = new Categoria();
-										c.setId(categoria);
-										usuario.setCategoria(c);
-										
-										Endereco endereco = new Endereco();
-										endereco.setEstado(estado);
-										endereco.setCidade(tfCidade.getText());
-										endereco.setBairro(tfBairro.getText());
-										endereco.setRua(tfRua.getText());
-										endereco.setComplemento(tfComplemento.getText());
-										endereco.setId(Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 5))));
-										endereco.setNumero(Integer.parseInt(tfNumero.getText()));
-										usuario.setEndereco(endereco);
-										sistema.alterarUsuario(usuario);						
-									} catch (Exception e1) {
-										JOptionPane.showMessageDialog(null, e1.getMessage());
-									}
-									atualizarTabela();
-									limpar();
-								}else JOptionPane.showMessageDialog(null, "É necessário atribuir um email ao endereço do usuário!");
-							}else JOptionPane.showMessageDialog(null, "É necessário atribuir um estado ao endereço do usuário!");
-						}else JOptionPane.showMessageDialog(null, "É necessário atribuir um turno ao usuário!");
-					}else JOptionPane.showMessageDialog(null, "É necessário atribuir uma categoria ao usuário!");
-				}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
-			}
-		});
-		alterar_1.setBackground(UIManager.getColor("Button.darkShadow"));
-		
-	
-		
-		 excluir_1 = new JButton("Excluir");
-		 excluir_1.setEnabled(false);
-		excluir_1.setBounds(451, 209, 118, 21);
-		layeredPane.add(excluir_1);
-		excluir_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		excluir_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (table.getSelectedRow()!=-1){
-					try {
-						sistema.excluirUsuario(Integer.parseInt(tfCodigo.getText()), Integer.parseInt(tfCodigoEndereco.getText()));
-					} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
-						JOptionPane.showMessageDialog(null,  e1.getMessage());
-					}
-					atualizarTabela();
-					limpar();
-				
-				}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
-				
-			}
-		});
-		excluir_1.setBackground(UIManager.getColor("Button.darkShadow"));
 		
 		tfemail = new JTextField();
 		tfemail.setBounds(127, 144, 282, 19);
@@ -546,25 +288,43 @@ public class UsuarioView extends JFrame {
 		tfemail.setColumns(10);
 		
 		JLabel lblEmail = new JLabel("Email:");
-		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblEmail.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblEmail.setBounds(39, 145, 70, 20);
+		lblEmail.setForeground(new Color(85, 97, 120));
+		lblEmail.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblEmail.setBounds(69, 144, 144, 20);
 		layeredPane.add(lblEmail);
 		
+		JLabel lblCargo = new JLabel("Cargo:");
+		lblCargo.setForeground(new Color(85, 97, 120));
+		lblCargo.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblCargo.setBounds(69, 111, 144, 20);
+		layeredPane.add(lblCargo);
+		
+		JLabel lblTurno = new JLabel("Turno:");
+		lblTurno.setForeground(new Color(85, 97, 120));
+		lblTurno.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblTurno.setBounds(69, 81, 144, 20);
+		layeredPane.add(lblTurno);
+		
+		JLabel lblNome_2 = new JLabel("Nome:");
+		lblNome_2.setForeground(new Color(85, 97, 120));
+		lblNome_2.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblNome_2.setBounds(69, 47, 144, 20);
+		layeredPane.add(lblNome_2);
+		
+		JLabel lblID_2 = new JLabel("ID:");
+		lblID_2.setForeground(new Color(85, 97, 120));
+		lblID_2.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblID_2.setBounds(96, 15, 144, 20);
+		layeredPane.add(lblID_2);
+		
 		JLayeredPane layeredPane_1 = new JLayeredPane();
-		layeredPane_1.setBounds(1440, 527, 299, 150);
+		layeredPane_1.setBounds(1432, 640, 299, 150);
 		contentPane.add(layeredPane_1);
 		
 		tfTelefone = new JTextField();
 		tfTelefone.setBounds(100, 22, 183, 19);
 		layeredPane_1.add(tfTelefone);
 		tfTelefone.setColumns(10);
-		
-		JLabel lblCdigo_1_1 = new JLabel("Telefone:");
-		lblCdigo_1_1.setBounds(-17, 21, 99, 20);
-		layeredPane_1.add(lblCdigo_1_1);
-		lblCdigo_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCdigo_1_1.setFont(new Font("Dialog", Font.BOLD, 15));
 		
 		alterar_2 = new JButton("Alterar");
 		alterar_2.setEnabled(false);
@@ -587,7 +347,7 @@ public class UsuarioView extends JFrame {
 				
 		});
 		alterar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		alterar_2.setBackground(UIManager.getColor("Button.darkShadow"));
+		alterar_2.setBackground(Color.WHITE);
 		
 		cadastrar_2 = new JButton("Cadastrar");
 		cadastrar_2.setEnabled(false);
@@ -608,7 +368,7 @@ public class UsuarioView extends JFrame {
 			}
 		});
 		cadastrar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		cadastrar_2.setBackground(UIManager.getColor("Button.darkShadow"));
+		cadastrar_2.setBackground(Color.WHITE);
 		
 		excluir_2 = new JButton("Excluir");
 		excluir_2.setEnabled(false);
@@ -631,7 +391,13 @@ public class UsuarioView extends JFrame {
 			}
 		});
 		excluir_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		excluir_2.setBackground(UIManager.getColor("Button.darkShadow"));
+		excluir_2.setBackground(Color.WHITE);
+		
+		JLabel lblTelefone = new JLabel("Telefone:");
+		lblTelefone.setForeground(new Color(85, 97, 120));
+		lblTelefone.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblTelefone.setBounds(12, 22, 144, 20);
+		layeredPane_1.add(lblTelefone);
 		table.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
 				try {
@@ -662,6 +428,18 @@ public class UsuarioView extends JFrame {
 		contentPane.add(textusuario);
 		textusuario.setColumns(10);
 		
+		JLabel lblusuarioscadastrados = new JLabel("USUÁRIOS CADASTRADOS");
+		lblusuarioscadastrados.setForeground(new Color(85, 97, 120));
+		lblusuarioscadastrados.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblusuarioscadastrados.setBounds(702, 154, 337, 20);
+		contentPane.add(lblusuarioscadastrados);
+		
+		JLabel lbltelefones = new JLabel("TELEFONES");
+		lbltelefones.setForeground(new Color(85, 97, 120));
+		lbltelefones.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lbltelefones.setBounds(1520, 154, 337, 20);
+		contentPane.add(lbltelefones);
+		
 		
 		tfIdUsuario = new JTextField();
 		tfIdUsuario.setBackground(SystemColor.window);
@@ -681,9 +459,240 @@ public class UsuarioView extends JFrame {
 				frame.setLocationRelativeTo(null);
 			}
 		});
+		
+		JLabel lblBUSCAUSUARIOS = new JLabel("BUSCA DE USUÁRIOS");
+		lblBUSCAUSUARIOS.setForeground(new Color(85, 97, 120));
+		lblBUSCAUSUARIOS.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblBUSCAUSUARIOS.setBounds(722, 18, 337, 20);
+		contentPane.add(lblBUSCAUSUARIOS);
+		
+		JLabel lblid = new JLabel("ID:");
+		lblid.setForeground(new Color(85, 97, 120));
+		lblid.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblid.setBounds(521, 61, 52, 20);
+		contentPane.add(lblid);
+		
+		JLabel lblNome = new JLabel("Nome:");
+		lblNome.setForeground(new Color(85, 97, 120));
+		lblNome.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblNome.setBounds(779, 61, 52, 20);
+		contentPane.add(lblNome);
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btnNewButton.setBounds(1630, 12, 133, 31);
+		btnNewButton.setBounds(1644, 10, 133, 31);
 		contentPane.add(btnNewButton);
+		
+		JLayeredPane layeredPane_2 = new JLayeredPane();
+		layeredPane_2.setBounds(656, 640, 619, 290);
+		contentPane.add(layeredPane_2);
+		
+		tfComplemento = new JTextField();
+		tfComplemento.setBounds(139, 198, 282, 19);
+		layeredPane_2.add(tfComplemento);
+		tfComplemento.setColumns(10);
+		
+		JLabel lblComplemento_1 = new JLabel("Complemento:");
+		lblComplemento_1.setForeground(new Color(85, 97, 120));
+		lblComplemento_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblComplemento_1.setBounds(0, 198, 144, 20);
+		layeredPane_2.add(lblComplemento_1);
+		
+		tfNumero = new JTextField();
+		tfNumero.setBounds(139, 167, 282, 19);
+		layeredPane_2.add(tfNumero);
+		tfNumero.setColumns(10);
+		
+		JLabel lblNumero_1 = new JLabel("Número:");
+		lblNumero_1.setForeground(new Color(85, 97, 120));
+		lblNumero_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblNumero_1.setBounds(48, 167, 144, 20);
+		layeredPane_2.add(lblNumero_1);
+		
+		tfRua = new JTextField();
+		tfRua.setBounds(139, 136, 282, 19);
+		layeredPane_2.add(tfRua);
+		tfRua.setColumns(10);
+		
+		JLabel lblBairro_1 = new JLabel("Bairro:");
+		lblBairro_1.setForeground(new Color(85, 97, 120));
+		lblBairro_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblBairro_1.setBounds(67, 105, 144, 20);
+		layeredPane_2.add(lblBairro_1);
+		
+		tfBairro = new JTextField();
+		tfBairro.setBounds(139, 105, 282, 19);
+		layeredPane_2.add(tfBairro);
+		tfBairro.setColumns(10);
+		
+		tfCidade = new JTextField();
+		tfCidade.setBounds(139, 74, 282, 19);
+		layeredPane_2.add(tfCidade);
+		tfCidade.setColumns(10);
+		comboBox_2.setBounds(139, 41, 283, 21);
+		layeredPane_2.add(comboBox_2);
+		
+		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"Selecione", "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"}));
+		comboBox_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		comboBox_2.setBackground(Color.WHITE);
+		
+		JLabel lblRua = new JLabel("Rua:");
+		lblRua.setForeground(new Color(85, 97, 120));
+		lblRua.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblRua.setBounds(77, 135, 144, 20);
+		layeredPane_2.add(lblRua);
+		
+		JLabel lblCidade_1 = new JLabel("Cidade:");
+		lblCidade_1.setForeground(new Color(85, 97, 120));
+		lblCidade_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblCidade_1.setBounds(67, 74, 144, 20);
+		layeredPane_2.add(lblCidade_1);
+		
+		JLabel lblEstado = new JLabel("Estado:");
+		lblEstado.setForeground(new Color(85, 97, 120));
+		lblEstado.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblEstado.setBounds(67, 42, 144, 20);
+		layeredPane_2.add(lblEstado);
+		
+	
+		
+		 excluir_1 = new JButton("Excluir");
+		 excluir_1.setBounds(463, 166, 118, 21);
+		 layeredPane_2.add(excluir_1);
+		 excluir_1.setEnabled(false);
+		 excluir_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		 excluir_1.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
+		 		if (table.getSelectedRow()!=-1){
+		 			try {
+		 				sistema.excluirUsuario(Integer.parseInt(tfCodigo.getText()), Integer.parseInt(tfCodigoEndereco.getText()));
+		 			} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
+		 				JOptionPane.showMessageDialog(null,  e1.getMessage());
+		 			}
+		 			atualizarTabela();
+		 			limpar();
+		 		
+		 		}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
+		 		
+		 	}
+		 });
+		 excluir_1.setBackground(Color.WHITE);
+		 
+		 JButton cadastrar_1_1_1 = new JButton("Limpar");
+		 cadastrar_1_1_1.setBounds(463, 73, 118, 21);
+		 layeredPane_2.add(cadastrar_1_1_1);
+		 cadastrar_1_1_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		 cadastrar_1_1_1.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
+		 		limpar();
+		 	}
+		 });
+		 cadastrar_1_1_1.setBackground(Color.WHITE);
+		 
+		 alterar_1 = new JButton("Alterar");
+		 alterar_1.setBounds(463, 103, 118, 21);
+		 layeredPane_2.add(alterar_1);
+		 alterar_1.setEnabled(false);
+		 alterar_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		 alterar_1.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
+		 		if (table.getSelectedRow()!=-1){
+		 			int categoria = comboBox.getSelectedIndex();
+		 			if(categoria!=0) {
+		 				String turno = String.valueOf(comboBox_1.getSelectedItem());
+		 				if(!(turno.equals("Selecione"))) {
+		 					String estado = String.valueOf(comboBox_2.getSelectedItem());
+		 					if(!(estado.equals("Selecione"))) {
+		 						if(!(tfemail.getText().equals(""))) {
+		 							try {
+		 								usuario.setId(Integer.parseInt(tfCodigo.getText()));	
+		 								usuario.setNome(tfNome.getText());
+		 								usuario.setTurno(turno);
+		 								usuario.setEmail(tfemail.getText());
+		 								Categoria c = new Categoria();
+		 								c.setId(categoria);
+		 								usuario.setCategoria(c);
+		 								
+		 								Endereco endereco = new Endereco();
+		 								endereco.setEstado(estado);
+		 								endereco.setCidade(tfCidade.getText());
+		 								endereco.setBairro(tfBairro.getText());
+		 								endereco.setRua(tfRua.getText());
+		 								endereco.setComplemento(tfComplemento.getText());
+		 								endereco.setId(Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 5))));
+		 								endereco.setNumero(Integer.parseInt(tfNumero.getText()));
+		 								usuario.setEndereco(endereco);
+		 								sistema.alterarUsuario(usuario);						
+		 							} catch (Exception e1) {
+		 								JOptionPane.showMessageDialog(null, e1.getMessage());
+		 							}
+		 							atualizarTabela();
+		 							limpar();
+		 						}else JOptionPane.showMessageDialog(null, "É necessário atribuir um email ao endereço do usuário!");
+		 					}else JOptionPane.showMessageDialog(null, "É necessário atribuir um estado ao endereço do usuário!");
+		 				}else JOptionPane.showMessageDialog(null, "É necessário atribuir um turno ao usuário!");
+		 			}else JOptionPane.showMessageDialog(null, "É necessário atribuir uma categoria ao usuário!");
+		 		}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
+		 	}
+		 });
+		 alterar_1.setBackground(Color.WHITE);
+		 
+		 cadastrar_1 = new JButton("Cadastrar");
+		 cadastrar_1.setBounds(463, 134, 118, 21);
+		 layeredPane_2.add(cadastrar_1);
+		 cadastrar_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		 cadastrar_1.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
+		 			if(tfNome.getText().equals("") || tfCidade.getText().equals("") || tfBairro.getText().equals("") || tfRua.getText().equals("") || tfNumero.getText().equals("") || comboBox.getSelectedItem().equals("Selecione") || comboBox_1.getSelectedItem().equals("Selecione") || comboBox_2.getSelectedItem().equals("Selecione")) {      
+		 				JOptionPane.showMessageDialog(null, "Preencha todos os campos");
+		 			}else {
+
+		 				String nome = tfNome.getText();
+		 				String estado = String.valueOf(comboBox_2.getSelectedItem());	
+		 				String cidade = tfCidade.getText();
+		 				String bairro = tfBairro.getText();
+		 				String rua = tfRua.getText();
+		 				String complemento = tfComplemento.getText();
+		 				int numero = Integer.parseInt(tfNumero.getText());
+		 				int categoria = comboBox.getSelectedIndex();
+		 				String turno = String.valueOf(comboBox_1.getSelectedItem());				
+
+		 				usuario.setNome(nome);
+		 				usuario.setTurno(turno);
+		 				usuario.setEmail(tfemail.getText());
+		 				Categoria c = new Categoria();
+		 				c.setId(categoria);
+		 				usuario.setCategoria(c);
+		 				Endereco endereco = new Endereco();
+		 				endereco.setEstado(estado);
+		 				endereco.setCidade(cidade);
+		 				endereco.setBairro(bairro);
+		 				endereco.setRua(rua);
+		 				endereco.setComplemento(complemento);
+		 				endereco.setNumero(numero);
+		 				usuario.setEndereco(endereco);
+		 				try {
+		 					sistema.adicionarUsuario(usuario);
+		 				} catch (InsertException | SelectException | JaCadastradoException e1) {
+		 					JOptionPane.showMessageDialog(null, e1.getMessage());
+		 				}
+		 				
+		 				atualizarTabela();
+		 				limpar();
+
+		 			}	
+		 	}
+		 	
+		 });
+		 cadastrar_1.setBackground(Color.WHITE);
+		
+		lblNewLabel.setBounds(12, 0, 1898, 1047);
+		contentPane.add(lblNewLabel);
+		
+		table.getTableHeader().setOpaque(false);
+		table.getTableHeader().setBackground(new Color(225, 235, 252));
+		table.setFillsViewportHeight(true);
+		table_1.getTableHeader().setOpaque(false);
+		table_1.getTableHeader().setBackground(new Color(225, 235, 252));
+		table_1.setFillsViewportHeight(true);
 
 	}
 

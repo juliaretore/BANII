@@ -733,29 +733,29 @@ public class FuncionarioView extends JFrame {
 		lblBuscaDeAssistentes_1.setBounds(1228, 26, 337, 20);
 		contentPane.add(lblBuscaDeAssistentes_1);
 		
-		JLabel lblBuscaDeAssistentes_1_1 = new JLabel("Nome:");
-		lblBuscaDeAssistentes_1_1.setForeground(new Color(85, 97, 120));
-		lblBuscaDeAssistentes_1_1.setFont(new Font("Lato Black", Font.BOLD, 15));
-		lblBuscaDeAssistentes_1_1.setBounds(1063, 59, 81, 20);
-		contentPane.add(lblBuscaDeAssistentes_1_1);
+		JLabel lblNome_1 = new JLabel("Nome:");
+		lblNome_1.setForeground(new Color(85, 97, 120));
+		lblNome_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblNome_1.setBounds(1063, 59, 81, 20);
+		contentPane.add(lblNome_1);
 		
-		JLabel lblBuscaDeAssistentes_1_1_1 = new JLabel("ID:");
-		lblBuscaDeAssistentes_1_1_1.setForeground(new Color(85, 97, 120));
-		lblBuscaDeAssistentes_1_1_1.setFont(new Font("Lato Black", Font.BOLD, 15));
-		lblBuscaDeAssistentes_1_1_1.setBounds(1312, 59, 337, 20);
-		contentPane.add(lblBuscaDeAssistentes_1_1_1);
+		JLabel lblID_1 = new JLabel("ID:");
+		lblID_1.setForeground(new Color(85, 97, 120));
+		lblID_1.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblID_1.setBounds(1312, 59, 337, 20);
+		contentPane.add(lblID_1);
 		
-		JLabel lblBuscaDeAssistentes_1_1_2 = new JLabel("Nome:");
-		lblBuscaDeAssistentes_1_1_2.setForeground(new Color(85, 97, 120));
-		lblBuscaDeAssistentes_1_1_2.setFont(new Font("Lato Black", Font.BOLD, 15));
-		lblBuscaDeAssistentes_1_1_2.setBounds(303, 59, 81, 20);
-		contentPane.add(lblBuscaDeAssistentes_1_1_2);
+		JLabel lblBNome = new JLabel("Nome:");
+		lblBNome.setForeground(new Color(85, 97, 120));
+		lblBNome.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblBNome.setBounds(303, 59, 81, 20);
+		contentPane.add(lblBNome);
 		
-		JLabel lblBuscaDeAssistentes_1_1_1_1 = new JLabel("ID:");
-		lblBuscaDeAssistentes_1_1_1_1.setForeground(new Color(85, 97, 120));
-		lblBuscaDeAssistentes_1_1_1_1.setFont(new Font("Lato Black", Font.BOLD, 15));
-		lblBuscaDeAssistentes_1_1_1_1.setBounds(554, 60, 52, 20);
-		contentPane.add(lblBuscaDeAssistentes_1_1_1_1);
+		JLabel lblID = new JLabel("ID:");
+		lblID.setForeground(new Color(85, 97, 120));
+		lblID.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblID.setBounds(554, 60, 52, 20);
+		contentPane.add(lblID);
 		
 		lblNewLabel.setBounds(12, 0, 1898, 1047);
 		contentPane.add(lblNewLabel);

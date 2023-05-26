@@ -40,6 +40,7 @@ public class TelaPrincipal extends JFrame {
 	static JButton btnUsuario = new JButton("Gerenciamento de Usuários");
 	private JButton btnFuncionario;
 	private JButton btnEmprestimo;
+	private JButton btnPagamentoDeMultas;
 
 	public static void main(String[] args) { 
 		EventQueue.invokeLater(new Runnable() {
@@ -57,7 +58,6 @@ public class TelaPrincipal extends JFrame {
 
 
 	public TelaPrincipal() {
-		JLabel lblNewLabel = new JLabel("New label");
 //		ImageIcon imagemTituloJanela = new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpg"));
 //		setIconImage(imagemTituloJanela.getImage());
 //		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/menu.jpg")));
@@ -65,18 +65,21 @@ public class TelaPrincipal extends JFrame {
 		
 		setTitle("Menu");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//		setBounds(200, 2000,  1800, 1000);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setBounds(0, 0,  1930, 1080);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);;
 		this.setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background.png")));
+		
 		btnUsuario.setBackground(Color.WHITE);
 		btnUsuario.setForeground(Color.BLACK);
-		btnUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnUsuario.setBounds(211, 253, 271, 77);
+		btnUsuario.setFont(new Font("Lato Black", Font.PLAIN, 20));
+		btnUsuario.setBounds(710, 204, 461, 77);
 		contentPane.add(btnUsuario);
 		
 		
@@ -108,7 +111,7 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btnNewButton.setBounds(1630, 12, 133, 31);
+		btnNewButton.setBounds(1648, 12, 133, 31);
 		contentPane.add(btnNewButton);
 		
 		btnUsuario.setActionCommand("Gerenciamento de Usuários");
@@ -136,10 +139,10 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		btnFuncionario.setForeground(Color.BLACK);
-		btnFuncionario.setFont(new Font("Dialog", Font.PLAIN, 14));
+		btnFuncionario.setFont(new Font("Lato Black", Font.PLAIN, 20));
 		btnFuncionario.setBackground(Color.WHITE);
 		btnFuncionario.setActionCommand("Gerenciamento de Usuários");
-		btnFuncionario.setBounds(211, 342, 271, 77);
+		btnFuncionario.setBounds(710, 370, 461, 77);
 		contentPane.add(btnFuncionario);
 		
 		JButton btnLivro = new JButton("Gerenciamento de Livros");
@@ -154,18 +157,17 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		btnLivro.setForeground(Color.BLACK);
-		btnLivro.setFont(new Font("Dialog", Font.PLAIN, 14));
+		btnLivro.setFont(new Font("Lato Black", Font.PLAIN, 20));
 		btnLivro.setBackground(Color.WHITE);
 		btnLivro.setActionCommand("");
-		btnLivro.setBounds(211, 435, 271, 77);
+		btnLivro.setBounds(710, 524, 461, 77);
 		contentPane.add(btnLivro);
 		
 		
 		
-		lblNewLabel.setBounds(179, 155, 676, 661);
-		contentPane.add(lblNewLabel);
+
 		
-		btnEmprestimo = new JButton("Novo Emprestimo");
+		btnEmprestimo = new JButton("Gerênciar Emprestimo");
 		btnEmprestimo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				NovoEmprestimoReservaView objeto = NovoEmprestimoReservaView.getInstance();	
@@ -177,12 +179,22 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		btnEmprestimo.setForeground(Color.BLACK);
-		btnEmprestimo.setFont(new Font("Dialog", Font.PLAIN, 14));
+		btnEmprestimo.setFont(new Font("Lato Black", Font.PLAIN, 20));
 		btnEmprestimo.setBackground(Color.WHITE);
 		btnEmprestimo.setActionCommand("");
-		btnEmprestimo.setBounds(211, 524, 271, 77);
+		btnEmprestimo.setBounds(710, 676, 461, 77);
 		contentPane.add(btnEmprestimo);
 		
+		btnPagamentoDeMultas = new JButton("Pagamento de Multas");
+		btnPagamentoDeMultas.setForeground(Color.BLACK);
+		btnPagamentoDeMultas.setFont(new Font("Lato Black", Font.PLAIN, 20));
+		btnPagamentoDeMultas.setBackground(Color.WHITE);
+		btnPagamentoDeMultas.setActionCommand("");
+		btnPagamentoDeMultas.setBounds(710, 830, 461, 77);
+		contentPane.add(btnPagamentoDeMultas);
+		
+		lblNewLabel.setBounds(0, -17, 1846, 1021);
+		contentPane.add(lblNewLabel);
 
 	}
 }

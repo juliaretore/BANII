@@ -77,7 +77,6 @@ public class AdicionarUsuarioEmprestimoView extends JFrame {
 				atualizarTabela();
 			}
 		});
-		JLabel lblNewLabel = new JLabel("New label");
 
 		setTitle("Selecionar usuário para o empréstimo");
 		setResizable(false);
@@ -88,16 +87,8 @@ public class AdicionarUsuarioEmprestimoView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblBusca = new JLabel("BUSCA");
-		lblBusca.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblBusca.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblBusca.setBounds(239, 12, 69, 20);
-		contentPane.add(lblBusca);
-		
-		JLabel lblMusicasParaAdicionae = new JLabel("USUÁRIOS PARA ADICIONAR");
-		lblMusicasParaAdicionae.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblMusicasParaAdicionae.setBounds(142, 121, 369, 20);
-		contentPane.add(lblMusicasParaAdicionae);
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
 		
 		JButton sair = new JButton("Sair");
 		sair.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
@@ -106,7 +97,7 @@ public class AdicionarUsuarioEmprestimoView extends JFrame {
 				sair();
 			}
 		});
-		sair.setBackground(SystemColor.window);
+		sair.setBackground(Color.WHITE);
 		sair.setBounds(348, 354, 92, 23);
 		contentPane.add(sair);
 		
@@ -115,8 +106,8 @@ public class AdicionarUsuarioEmprestimoView extends JFrame {
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
-		table.setBackground(SystemColor.window);
-		table.setSelectionBackground(SystemColor.activeCaption);
+		table.setBackground(Color.WHITE);
+		table.setSelectionBackground(new Color(212, 226, 250));
 		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -129,14 +120,8 @@ public class AdicionarUsuarioEmprestimoView extends JFrame {
 		table.getColumnModel().getColumn(2).setPreferredWidth(100);
 		table.getColumnModel().getColumn(3).setPreferredWidth(100);
 		
-		JLabel lblId = new JLabel("ID:");
-		lblId.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		lblId.setBounds(62, 40, 69, 20);
-		contentPane.add(lblId);
-		lblId.setHorizontalAlignment(SwingConstants.RIGHT);
-		
 		textPCodigo = new JTextField();
-		textPCodigo.setBounds(149, 41, 305, 20);
+		textPCodigo.setBounds(127, 28, 305, 20);
 		contentPane.add(textPCodigo);
 		textPCodigo.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {			
@@ -152,7 +137,7 @@ public class AdicionarUsuarioEmprestimoView extends JFrame {
 		textPCodigo.setColumns(10);
 		
 		textPNome = new JTextField();
-		textPNome.setBounds(149, 73, 305, 20);
+		textPNome.setBounds(127, 60, 305, 20);
 		contentPane.add(textPNome);
 		textPNome.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {			
@@ -166,17 +151,6 @@ public class AdicionarUsuarioEmprestimoView extends JFrame {
 			}
 		});
 		textPNome.setColumns(10);
-		
-		JLabel label_7 = new JLabel("Nome:");
-		label_7.setFont(new Font("Segoe UI Symbol", Font.BOLD, 15));
-		label_7.setBounds(72, 72, 59, 20);
-		contentPane.add(label_7);
-		label_7.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-		JSeparator separator = new JSeparator();
-		separator.setForeground(Color.LIGHT_GRAY);
-		separator.setBounds(5, 104, 384, 2);
-		contentPane.add(separator);
 		
 		JButton selecionar = new JButton("Selecionar");
 		selecionar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
@@ -195,12 +169,40 @@ public class AdicionarUsuarioEmprestimoView extends JFrame {
 				}else JOptionPane.showMessageDialog(null, "Nenhum usuário selecionado!");
 			}
 		});
-		selecionar.setBackground(SystemColor.window);
-		selecionar.setBounds(127, 354, 99, 23);
+		selecionar.setBackground(Color.WHITE);
+		selecionar.setBounds(87, 354, 99, 23);
 		contentPane.add(selecionar);
 		
-		lblNewLabel.setBounds(142, 215, 369, 490);
+		JLabel lblUsuriosParaAdicionar = new JLabel("USUÁRIOS PARA ADICIONAR");
+		lblUsuriosParaAdicionar.setForeground(new Color(85, 97, 120));
+		lblUsuriosParaAdicionar.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblUsuriosParaAdicionar.setBounds(149, 121, 412, 20);
+		contentPane.add(lblUsuriosParaAdicionar);
+		
+		JLabel lblBusca_1 = new JLabel("BUSCA");
+		lblBusca_1.setForeground(new Color(85, 97, 120));
+		lblBusca_1.setFont(new Font("Lato Black", Font.BOLD, 16));
+		lblBusca_1.setBounds(238, 9, 69, 20);
+		contentPane.add(lblBusca_1);
+		
+		JLabel lblid = new JLabel("ID:");
+		lblid.setForeground(new Color(85, 97, 120));
+		lblid.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblid.setBounds(87, 28, 52, 20);
+		contentPane.add(lblid);
+		
+		JLabel lblNome = new JLabel("Nome:");
+		lblNome.setForeground(new Color(85, 97, 120));
+		lblNome.setFont(new Font("Lato Black", Font.BOLD, 15));
+		lblNome.setBounds(64, 60, 52, 20);
+		contentPane.add(lblNome);
+		
+		lblNewLabel.setBounds(-53, -29, 1898, 1047);
 		contentPane.add(lblNewLabel);
+		
+		table.getTableHeader().setOpaque(false);
+		table.getTableHeader().setBackground(new Color(225, 235, 252));
+		table.setFillsViewportHeight(true);
 	}
 
 	public void sair() {
