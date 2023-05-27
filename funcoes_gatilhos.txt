@@ -11,7 +11,7 @@ declare nome_categoria varchar(100);
 declare turno_usuario varchar(40);
 begin
 	for item in select * from emprestimo loop
-		if(data_real_entr is null) then
+		if(item.data_real_entr is null) then
 			if(current_date > item.data_est_entr) then
 				nome_categoria := (select c.nome from categoria c join usuario u on c.id=u.id_categoria where u.id=item.id);
 				turno_usuario := (select u.turno from usuario u join emprestimo e on u.id=e.id_usuario where e.id=item.id);

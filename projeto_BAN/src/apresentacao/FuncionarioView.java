@@ -143,9 +143,6 @@ public class FuncionarioView extends JFrame {
 		
 		setTitle("Gerenciar Funcionários");
 		setResizable(false);
-		
-		setBounds(0, 0,  1930, 1080);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setEnabled(false);
 		setContentPane(contentPane);

@@ -1,6 +1,7 @@
 package apresentacao;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -120,6 +121,10 @@ public class TelaPrincipal extends JFrame {
 				UsuarioView objeto = UsuarioView.getInstance();
 				UsuarioView.tfIdUsuario.setText(tfIdUsuario.getText());
 				UsuarioView.textusuario.setText(textusuario.getText());
+				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+				int height = screenSize.height;
+				int width = screenSize.width;
+				objeto.setSize(width, height);
 				objeto.setVisible(true);
 				objeto.setLocationRelativeTo(null);
 				dispose();
@@ -132,10 +137,13 @@ public class TelaPrincipal extends JFrame {
 				FuncionarioView objeto = FuncionarioView.getInstance();
 				FuncionarioView.tfIdUsuario.setText(tfIdUsuario.getText());
 				FuncionarioView.textusuario.setText(textusuario.getText());
-				dispose();
+				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+				int height = screenSize.height;
+				int width = screenSize.width;
+				objeto.setSize(width, height);
 				objeto.setVisible(true);
 				objeto.setLocationRelativeTo(null);
-				
+				dispose();				
 			}
 		});
 		btnFuncionario.setForeground(Color.BLACK);
@@ -151,9 +159,14 @@ public class TelaPrincipal extends JFrame {
 				LivroView objeto = LivroView.getInstance();
 				LivroView.tfIdUsuario.setText(tfIdUsuario.getText());
 				LivroView.textusuario.setText(textusuario.getText());
-				dispose();
+				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+				int height = screenSize.height;
+				int width = screenSize.width;
+				objeto.setSize(width, height);
 				objeto.setVisible(true);
 				objeto.setLocationRelativeTo(null);
+				dispose();
+
 			}
 		});
 		btnLivro.setForeground(Color.BLACK);
@@ -173,9 +186,13 @@ public class TelaPrincipal extends JFrame {
 				NovoEmprestimoReservaView objeto = NovoEmprestimoReservaView.getInstance();	
 				NovoEmprestimoReservaView.tfIdUsuario.setText(tfIdUsuario.getText());
 				NovoEmprestimoReservaView.textusuario.setText(textusuario.getText());
-				dispose();
+				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+				int height = screenSize.height;
+				int width = screenSize.width;
+				objeto.setSize(width, height);
 				objeto.setVisible(true);
 				objeto.setLocationRelativeTo(null);
+				dispose();
 			}
 		});
 		btnEmprestimo.setForeground(Color.BLACK);

@@ -236,4 +236,12 @@ public class Sistema {
 		return emprestimoDAO.select_historico_exemplar(id_exemplar);
 	}
 	
+	public void atualizaDatasReserva() throws InsertException, SelectException, JaCadastradoException {
+		emprestimoDAO.verifica_datas_reservas();
+	}
+	
+	public void atualizarMultas() throws InsertException, SelectException, JaCadastradoException {
+		emprestimoDAO.atualizar_multas();
+	}
+	
 }

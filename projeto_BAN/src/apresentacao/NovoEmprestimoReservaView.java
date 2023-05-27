@@ -120,6 +120,16 @@ public class NovoEmprestimoReservaView extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			public void windowOpened(WindowEvent arg0) {
 				atualizarTabela();
+				try {
+					sistema.atualizaDatasReserva();
+				} catch (InsertException | SelectException | JaCadastradoException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage());
+				}
+				try {
+					sistema.atualizarMultas();
+				} catch (InsertException | SelectException | JaCadastradoException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage());
+				}
 			}
 		});
 //		ImageIcon imagemTituloJanela = new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpg"));
@@ -129,8 +139,6 @@ public class NovoEmprestimoReservaView extends JFrame {
 		setTitle("Gerênciar Empréstimos e Reservas");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(0, 0,  1930, 1080);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setEnabled(false);
 		setContentPane(contentPane);

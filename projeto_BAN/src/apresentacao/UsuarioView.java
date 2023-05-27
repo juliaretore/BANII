@@ -45,6 +45,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.Component;
+import java.awt.Dimension;
+
 import javax.swing.JPasswordField;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
@@ -133,13 +135,15 @@ public class UsuarioView extends JFrame {
 		setTitle("Gerenciar Usuários");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(0, 0,  1930, 1080);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+//		setBounds(0, 0,  1930, 1080);
+//		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setEnabled(false);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
+		 
 		
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));

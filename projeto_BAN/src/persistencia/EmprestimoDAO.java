@@ -125,7 +125,7 @@ private static EmprestimoDAO instance = null;
 	
 	public void atualizar_multas() throws InsertException, SelectException, JaCadastradoException{
 		try {
-			atualizar_multas.executeUpdate();
+			atualizar_multas.execute();
 		}catch (SQLException e) {
 			throw new InsertException("Erro ao atualizar multas");
 		}	
@@ -133,7 +133,7 @@ private static EmprestimoDAO instance = null;
 	
 	public void verifica_datas_reservas() throws InsertException, SelectException, JaCadastradoException{
 		try {
-			verifica_datas_reservas.executeUpdate();
+			verifica_datas_reservas.execute();
 		}catch (SQLException e) {
 			throw new InsertException("Erro ao verificar datas reservas");
 		}	
