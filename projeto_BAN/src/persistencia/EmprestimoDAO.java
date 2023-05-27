@@ -60,8 +60,8 @@ private static EmprestimoDAO instance = null;
 				insert_emprestimo.setInt(3, cid_funcionario);				
 				insert_emprestimo.execute();
 			}catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage());
-//				throw new InsertException("Erro ao inserir empréstimo");
+				String texto[] = e.getMessage().split("\\r?\\n");
+				JOptionPane.showMessageDialog(null, texto[0]);
 			}	
 	}
 	
@@ -72,7 +72,8 @@ private static EmprestimoDAO instance = null;
 			insert_emprestimo_reserva.setInt(3, cid_funcionario);				
 			insert_emprestimo_reserva.executeUpdate();
 		}catch (SQLException e) {
-			throw new InsertException("Erro ao inserir empréstimo a partir de reserva");
+			String texto[] = e.getMessage().split("\\r?\\n");
+			JOptionPane.showMessageDialog(null, texto[0]);
 		}	
 	}	
 
@@ -90,7 +91,8 @@ private static EmprestimoDAO instance = null;
 			renovar_emprestimo.setInt(1, cid_emprestimo);
 			renovar_emprestimo.executeUpdate();
 		}catch (SQLException e) {
-			throw new InsertException("Erro ao renovar empréstimo");
+			String texto[] = e.getMessage().split("\\r?\\n");
+			JOptionPane.showMessageDialog(null, texto[0]);
 		}	
 	}
 	
