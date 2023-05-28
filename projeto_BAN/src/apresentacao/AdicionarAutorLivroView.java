@@ -2,22 +2,21 @@ package apresentacao;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.SystemColor;
-import java.awt.Toolkit;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,16 +24,17 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+//import dados.Autor;
 import dados.Autor;
-import dados.Exemplar;
 import exceptions.DeleteException;
 import exceptions.InsertException;
 import exceptions.JaCadastradoException;
@@ -42,13 +42,6 @@ import exceptions.NaoCadastradoException;
 import exceptions.SelectException;
 import exceptions.UpdateException;
 import negocio.Sistema;
-import persistencia.*;
-import javax.swing.ImageIcon;
-import java.awt.Font;
-import javax.swing.border.MatteBorder;
-import javax.swing.JLayeredPane;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
 
 public class AdicionarAutorLivroView extends JFrame {
 
@@ -65,7 +58,6 @@ public class AdicionarAutorLivroView extends JFrame {
 	private JTextField tfNacionalidade;
 	private JTextField tfArea;
 	private JButton cadastrar;
-	private JButton excluir;
 	private JButton alterar;
 		
 	public static void main(String[] args) {
@@ -136,7 +128,6 @@ public class AdicionarAutorLivroView extends JFrame {
 						JOptionPane.showMessageDialog(null, e.getMessage());
 					}
 					cadastrar.setEnabled(false);
-					excluir.setEnabled(true);
 					alterar.setEnabled(true);
 					
 			}
@@ -157,7 +148,7 @@ public class AdicionarAutorLivroView extends JFrame {
 			}
 		});
 		textPCodigo.setColumns(10);
-		
+
 		textPNome = new JTextField();
 		textPNome.setBounds(180, 63, 305, 20);
 		contentPane.add(textPNome);
@@ -276,24 +267,6 @@ public class AdicionarAutorLivroView extends JFrame {
 		alterar.setBounds(456, 63, 118, 21);
 		layeredPane.add(alterar);
 		
-		excluir = new JButton("Excluir");
-		excluir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					sistema.excluirAutor(Integer.parseInt(tfCodigo.getText()));
-				} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
-					JOptionPane.showMessageDialog(null,  e1.getMessage());
-				}
-				limpar();
-				atualizarTabela();
-			}
-		});
-		excluir.setEnabled(false);
-		excluir.setBorder(new LineBorder(new Color(0, 0, 0)));
-		excluir.setBackground(Color.WHITE);
-		excluir.setBounds(456, 118, 118, 21);
-		layeredPane.add(excluir);
-		
 		JButton limpar = new JButton("Limpar");
 		limpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -397,7 +370,6 @@ public class AdicionarAutorLivroView extends JFrame {
 		tfArea.setText("");
 		table.clearSelection();
 		cadastrar.setEnabled(true);
-		excluir.setEnabled(false);
 		alterar.setEnabled(false);	
 	}
 	

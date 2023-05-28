@@ -2,32 +2,22 @@ package apresentacao;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.SystemColor;
-import java.awt.Toolkit;
-
-import javax.swing.JSeparator;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import persistencia.*;
-import dados.Categoria;
-import dados.Endereco;
 import dados.Exemplar;
-import dados.Funcionario;
 import dados.Livro;
-import dados.Usuario;
 import exceptions.DeleteException;
 import exceptions.InsertException;
 import exceptions.JaCadastradoException;
@@ -35,36 +25,22 @@ import exceptions.NaoCadastradoException;
 import exceptions.SelectException;
 import exceptions.UpdateException;
 import negocio.Sistema;
-
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.nio.file.spi.FileSystemProvider;
-import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
 import java.awt.Font;
-import java.awt.Component;
-import javax.swing.JPasswordField;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import java.awt.Choice;
-import java.awt.Scrollbar;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.JSplitPane;
 import javax.swing.JLayeredPane;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.SoftBevelBorder;
 import javax.swing.UIManager;
 
 public class LivroView extends JFrame {
@@ -95,9 +71,7 @@ public class LivroView extends JFrame {
 	private JButton cadastrar_1;
 	private JButton cadatrar_autor;
 	private JButton alterar;
-	private JButton excluir_1;
 	private JButton alterar_2;
-	private JButton excluir_2;
 	private JButton remover_autor;
 	private JTextField textPCodigo_1;
 	private static JTable table_2;
@@ -139,9 +113,6 @@ public class LivroView extends JFrame {
 				atualizarTabela();
 			}
 		});
-//		ImageIcon imagemTituloJanela = new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpg"));
-//		setIconImage(imagemTituloJanela.getImage());
-
 
 		setTitle("Gerenciar Livros");
 		setResizable(false);
@@ -150,7 +121,6 @@ public class LivroView extends JFrame {
 		contentPane.setEnabled(false);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
 		
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
@@ -329,29 +299,6 @@ public class LivroView extends JFrame {
 		});
 		alterar.setBackground(Color.WHITE);
 		
-	
-		
-		excluir_1 = new JButton("Excluir");
-		excluir_1.setEnabled(false);
-		excluir_1.setBounds(456, 118, 118, 21);
-		layeredPane.add(excluir_1);
-		excluir_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		excluir_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					try {
-						sistema.excluirLivro(Integer.parseInt(tfCodigo.getText()));
-					} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
-						JOptionPane.showMessageDialog(null,  e1.getMessage());
-					}
-					limpar();
-					limpar_1();
-					atualizarTabela();
-					atualizarTabela_1();
-					atualizarTabela_2();
-			}
-		});
-		excluir_1.setBackground(Color.WHITE);
-		
 		JButton limpar = new JButton("Limpar");
 		limpar.setBounds(456, 31, 118, 21);
 		layeredPane.add(limpar);
@@ -419,24 +366,6 @@ public class LivroView extends JFrame {
 		limpar_2.setBounds(456, 30, 118, 21);
 		layeredPane_1.add(limpar_2);
 		
-		excluir_2 = new JButton("Excluir");
-		excluir_2.setEnabled(false);
-		excluir_2.setBounds(456, 119, 118, 21);
-		layeredPane_1.add(excluir_2);
-		excluir_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					try {
-						sistema.excluirExemplar(Integer.parseInt(tfCodigo_1.getText()));
-					} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
-						JOptionPane.showMessageDialog(null,  e1.getMessage());
-					}
-					atualizarTabela_2();
-					limpar_1();		
-			}
-		});
-		excluir_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		excluir_2.setBackground(Color.WHITE);
-		
 		cadastrar_2 = new JButton("Cadastrar");
 		cadastrar_2.setEnabled(false);
 		cadastrar_2.setBounds(456, 88, 118, 21);
@@ -471,7 +400,7 @@ public class LivroView extends JFrame {
 		
 		alterar_2 = new JButton("Alterar");
 		alterar_2.setEnabled(false);
-		alterar_2.setBounds(456, 55, 118, 21);
+		alterar_2.setBounds(456, 63, 118, 21);
 		layeredPane_1.add(alterar_2);
 		alterar_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -499,7 +428,7 @@ public class LivroView extends JFrame {
 		
 		comboBox = new JComboBox();
 		comboBox.setBackground(Color.WHITE);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Selecione", "Emprestimo", "Permanente", "Reserva"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Selecione", "Emprestimo", "Permanente", "Reserva", "Fora de uso"}));
 		comboBox.setBounds(127, 117, 282, 24);
 		layeredPane_1.add(comboBox);
 		
@@ -597,7 +526,6 @@ public class LivroView extends JFrame {
 					try {
 						setCamposFromTabela_2();
 						cadastrar_2.setEnabled(false);
-						excluir_2.setEnabled(true);
 						alterar_2.setEnabled(true);
 						historico.setEnabled(true);
 
@@ -652,7 +580,6 @@ public class LivroView extends JFrame {
 					remover_autor.setEnabled(false);
 					cadastrar_1.setEnabled(false);
 					alterar.setEnabled(true);
-					excluir_1.setEnabled(true);
 					cadastrar_2.setEnabled(true);
 			}
 		});
@@ -780,7 +707,6 @@ public class LivroView extends JFrame {
 		remover_autor.setEnabled(false);
 		cadastrar_1.setEnabled(true);
 		alterar.setEnabled(false);
-		excluir_1.setEnabled(false);
 		cadastrar_2.setEnabled(false);
 		historico.setEnabled(false);
 
@@ -792,7 +718,6 @@ public class LivroView extends JFrame {
 		tfEstante.setText("");
 		table_2.clearSelection();
 		cadastrar_2.setEnabled(true);
-		excluir_2.setEnabled(false);
 		alterar_2.setEnabled(false);
 		comboBox.setSelectedIndex(0);
 		historico.setEnabled(false);

@@ -67,7 +67,6 @@ public class MultasView extends JFrame {
 	private JPanel contentPane;
 	private JTextField textPNome;
 	private JTextField textPCodigo;
-
 	private static List<Object> multas = new ArrayList<Object>();
 	private static List<Object> usuarios = new ArrayList<Object>();
 	Usuario usuario = new Usuario();		
@@ -110,15 +109,10 @@ public class MultasView extends JFrame {
 				atualizarTabela();
 			}
 		});
-//		ImageIcon imagemTituloJanela = new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpg"));
-//		setIconImage(imagemTituloJanela.getImage());
-
 
 		setTitle("Gerenciar Multas");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(0, 0,  1930, 1080);
-//		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setEnabled(false);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

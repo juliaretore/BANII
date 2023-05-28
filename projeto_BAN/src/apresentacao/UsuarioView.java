@@ -9,19 +9,14 @@ import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.SystemColor;
-import java.awt.Toolkit;
-
-import javax.swing.JSeparator;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import persistencia.*;
 import dados.Categoria;
 import dados.Endereco;
 import dados.Usuario;
@@ -30,9 +25,7 @@ import exceptions.InsertException;
 import exceptions.JaCadastradoException;
 import exceptions.NaoCadastradoException;
 import exceptions.SelectException;
-import exceptions.UpdateException;
 import negocio.Sistema;
-
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -42,23 +35,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
 import java.awt.Font;
-import java.awt.Component;
-import java.awt.Dimension;
-
-import javax.swing.JPasswordField;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import java.awt.Choice;
-import java.awt.Scrollbar;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JLayeredPane;
-import javax.swing.UIManager;
 
 public class UsuarioView extends JFrame {
 
@@ -87,7 +70,6 @@ public class UsuarioView extends JFrame {
 	private JTextField tfComplemento;
 	private JTextField tfCodigoEndereco;
 	private JTextField tfTelefone;
-	private JButton excluir_1;
 	private JButton cadastrar_1;
 	private JButton alterar_1;
 	private JButton alterar_2;
@@ -128,23 +110,16 @@ public class UsuarioView extends JFrame {
 				atualizarTabela();
 			}
 		});
-//		ImageIcon imagemTituloJanela = new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpg"));
-//		setIconImage(imagemTituloJanela.getImage());
-
 
 		setTitle("Gerenciar Usuários");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(0, 0,  1930, 1080);
-//		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setEnabled(false);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		 
-		
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
 		
@@ -406,7 +381,6 @@ public class UsuarioView extends JFrame {
 			public void mousePressed(MouseEvent arg0) {
 				try {
 					setCamposFromTabela();
-					excluir_1.setEnabled(true);
 					alterar_1.setEnabled(true);
 					cadastrar_1.setEnabled(false);
 					cadastrar_2.setEnabled(true);
@@ -555,30 +529,6 @@ public class UsuarioView extends JFrame {
 		lblEstado.setFont(new Font("Lato Black", Font.BOLD, 15));
 		lblEstado.setBounds(67, 42, 144, 20);
 		layeredPane_2.add(lblEstado);
-		
-	
-		
-		 excluir_1 = new JButton("Excluir");
-		 excluir_1.setBounds(463, 166, 118, 21);
-		 layeredPane_2.add(excluir_1);
-		 excluir_1.setEnabled(false);
-		 excluir_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		 excluir_1.addActionListener(new ActionListener() {
-		 	public void actionPerformed(ActionEvent e) {
-		 		if (table.getSelectedRow()!=-1){
-		 			try {
-		 				sistema.excluirUsuario(Integer.parseInt(tfCodigo.getText()), Integer.parseInt(tfCodigoEndereco.getText()));
-		 			} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
-		 				JOptionPane.showMessageDialog(null,  e1.getMessage());
-		 			}
-		 			atualizarTabela();
-		 			limpar();
-		 		
-		 		}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
-		 		
-		 	}
-		 });
-		 excluir_1.setBackground(Color.WHITE);
 		 
 		 JButton cadastrar_1_1_1 = new JButton("Limpar");
 		 cadastrar_1_1_1.setBounds(463, 73, 118, 21);
@@ -721,7 +671,6 @@ public class UsuarioView extends JFrame {
 		tfComplemento.setText("");
 		tfNumero.setText("");
 		tfCodigoEndereco.setText("");
-		excluir_1.setEnabled(false);
 		alterar_1.setEnabled(false);
 		excluir_2.setEnabled(false);
 		alterar_2.setEnabled(false);

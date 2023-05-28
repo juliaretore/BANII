@@ -31,8 +31,6 @@ private static UsuarioDAO instance = null;
 	private PreparedStatement select_table;
 	private PreparedStatement select_endereco;
 	private PreparedStatement select_telefones;
-	private PreparedStatement delete_usuario;
-	private PreparedStatement delete_endereco;
 	private PreparedStatement delete_telefone;
 	private PreparedStatement select_table_emprestimos;
 	
@@ -55,8 +53,6 @@ private static UsuarioDAO instance = null;
 		select_endereco = conexao.prepareStatement("select * from endereco where id=?");
 		select_table = conexao.prepareStatement("select u.id, u.nome, c.nome, u.turno, endereco, u.email from usuario u join categoria c on u.id_categoria=c.id");
 		select_telefones = conexao.prepareStatement("select numero from telefone where id_usuario=?");
-		delete_usuario = conexao.prepareStatement("delete from usuario where id=?");
-		delete_endereco = conexao.prepareStatement("delete from endereco where id=?");
 		delete_telefone = conexao.prepareStatement("delete from telefone where id_usuario=? and numero=?");
 		select_table_emprestimos = conexao.prepareStatement("select u.id, u.nome, c.nome, u.turno from usuario u join categoria c on u.id_categoria=c.id");
 
@@ -229,16 +225,6 @@ private static UsuarioDAO instance = null;
 		return lista;
 	}
 
-	public void delete(int usuario, int endereco) throws DeleteException, SelectException, NaoCadastradoException{
-		try {
-			delete_usuario.setInt(1, usuario);
-			delete_usuario.executeUpdate();
-			delete_endereco.setInt(1, endereco);
-			delete_endereco.executeUpdate();
-		}catch(SQLException e) {
-			throw new DeleteException("Erro ao deletar usuário");
-		}
-	}
 	
 	public void delete_telefone(int usuario, String telefone) throws DeleteException, SelectException, NaoCadastradoException{
 		try {

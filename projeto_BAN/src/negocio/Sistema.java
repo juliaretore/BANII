@@ -77,9 +77,6 @@ public class Sistema {
 		usuarioDAO.update_usuario(usuario);
 	}
 	
-	public void excluirUsuario(int usuario, int endereco) throws DeleteException, SelectException, NaoCadastradoException {
-		usuarioDAO.delete(usuario, endereco);
-	}
 	
 	public void excluirTelefone(int usuario, String telefone) throws DeleteException, SelectException, NaoCadastradoException {
 		usuarioDAO.delete_telefone(usuario, telefone);
@@ -135,14 +132,6 @@ public class Sistema {
 		livroDAO.update_exemplar(exemplar);
 	}
 	
-	public void excluirLivro(int id_livro) throws DeleteException, SelectException, NaoCadastradoException {
-		livroDAO.delete_livro(id_livro);
-	}
-
-	public void excluirExemplar(int id_exemplar) throws DeleteException, SelectException, NaoCadastradoException { 
-		livroDAO.delete_exemplar(id_exemplar);
-	}
-	
 	public void excluirAutorLivro(int id_livro, int id_autor) throws DeleteException, SelectException, NaoCadastradoException { 
 		livroDAO.delete_autor_livro(id_livro, id_autor);
 	}	
@@ -190,8 +179,8 @@ public class Sistema {
 		funcionarioDAO.update_funcionario(funcionario);
 	}
 	
-	public void excluirFuncionario(int funcionario, int op) throws DeleteException, SelectException, NaoCadastradoException {
-		funcionarioDAO.delete_funcionario(funcionario, op);
+	public void inativaFuncionario(int funcionario, int op) throws DeleteException, SelectException, NaoCadastradoException {
+		funcionarioDAO.inativa_funcionario(funcionario, op);
 	}
 
 	public void excluirSupervisao(int bibliotecario, int assistente) throws DeleteException, SelectException, NaoCadastradoException { 

@@ -23,7 +23,7 @@ private static FuncionarioDAO instance = null;
 	private PreparedStatement insert_funcionario;
 	private PreparedStatement insert_supervisao;
 	private PreparedStatement update_funcionario;
-	private PreparedStatement delete_funcionario;
+	private PreparedStatement inativa_funcionario;
 	private PreparedStatement select_bibliotecarios;
 	private PreparedStatement select_assistentes;
 	private PreparedStatement select_assistentes_bibliotecario;
@@ -42,17 +42,17 @@ private static FuncionarioDAO instance = null;
 	private FuncionarioDAO() throws ClassNotFoundException, SQLException, SelectException{
 		Connection conexao = Conexao.getConexao();
 		select_new_id_funcionario = conexao.prepareStatement("select nextval('id_funcionario')");
-		insert_funcionario =  conexao.prepareStatement("insert into funcionario values (?,?,?,?,?,?,?,?)");
+		insert_funcionario =  conexao.prepareStatement("insert into funcionario values (?,?,?,?,?,?,?,?,?)");
 		insert_supervisao = conexao.prepareStatement("insert into supervisao values (?,?)");
 		update_funcionario = conexao.prepareStatement("update funcionario set login=?, nome=?, salario=?, turno=?, email=? where id=?");
-		delete_funcionario = conexao.prepareStatement("delete from funcionario where id=?");
+		inativa_funcionario = conexao.prepareStatement("update funcionario set ativo=0 where id=?");
 		delete_supervisoes = conexao.prepareStatement("delete from supervisao where id_bibliotecario=?");
 		delete_supervisoes_a = conexao.prepareStatement("delete from supervisao where id_assistente=?");
 		delete_supervisao = conexao.prepareStatement("delete from supervisao where id_bibliotecario=? and id_assistente=?");
-		select_bibliotecarios = conexao.prepareStatement("select id, nome, login, turno, salario, email from funcionario where tipo=1");
-		select_assistentes = conexao.prepareStatement("select id, nome, login, turno, salario, email from funcionario where tipo=2");
-		select_assistentes_bibliotecario = conexao.prepareStatement("select id, nome, login, turno, salario, email from funcionario where tipo=2 and id in (select id_assistente from supervisao where id_bibliotecario=?)");
-		select_adicionar_supervisao = conexao.prepareStatement("select id, nome, login, turno, salario, email from funcionario where tipo=2 and id not in (select id_assistente from supervisao where id_bibliotecario=?)");
+		select_bibliotecarios = conexao.prepareStatement("select id, nome, login, turno, salario, email from funcionario where tipo=1 and ativo=1");
+		select_assistentes = conexao.prepareStatement("select id, nome, login, turno, salario, email from funcionario where tipo=2 and ativo=1");
+		select_assistentes_bibliotecario = conexao.prepareStatement("select id, nome, login, turno, salario, email from funcionario where tipo=2 and ativo=1 and id in (select id_assistente from supervisao where id_bibliotecario=?)");
+		select_adicionar_supervisao = conexao.prepareStatement("select id, nome, login, turno, salario, email from funcionario where tipo=2 and ativo=1 and id not in (select id_assistente from supervisao where id_bibliotecario=?)");
 	}
 	
 	private int select_new_id_funcionario() throws SelectException{
@@ -75,6 +75,7 @@ private static FuncionarioDAO instance = null;
 				insert_funcionario.setString(6, funcionario.getTurno());
 				insert_funcionario.setInt(7, funcionario.getTipo());
 				insert_funcionario.setString(8, funcionario.getEmail());
+				insert_funcionario.setInt(9, 1);
 				insert_funcionario.executeUpdate();
 			}catch (SQLException e) {
 				throw new InsertException("Erro ao inserir funcionário.");
@@ -105,18 +106,18 @@ private static FuncionarioDAO instance = null;
 		}
 	}
 	
-	public void delete_funcionario(int funcionario, int op) throws DeleteException, SelectException, NaoCadastradoException{
+	public void inativa_funcionario(int funcionario, int op) throws DeleteException, SelectException, NaoCadastradoException{
 		try {
 			
-			if(op==0) { 
+			if(op==0) {       //bibliotecario
 				delete_supervisoes.setInt(1, funcionario);
 				delete_supervisoes.executeUpdate();
-			}else if(op==1) {
+			}else if(op==1) { //assistesnte
 				delete_supervisoes_a.setInt(1, funcionario);
 				delete_supervisoes_a.executeUpdate();
 			}
-			delete_funcionario.setInt(1, funcionario);
-			delete_funcionario.executeUpdate();
+			inativa_funcionario.setInt(1, funcionario);
+			inativa_funcionario.executeUpdate();
 		}catch(SQLException e) {
 			throw new DeleteException("Erro ao deletar funcionário");
 		}

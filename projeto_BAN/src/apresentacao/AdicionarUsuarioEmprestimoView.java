@@ -2,14 +2,10 @@ package apresentacao;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.SystemColor;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,25 +15,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-
 import exceptions.InsertException;
-import exceptions.JaCadastradoException;
-import exceptions.NaoCadastradoException;
 import exceptions.SelectException;
 import negocio.Sistema;
-import persistencia.*;
-import javax.swing.ImageIcon;
 import java.awt.Font;
 import javax.swing.border.MatteBorder;
 
@@ -157,10 +146,10 @@ public class AdicionarUsuarioEmprestimoView extends JFrame {
 		selecionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (table.getSelectedRow()!=-1){
-					NovoEmprestimoReservaView.tfCodigo.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
-					NovoEmprestimoReservaView.tfUsuario.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
+					EmprestimoView.tfCodigo.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
+					EmprestimoView.tfUsuario.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
 					try {
-						NovoEmprestimoReservaView.tfData.setText(sistema.dataEmprestimo(Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)))));
+						EmprestimoView.tfData.setText(sistema.dataEmprestimo(Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)))));
 					} catch (NumberFormatException | InsertException e) {
 						e.printStackTrace();
 					}

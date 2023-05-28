@@ -4,13 +4,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import persistencia.LoginDAO;
 import dados.Funcionario;
-import dados.Usuario;
 import exceptions.LoginIncorretoException;
 import exceptions.SelectException;
 import negocio.Sistema;
-
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.JButton;
@@ -22,11 +19,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Toolkit;
-import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.UIManager;
-import javax.swing.border.CompoundBorder;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.border.LineBorder;
@@ -46,12 +42,9 @@ public class LoginView extends JFrame {
 				try {
 					LoginView frame = new LoginView();
 					frame.setVisible(true);
-					frame.setLocationRelativeTo(null);
-
-					
+					frame.setLocationRelativeTo(null);					
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
-//					e.printStackTrace();
 				}
 			}
 		});
@@ -64,11 +57,6 @@ public class LoginView extends JFrame {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
 		
-//		lblNewLabel = new JLabel("New label");
-//		ImageIcon img = new javax.swing.ImageIcon(getClass().getResource("/img/login.jpg"));  
-//		lblNewLabel.setIcon(img);
-//        img.setImage(img.getImage().getScaledInstance(445, 250, 100));
-		
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background3.png")));
 		
@@ -80,7 +68,6 @@ public class LoginView extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
 		
 		tflogin = new JTextField();
 		tflogin.setFont(new Font("Dialog", Font.PLAIN, 22));
@@ -154,12 +141,7 @@ public class LoginView extends JFrame {
 
 		lblNewLabel.setBounds(0, -33, 771, 528);
 		contentPane.add(lblNewLabel);
-		
-
-
-		
-
-		
+			
 
 	}
 }

@@ -33,7 +33,7 @@ public class Conexao {
 	private final static String USUARIO = "postgres";
 	private final static String SENHA = "postgres";
 //	private final static String NOME_DB = "biblioteca";
-	private final static String NOME_DB = "2";
+	private final static String NOME_DB = "3";
 
 
 	private static Connection conexao;

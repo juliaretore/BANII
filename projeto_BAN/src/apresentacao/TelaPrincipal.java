@@ -6,32 +6,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import dados.Usuario;
-import exceptions.SelectException;
-import negocio.Sistema;
-
 import javax.swing.JButton;
-import javax.swing.JDialog;
-
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Toolkit;
-
 import javax.swing.JTextField;
-import javax.swing.Timer;
-import javax.swing.UIManager;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
-import javax.swing.border.MatteBorder;
 import java.awt.SystemColor;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.SwingConstants;
 
 public class TelaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -59,11 +42,6 @@ public class TelaPrincipal extends JFrame {
 
 
 	public TelaPrincipal() {
-//		ImageIcon imagemTituloJanela = new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpg"));
-//		setIconImage(imagemTituloJanela.getImage());
-//		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/menu.jpg")));
-		
-		
 		setTitle("Menu");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(0, 0,  1930, 1080);
@@ -183,9 +161,9 @@ public class TelaPrincipal extends JFrame {
 		btnEmprestimo = new JButton("Gerênciar Emprestimo");
 		btnEmprestimo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				NovoEmprestimoReservaView objeto = NovoEmprestimoReservaView.getInstance();	
-				NovoEmprestimoReservaView.tfIdUsuario.setText(tfIdUsuario.getText());
-				NovoEmprestimoReservaView.textusuario.setText(textusuario.getText());
+				EmprestimoView objeto = EmprestimoView.getInstance();	
+				EmprestimoView.tfIdUsuario.setText(tfIdUsuario.getText());
+				EmprestimoView.textusuario.setText(textusuario.getText());
 				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 				int height = screenSize.height;
 				int width = screenSize.width;

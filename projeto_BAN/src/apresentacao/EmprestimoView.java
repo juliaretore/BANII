@@ -2,55 +2,35 @@ package apresentacao;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
-
-import javax.swing.JSeparator;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import persistencia.*;
-import dados.Categoria;
-import dados.Endereco;
-import dados.Funcionario;
-import dados.Usuario;
-import exceptions.DeleteException;
 import exceptions.InsertException;
 import exceptions.JaCadastradoException;
-import exceptions.NaoCadastradoException;
 import exceptions.SelectException;
-import exceptions.UpdateException;
 import negocio.Sistema;
-
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.nio.file.spi.FileSystemProvider;
-import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
 import java.awt.Font;
-import java.awt.Component;
-import java.awt.Dimension;
-
-import javax.swing.JPasswordField;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
 import java.awt.Choice;
@@ -67,7 +47,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.UIManager;
 
-public class NovoEmprestimoReservaView extends JFrame {
+public class EmprestimoView extends JFrame {
 
 
 	private static final long serialVersionUID = 1L;
@@ -79,7 +59,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 	private static List<Object> livros = new ArrayList<Object>();
 	private static List<Object> emprestimos = new ArrayList<Object>();
 	private static Sistema sistema;
-	private static NovoEmprestimoReservaView novoEmprestimoReservaView;
+	private static EmprestimoView novoEmprestimoReservaView;
 	private static JTable table_1;
 	static JTextField tfCodigo;
 	private JTextField tfLivro;
@@ -102,7 +82,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NovoEmprestimoReservaView frame = new NovoEmprestimoReservaView();
+					EmprestimoView frame = new EmprestimoView();
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);					
 				} catch (Exception e) {
@@ -112,11 +92,11 @@ public class NovoEmprestimoReservaView extends JFrame {
 		});
 	}
 
-	public static NovoEmprestimoReservaView getInstance() {
-        if(novoEmprestimoReservaView==null) novoEmprestimoReservaView=new NovoEmprestimoReservaView();
+	public static EmprestimoView getInstance() {
+        if(novoEmprestimoReservaView==null) novoEmprestimoReservaView=new EmprestimoView();
         return novoEmprestimoReservaView;
     } 
-	public NovoEmprestimoReservaView() {
+	public EmprestimoView() {
 		try {
 			sistema = new Sistema();
 		} catch (ClassNotFoundException | SQLException | SelectException e) {
@@ -139,8 +119,6 @@ public class NovoEmprestimoReservaView extends JFrame {
 				}
 			}
 		});
-//		ImageIcon imagemTituloJanela = new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpg"));
-//		setIconImage(imagemTituloJanela.getImage());
 
 
 		setTitle("Gerênciar Empréstimos e Reservas");
@@ -150,10 +128,6 @@ public class NovoEmprestimoReservaView extends JFrame {
 		contentPane.setEnabled(false);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = screenSize.height;
-		int width = screenSize.width;
-		setBounds(0, 0,  width, height);
 		
 		JButton sair = new JButton("Sair");
 		sair.setBorder(new LineBorder(new Color(0, 0, 0)));

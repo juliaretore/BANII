@@ -2,30 +2,21 @@ package apresentacao;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.SystemColor;
-import java.awt.Toolkit;
-
-import javax.swing.JSeparator;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import persistencia.*;
-import dados.Categoria;
-import dados.Endereco;
 import dados.Funcionario;
-import dados.Usuario;
 import exceptions.DeleteException;
 import exceptions.InsertException;
 import exceptions.JaCadastradoException;
@@ -33,37 +24,23 @@ import exceptions.NaoCadastradoException;
 import exceptions.SelectException;
 import exceptions.UpdateException;
 import negocio.Sistema;
-
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.nio.file.spi.FileSystemProvider;
 import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
 import java.awt.Font;
-import java.awt.Component;
-import javax.swing.JPasswordField;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import java.awt.Choice;
-import java.awt.Scrollbar;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.JSplitPane;
 import javax.swing.JLayeredPane;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.UIManager;
 
 public class FuncionarioView extends JFrame {
 
@@ -96,9 +73,9 @@ public class FuncionarioView extends JFrame {
 	private JButton cadastrar_1;
 	private JButton cadatrar_asisstente;
 	private JButton alterar;
-	private JButton excluir_1;
+	private JButton inativar_1;
 	private JButton alterar_2;
-	private JButton excluir_2;
+	private JButton inativar_2;
 	private JButton remover_assistente;
 	private JTextField textPNome_1;
 	private JTextField textPCodigo_1;
@@ -147,9 +124,9 @@ public class FuncionarioView extends JFrame {
 		contentPane.setEnabled(false);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setBounds(0, 0,  1930, 1080);
+
 		
-		//		ImageIcon imagemTituloJanela = new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpg"));
-		//		setIconImage(imagemTituloJanela.getImage());
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
 		
@@ -263,7 +240,7 @@ public class FuncionarioView extends JFrame {
 					if (table.getSelectedRow()!=-1) cadatrar_asisstente.setEnabled(true);
 						
 					if (table.getSelectedRow()!=-1)remover_assistente.setEnabled(true);
-					excluir_2.setEnabled(true);
+					inativar_2.setEnabled(true);
 					alterar_2.setEnabled(true);
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
@@ -364,25 +341,29 @@ public class FuncionarioView extends JFrame {
 		
 	
 		
-		excluir_1 = new JButton("Excluir");
-		excluir_1.setEnabled(false);
-		excluir_1.setBounds(456, 150, 118, 21);
-		layeredPane.add(excluir_1);
-		excluir_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		excluir_1.addActionListener(new ActionListener() {
+		inativar_1 = new JButton("Inativar ");
+		inativar_1.setEnabled(false);
+		inativar_1.setBounds(456, 150, 118, 21);
+		layeredPane.add(inativar_1);
+		inativar_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		inativar_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int input = JOptionPane.showConfirmDialog(null, "Você realmente deseja inativar funcionário? Essa ação é irreversível.");
+		        if(input==0) {
 					try {
-						sistema.excluirFuncionario(Integer.parseInt(tfCodigo.getText()), 0);
+						sistema.inativaFuncionario(Integer.parseInt(tfCodigo.getText()), 0);
 					} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
 						JOptionPane.showMessageDialog(null,  e1.getMessage());
 					}
-					atualizarTabela();
-					atualizarTabela_1();
-					limpar();
-					limpar_1();				
+		        }
+
+				atualizarTabela();
+				atualizarTabela_1();
+				limpar();
+				limpar_1();				
 			}
 		});
-		excluir_1.setBackground(Color.WHITE);
+		inativar_1.setBackground(Color.WHITE);
 		
 		JButton limpar = new JButton("Limpar");
 		limpar.setBounds(456, 62, 118, 21);
@@ -479,26 +460,30 @@ public class FuncionarioView extends JFrame {
 		limpar_2.setBounds(456, 63, 118, 21);
 		layeredPane_1.add(limpar_2);
 		
-		excluir_2 = new JButton("Excluir");
-		excluir_2.setEnabled(false);
-		excluir_2.setBounds(456, 150, 118, 21);
-		layeredPane_1.add(excluir_2);
-		excluir_2.addActionListener(new ActionListener() {
+		inativar_2 = new JButton("Inativar");
+		inativar_2.setEnabled(false);
+		inativar_2.setBounds(456, 150, 118, 21);
+		layeredPane_1.add(inativar_2);
+		inativar_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				int input = JOptionPane.showConfirmDialog(null, "Você realmente deseja inativar funcionário? Essa ação é irreversível.");
+		        if(input==0) {
 					try {
-						sistema.excluirFuncionario(Integer.parseInt(tfCodigo_1.getText()),1);
+						sistema.inativaFuncionario(Integer.parseInt(tfCodigo_1.getText()),1);
 					} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
 						JOptionPane.showMessageDialog(null,  e1.getMessage());
 					}
 					atualizarTabela();
 					atualizarTabela_1();
 					limpar();
-					limpar_1();				
+					limpar_1();	
+		        }
 				
 			}
 		});
-		excluir_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		excluir_2.setBackground(Color.WHITE);
+		inativar_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		inativar_2.setBackground(Color.WHITE);
 		
 		cadastrar_2 = new JButton("Cadastrar");
 		cadastrar_2.setBounds(456, 118, 118, 21);
@@ -677,7 +662,7 @@ public class FuncionarioView extends JFrame {
 					remover_assistente.setEnabled(false);
 					cadastrar_1.setEnabled(false);
 					alterar.setEnabled(true);
-					excluir_1.setEnabled(true);
+					inativar_1.setEnabled(true);
 			}
 		});
 		
@@ -789,7 +774,7 @@ public class FuncionarioView extends JFrame {
 		cadastrar_1.setEnabled(true);
 		alterar.setEnabled(true);
 		alterar.setEnabled(false);
-		excluir_1.setEnabled(false);
+		inativar_1.setEnabled(false);
 		tfemail.setText("");
 
 	}
@@ -802,7 +787,7 @@ public class FuncionarioView extends JFrame {
 		comboBox_1_1.setSelectedIndex(0);
 		table_1.clearSelection();
 		cadastrar_2.setEnabled(true);
-		excluir_2.setEnabled(false);
+		inativar_2.setEnabled(false);
 		alterar_2.setEnabled(false);
 		remover_assistente.setEnabled(false);
 		tfemail_2.setText("");

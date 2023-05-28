@@ -28,13 +28,8 @@ private static LivroDAO instance = null;
 	private PreparedStatement insert_autores_livro;
 	private PreparedStatement update_livro;
 	private PreparedStatement update_exemplar;
-	
-	private PreparedStatement delete_livro;
-	private PreparedStatement delete_exemplares;
-	private PreparedStatement delete_exemplar;
 	private PreparedStatement delete_autor_livro;
 	private PreparedStatement select_livros;
-	
 	private PreparedStatement select_autores_livro;
 	private PreparedStatement select_exemplares_livro;
 	private PreparedStatement select_adicionar_autores_livro;
@@ -59,15 +54,12 @@ private static LivroDAO instance = null;
 		insert_autores_livro = conexao.prepareStatement("insert into autores_livro values (?,?)");
 		update_livro = conexao.prepareStatement("update livro set isbn=?, titulo=?, editora=? where id=?");
 		update_exemplar = conexao.prepareStatement("update exemplar set prateleira=?, estante=?, colecao=? where id=?");
-		delete_livro = conexao.prepareStatement("delete from livro where id=?");
-		delete_exemplares = conexao.prepareStatement("delete from exemplar where id_livro=?");
-		delete_exemplar = conexao.prepareStatement("delete from exemplar where id=?");
 		delete_autor_livro = conexao.prepareStatement("delete from autores_livro where id_livro=? and id_autor=?");
 		select_livros = conexao.prepareStatement("select id, isbn, titulo, editora from livro");
 		select_autores_livro = conexao.prepareStatement("select a.id, a.nome, a.nacionalidade, a.area from autor a join autores_livro al on a.id=al.id_autor where id_livro=?");
 		select_exemplares_livro = conexao.prepareStatement("select id, prateleira, estante, colecao, id_usuario_reserva from exemplar where id_livro=?");
 		select_usuario = conexao.prepareStatement("select nome from usuario where id=?");
-		select_exemplares_livro_disponiveis = conexao.prepareStatement("select id, prateleira, estante, colecao from exemplar where id_livro=? and id_usuario_reserva is null and colecao!='Reserva' and id not in (select id_exemplar from emprestimo where situacao=0)");
+		select_exemplares_livro_disponiveis = conexao.prepareStatement("select id, prateleira, estante, colecao from exemplar where id_livro=? and id_usuario_reserva is null and colecao!='Reserva' and colecao!='Fora de uso' and id not in (select id_exemplar from emprestimo where situacao=0)");
 		select_exemplar_emprestado = conexao.prepareStatement("select id_usuario from emprestimo where id_exemplar=? and situacao=0");
 		select_adicionar_autores_livro = conexao.prepareStatement("select id, nome, nacionalidade, area from autor where id not in (select a.id a from autor a join autores_livro al on a.id=al.id_autor where al.id_livro=?)");
 	}
@@ -151,26 +143,6 @@ private static LivroDAO instance = null;
 		}
 	}
 	
-	public void delete_livro(int id_livro) throws DeleteException, SelectException, NaoCadastradoException{
-		try {
-			delete_exemplares.setInt(1, id_livro);
-			delete_exemplares.executeUpdate();
-			delete_livro.setInt(1, id_livro);
-			delete_livro.executeUpdate();
-		}catch(SQLException e) {
-			throw new DeleteException("Erro ao deletar livro");
-		}
-	}
-
-	public void delete_exemplar(int id_exemplar) throws DeleteException, SelectException, NaoCadastradoException{
-		try {	
-			delete_exemplar.setInt(1, id_exemplar);
-			delete_exemplar.executeUpdate();
-		}catch(SQLException e) {
-			throw new DeleteException("Erro ao deletar exemplar");
-		}
-	}
-	
 	public void delete_autor_livro(int id_livro, int id_autor) throws DeleteException, SelectException, NaoCadastradoException{
 		try {	
 			delete_autor_livro.setInt(1, id_livro);
@@ -243,6 +215,8 @@ private static LivroDAO instance = null;
 					  situacao = "Em empréstimo"; 
 					  nome = select_usuario(rs2.getInt(1));
 				 }
+				 
+				 if(rs.getString(4).equals("Fora de uso")) situacao="Fora de uso";
 				
 				Object[] linha  = {id_exemplar, rs.getInt(2), rs.getInt(3),rs.getString(4), situacao, nome};
 				lista.add(linha);
