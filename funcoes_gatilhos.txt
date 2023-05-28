@@ -205,9 +205,15 @@ create trigger cadastro_reserva  before insert on reservas_livro for each row ex
 ---------------------------------------------------------------------------------------------
 -- 9) Pagamento de Multa
 
-create or replace function pagamento_multas(cid_emprestimo int) returns void as
+create or replace function pagamento_multas(cid_usuario int) returns void as
 $$
+declare item record;
 begin 
-	update emprestimo set pagamento_multa=0 where id=cid_emprestimo;
+	for item in select * from emprestimo loop
+		if item.id_usuario=cid_usuario and item.situacao=1 then
+			update emprestimo set pagamento_multa=0 where id=item.id;
+		end if;
+	end loop;
+
 end;
 $$ language plpgsql;
