@@ -93,9 +93,6 @@ create table funcionario(
 	primary key (id)
 );
 
-update funcionario set ativo=0 where id=?
-select * from funcionario
-
 create table supervisao(
 	id_assistente int NOT NULL,
 	id_bibliotecario int NOT NULL,
