@@ -135,7 +135,7 @@ public class UsuarioView extends JFrame {
 		setTitle("Gerenciar Usuários");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//		setBounds(0, 0,  1930, 1080);
+		setBounds(0, 0,  1930, 1080);
 //		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setEnabled(false);

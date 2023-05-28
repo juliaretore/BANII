@@ -32,6 +32,8 @@ private static EmprestimoDAO instance = null;
 	private PreparedStatement pagar_multa;
 	private PreparedStatement select_data_emprestimo;
 	private PreparedStatement select_historico_exemplar;
+	private PreparedStatement select_emprestimos_correntes;
+	private PreparedStatement select_pagar_multas;
 	
 	public static EmprestimoDAO getInstance() throws ClassNotFoundException, SQLException, SelectException{
 		if(instance==null) instance=new EmprestimoDAO();
@@ -51,6 +53,8 @@ private static EmprestimoDAO instance = null;
 		pagar_multa = conexao.prepareStatement("select pagamento_multas(?)");
 		select_data_emprestimo = conexao.prepareStatement("select ((select c.tempo_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=?)+current_date)");
 		select_historico_exemplar = conexao.prepareStatement("select e.id,  u.nome, e.data_empr, e.data_est_entr, e.data_real_entr, e.situacao, e.multa, e.pagamento_multa from emprestimo e join usuario u on u.id=e.id_usuario where id_exemplar=?");
+		select_emprestimos_correntes = conexao.prepareStatement("select e.id, u.nome, l.titulo, ex.id, e.data_empr, e.data_est_entr, e.renovacoes from emprestimo e join usuario u on u.id=e.id_usuario join exemplar ex on ex.id=e.id_exemplar join livro l on l.id=ex.id_livro where e.situacao=0");
+		select_pagar_multas = conexao.prepareStatement("select e.id_usuario, u.nome, sum(multa) from emprestimo e join usuario u on u.id=e.id_usuario where e.situacao=1 and e.pagamento_multa=1 group by e.id_usuario, u.nome");
 	}
 	
 	public void insert_emprestimo(int cid_exemplar, int cid_usuario, int cid_funcionario) throws InsertException, SelectException, JaCadastradoException{
@@ -80,7 +84,7 @@ private static EmprestimoDAO instance = null;
 	public void devolucao_emprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException{
 		try {
 			devolucao_emprestimo.setInt(1, cid_emprestimo);
-			devolucao_emprestimo.executeUpdate();
+			devolucao_emprestimo.execute();
 		}catch (SQLException e) {
 			throw new InsertException("Erro na devolução do empréstimo");
 		}	
@@ -89,7 +93,7 @@ private static EmprestimoDAO instance = null;
 	public void renovar_emprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException{
 		try {
 			renovar_emprestimo.setInt(1, cid_emprestimo);
-			renovar_emprestimo.executeUpdate();
+			renovar_emprestimo.execute();
 		}catch (SQLException e) {
 			String texto[] = e.getMessage().split("\\r?\\n");
 			JOptionPane.showMessageDialog(null, texto[0]);
@@ -116,10 +120,10 @@ private static EmprestimoDAO instance = null;
 		}	
 	}
 	
-	public void pagar_multa(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException{
+	public void pagar_multa(int cid_usuario) throws InsertException, SelectException, JaCadastradoException{
 		try {
-			pagar_multa.setInt(1, cid_emprestimo);
-			pagar_multa.executeUpdate();
+			pagar_multa.setInt(1, cid_usuario);
+			pagar_multa.execute();
 		}catch (SQLException e) {
 			throw new InsertException("Erro pagar multa");
 		}	
@@ -177,6 +181,37 @@ private static EmprestimoDAO instance = null;
 	}	
 	
 		
+	public List<Object> select_emprestimos_correntes() throws SelectException {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			ResultSet rs = select_emprestimos_correntes.executeQuery();
+			while(rs.next()) {
+				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getInt(4),rs.getString(5), rs.getString(6), rs.getInt(7)};
+				lista.add(linha);
+			}
+		}catch(SQLException e) {
+			throw new SelectException("Erro ao buscar emprestimos correntes");
+		}
+		return lista;
+	}
+
+	public List<Object> select_pagar_multas() throws SelectException {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			ResultSet rs = select_pagar_multas.executeQuery();
+			while(rs.next()) {
+				if(rs.getDouble(3)>0) {
+					Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getDouble(3)};
+					lista.add(linha);
+				}
+				
+			}
+		}catch(SQLException e) {
+			throw new SelectException("Erro ao buscar multas");
+		}
+		return lista;
+	}
+	
 	
 }
 	

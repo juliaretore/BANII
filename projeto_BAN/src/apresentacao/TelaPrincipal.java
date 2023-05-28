@@ -203,6 +203,20 @@ public class TelaPrincipal extends JFrame {
 		contentPane.add(btnEmprestimo);
 		
 		btnPagamentoDeMultas = new JButton("Pagamento de Multas");
+		btnPagamentoDeMultas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MultasView objeto = MultasView.getInstance();
+				MultasView.tfIdUsuario.setText(tfIdUsuario.getText());
+				MultasView.textusuario.setText(textusuario.getText());
+				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+				int height = screenSize.height;
+				int width = screenSize.width;
+				objeto.setSize(width, height);
+				objeto.setVisible(true);
+				objeto.setLocationRelativeTo(null);
+				dispose();	
+			}
+		});
 		btnPagamentoDeMultas.setForeground(Color.BLACK);
 		btnPagamentoDeMultas.setFont(new Font("Lato Black", Font.PLAIN, 20));
 		btnPagamentoDeMultas.setBackground(Color.WHITE);

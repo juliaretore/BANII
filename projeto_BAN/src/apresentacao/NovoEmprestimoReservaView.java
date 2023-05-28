@@ -48,6 +48,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.Component;
+import java.awt.Dimension;
+
 import javax.swing.JPasswordField;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
@@ -75,6 +77,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 
 	private static List<Object> exemplares = new ArrayList<Object>();
 	private static List<Object> livros = new ArrayList<Object>();
+	private static List<Object> emprestimos = new ArrayList<Object>();
 	private static Sistema sistema;
 	private static NovoEmprestimoReservaView novoEmprestimoReservaView;
 	private static JTable table_1;
@@ -89,6 +92,9 @@ public class NovoEmprestimoReservaView extends JFrame {
 	JButton Reservar;
 	static JTextField textusuario;
 	static JTextField tfIdUsuario;
+	private static JTable table;
+	JButton btnRenovarEmprestimo;
+	JButton btnDevolucao;
 	
 
 	
@@ -120,6 +126,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			public void windowOpened(WindowEvent arg0) {
 				atualizarTabela();
+				atualizarTabela_2();
 				try {
 					sistema.atualizaDatasReserva();
 				} catch (InsertException | SelectException | JaCadastradoException e) {
@@ -143,9 +150,10 @@ public class NovoEmprestimoReservaView extends JFrame {
 		contentPane.setEnabled(false);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = screenSize.height;
+		int width = screenSize.width;
+		setBounds(0, 0,  width, height);
 		
 		JButton sair = new JButton("Sair");
 		sair.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -155,11 +163,11 @@ public class NovoEmprestimoReservaView extends JFrame {
 			}
 		});
 		sair.setBackground(Color.WHITE);
-		sair.setBounds(882, 925, 173, 20);
+		sair.setBounds(909, 978, 173, 20);
 		contentPane.add(sair);
 		
 		textPCodigo = new JTextField();
-		textPCodigo.setBounds(644, 69, 198, 20);
+		textPCodigo.setBounds(489, 69, 198, 20);
 		contentPane.add(textPCodigo);
 		textPCodigo.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
@@ -174,7 +182,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 		textPCodigo.setColumns(10);
 		
 		textPNome = new JTextField();
-		textPNome.setBounds(422, 69, 164, 20);
+		textPNome.setBounds(220, 69, 164, 20);
 		contentPane.add(textPNome);
 		textPNome.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
@@ -190,7 +198,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 		textPNome.setColumns(10);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(1061, 191, 530, 477);
+		scrollPane_1.setBounds(771, 175, 493, 297);
 		contentPane.add(scrollPane_1);
 		
 		table_1 = new JTable();
@@ -214,7 +222,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 		});
 		
 		JLayeredPane layeredPane_1 = new JLayeredPane();
-		layeredPane_1.setBounds(671, 703, 611, 193);
+		layeredPane_1.setBounds(1255, 224, 611, 186);
 		contentPane.add(layeredPane_1);
 		
 		JButton selecionar_usuario = new JButton("Buscar Usuário");
@@ -256,7 +264,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 		tfData.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		tfData.setEditable(false);
 		tfData.setColumns(10);
-		tfData.setBounds(172, 121, 282, 19);
+		tfData.setBounds(172, 126, 282, 19);
 		layeredPane_1.add(tfData);
 		
 		JButton limpar_2 = new JButton("Limpar");
@@ -267,11 +275,11 @@ public class NovoEmprestimoReservaView extends JFrame {
 		});
 		limpar_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		limpar_2.setBackground(Color.WHITE);
-		limpar_2.setBounds(490, 62, 83, 21);
+		limpar_2.setBounds(467, 63, 118, 21);
 		layeredPane_1.add(limpar_2);
 		
 		Cadastrar = new JButton("Cadastrar");
-		Cadastrar.setBounds(172, 152, 118, 21);
+		Cadastrar.setBounds(467, 94, 118, 21);
 		layeredPane_1.add(Cadastrar);
 		Cadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -290,6 +298,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 						
 							atualizarTabela_1();
 							limpar();
+							atualizarTabela_2();
 						}
 					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
@@ -335,7 +344,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 		Reservar.setActionCommand("Reservar");
 		Reservar.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		Reservar.setBackground(Color.WHITE);
-		Reservar.setBounds(336, 150, 118, 21);
+		Reservar.setBounds(467, 125, 118, 21);
 		layeredPane_1.add(Reservar);
 		
 		JLabel lblUsurio = new JLabel("Usuário:");
@@ -359,12 +368,12 @@ public class NovoEmprestimoReservaView extends JFrame {
 		JLabel lblDataDeEntrega = new JLabel("Data de Entrega:");
 		lblDataDeEntrega.setForeground(new Color(85, 97, 120));
 		lblDataDeEntrega.setFont(new Font("Lato Black", Font.BOLD, 15));
-		lblDataDeEntrega.setBounds(30, 121, 160, 20);
+		lblDataDeEntrega.setBounds(32, 126, 160, 20);
 		layeredPane_1.add(lblDataDeEntrega);
 		
 		textPCodigo_1 = new JTextField();
 		textPCodigo_1.setColumns(10);
-		textPCodigo_1.setBounds(1236, 69, 198, 20);
+		textPCodigo_1.setBounds(937, 69, 198, 20);
 		textPCodigo_1.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
 				TableRowSorter<TableModel> filtro = null;  
@@ -379,7 +388,7 @@ public class NovoEmprestimoReservaView extends JFrame {
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		scrollPane_2.setBounds(369, 191, 503, 477);
+		scrollPane_2.setBounds(143, 175, 581, 297);
 		contentPane.add(scrollPane_2);
 		
 		table_2 = new JTable();
@@ -391,6 +400,9 @@ public class NovoEmprestimoReservaView extends JFrame {
 				"ID", "ISBN", "Titulo", "Editora"
 			}
 		));
+		table_2.getColumnModel().getColumn(0).setPreferredWidth(15);
+		table_2.getColumnModel().getColumn(1).setPreferredWidth(85);
+		table_2.getColumnModel().getColumn(2).setPreferredWidth(100);
 		scrollPane_2.setViewportView(table_2);
 
 		table_2.addMouseListener(new MouseAdapter() {
@@ -443,54 +455,134 @@ public class NovoEmprestimoReservaView extends JFrame {
 		JLabel lblLivros = new JLabel("LIVROS");
 		lblLivros.setForeground(new Color(85, 97, 120));
 		lblLivros.setFont(new Font("Lato Black", Font.BOLD, 16));
-		lblLivros.setBounds(594, 159, 337, 20);
+		lblLivros.setBounds(399, 143, 337, 20);
 		contentPane.add(lblLivros);
 		
 		JLabel lblExemplares_1 = new JLabel("EXEMPLARES");
 		lblExemplares_1.setForeground(new Color(85, 97, 120));
 		lblExemplares_1.setFont(new Font("Lato Black", Font.BOLD, 16));
-		lblExemplares_1.setBounds(1269, 142, 337, 20);
+		lblExemplares_1.setBounds(961, 143, 337, 20);
 		contentPane.add(lblExemplares_1);
 		
 		JLabel lblExemplares_1_1 = new JLabel("BUSCA DE EXEMPLARES");
 		lblExemplares_1_1.setForeground(new Color(85, 97, 120));
 		lblExemplares_1_1.setFont(new Font("Lato Black", Font.BOLD, 16));
-		lblExemplares_1_1.setBounds(1226, 34, 337, 20);
+		lblExemplares_1_1.setBounds(916, 37, 337, 20);
 		contentPane.add(lblExemplares_1_1);
 		
 		JLabel lblExemplares_1_2 = new JLabel("BUSCA DE LIVROS");
 		lblExemplares_1_2.setForeground(new Color(85, 97, 120));
 		lblExemplares_1_2.setFont(new Font("Lato Black", Font.BOLD, 16));
-		lblExemplares_1_2.setBounds(529, 34, 337, 20);
+		lblExemplares_1_2.setBounds(360, 37, 337, 20);
 		contentPane.add(lblExemplares_1_2);
 		
 		JLabel lblTitulo = new JLabel("Titulo:");
 		lblTitulo.setForeground(new Color(85, 97, 120));
 		lblTitulo.setFont(new Font("Lato Black", Font.BOLD, 15));
-		lblTitulo.setBounds(365, 69, 52, 20);
+		lblTitulo.setBounds(165, 69, 52, 20);
 		contentPane.add(lblTitulo);
 		
 		JLabel lblIsbn = new JLabel("ISBN:");
 		lblIsbn.setForeground(new Color(85, 97, 120));
 		lblIsbn.setFont(new Font("Lato Black", Font.BOLD, 15));
-		lblIsbn.setBounds(595, 71, 52, 20);
+		lblIsbn.setBounds(439, 69, 52, 20);
 		contentPane.add(lblIsbn);
 		
 		JLabel lblId = new JLabel("ID:");
 		lblId.setForeground(new Color(85, 97, 120));
 		lblId.setFont(new Font("Lato Black", Font.BOLD, 15));
-		lblId.setBounds(1200, 69, 52, 20);
+		lblId.setBounds(891, 69, 52, 20);
 		contentPane.add(lblId);
 		
-		lblNewLabel.setBounds(12, 0, 1898, 1047);
-		contentPane.add(lblNewLabel);
+		JScrollPane scrollPane_2_1 = new JScrollPane();
+		scrollPane_2_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		scrollPane_2_1.setBounds(143, 549, 1723, 328);
+		contentPane.add(scrollPane_2_1);
 		
+		table = new JTable();
+		table.setBackground(Color.WHITE);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"ID", "Nome", "Titulo", "Exemplar", "Data Emprestimo", "Data estimada devolu\u00E7\u00E3o", "Renova\u00E7\u00F5es"
+			}
+		));
+		
+		table.getColumnModel().getColumn(0).setPreferredWidth(15);
+		table.getColumnModel().getColumn(1).setPreferredWidth(55);
+		table.getColumnModel().getColumn(2).setPreferredWidth(55);
+		table.getColumnModel().getColumn(3).setPreferredWidth(18);
+		table.getColumnModel().getColumn(4).setPreferredWidth(65);
+		table.getColumnModel().getColumn(5).setPreferredWidth(95);
+		table.getColumnModel().getColumn(6).setPreferredWidth(30);
+		
+		table.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent arg0) {
+				btnRenovarEmprestimo.setEnabled(true);
+				btnDevolucao.setEnabled(true);
+				
+			}
+		});
+		
+		scrollPane_2_1.setViewportView(table);
+		
+		btnDevolucao = new JButton("Devolução de Empréstimo");
+		btnDevolucao.setEnabled(false);
+		btnDevolucao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					sistema.devolucaoEmprestimo(Integer.parseInt(String.valueOf((table.getValueAt(table.getSelectedRow(), 0)))));
+					atualizarTabela_2();
+				} catch (NumberFormatException | InsertException | SelectException | JaCadastradoException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
+				
+			}
+		});
+		btnDevolucao.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		btnDevolucao.setBackground(Color.WHITE);
+		btnDevolucao.setBounds(1301, 889, 216, 21);
+		contentPane.add(btnDevolucao);
+		
+		btnRenovarEmprestimo = new JButton("Renovar Empréstimo");
+		btnRenovarEmprestimo.setEnabled(false);
+		btnRenovarEmprestimo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			try {
+				sistema.renovarEmprestimo(Integer.parseInt(String.valueOf((table.getValueAt(table.getSelectedRow(), 0)))));
+				atualizarTabela_2();
+			} catch (NumberFormatException | InsertException | SelectException | JaCadastradoException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage());
+			}
+				
+			}
+		});
+		btnRenovarEmprestimo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		btnRenovarEmprestimo.setBackground(Color.WHITE);
+		btnRenovarEmprestimo.setBounds(451, 889, 216, 21);
+		contentPane.add(btnRenovarEmprestimo);
+		table.getTableHeader().setOpaque(false);
+		table.getTableHeader().setBackground(new Color(225, 235, 252));
+		table.setFillsViewportHeight(true);
 		table_2.getTableHeader().setOpaque(false);
 		table_2.getTableHeader().setBackground(new Color(225, 235, 252));
 		table_2.setFillsViewportHeight(true);
 		table_1.getTableHeader().setOpaque(false);
 		table_1.getTableHeader().setBackground(new Color(225, 235, 252));
 		table_1.setFillsViewportHeight(true);
+				
+				JLabel lblExemplares_1_3 = new JLabel("EMPRÉSTIMOS CORRENTES");
+				lblExemplares_1_3.setForeground(new Color(85, 97, 120));
+				lblExemplares_1_3.setFont(new Font("Lato Black", Font.BOLD, 16));
+				lblExemplares_1_3.setBounds(870, 517, 337, 20);
+				contentPane.add(lblExemplares_1_3);
+		
+				JLabel lblNewLabel = new JLabel("New label");
+				lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
+				
+				lblNewLabel.setBounds(12, 0, 1898, 1047);
+				contentPane.add(lblNewLabel);
 		
 	}
 
@@ -543,4 +635,16 @@ public static void atualizarTabela_1() {
 		}
 	}
 
+
+public static void atualizarTabela_2() {
+	try {
+		emprestimos = sistema.listarEmprestimosCorrentes();
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		model.setNumRows(0);
+	for (int i=0;i<emprestimos.size();i++) model.addRow((Object[]) emprestimos.get(i));
+	
+	} catch (Exception e) {
+		JOptionPane.showMessageDialog(null, e.getMessage());
+	}
+}
 }
