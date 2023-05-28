@@ -154,10 +154,6 @@ public class TelaPrincipal extends JFrame {
 		btnLivro.setBounds(710, 524, 461, 77);
 		contentPane.add(btnLivro);
 		
-		
-		
-
-		
 		btnEmprestimo = new JButton("Gerênciar Emprestimo");
 		btnEmprestimo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -580,6 +580,7 @@ public class UsuarioView extends JFrame {
 		 							}
 		 							atualizarTabela();
 		 							limpar();
+		 							tfTelefone.setText("");
 		 						}else JOptionPane.showMessageDialog(null, "É necessário atribuir um email ao endereço do usuário!");
 		 					}else JOptionPane.showMessageDialog(null, "É necessário atribuir um estado ao endereço do usuário!");
 		 				}else JOptionPane.showMessageDialog(null, "É necessário atribuir um turno ao usuário!");
@@ -631,7 +632,7 @@ public class UsuarioView extends JFrame {
 		 				
 		 				atualizarTabela();
 		 				limpar();
-
+		 				tfTelefone.setText("");
 		 			}	
 		 	}
 		 	

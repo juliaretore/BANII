@@ -27,6 +27,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.sql.SQLWarning;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -58,6 +59,8 @@ public class EmprestimoView extends JFrame {
 	private static List<Object> exemplares = new ArrayList<Object>();
 	private static List<Object> livros = new ArrayList<Object>();
 	private static List<Object> emprestimos = new ArrayList<Object>();
+	private static List<Object> reservas = new ArrayList<Object>();
+
 	private static Sistema sistema;
 	private static EmprestimoView novoEmprestimoReservaView;
 	private static JTable table_1;
@@ -75,6 +78,8 @@ public class EmprestimoView extends JFrame {
 	private static JTable table;
 	JButton btnRenovarEmprestimo;
 	JButton btnDevolucao;
+	private static JTable table_3;
+	JButton btnRealizarEmprstimo;
 	
 
 	
@@ -107,6 +112,7 @@ public class EmprestimoView extends JFrame {
 			public void windowOpened(WindowEvent arg0) {
 				atualizarTabela();
 				atualizarTabela_2();
+				atualizarTabela_3();
 				try {
 					sistema.atualizaDatasReserva();
 				} catch (InsertException | SelectException | JaCadastradoException e) {
@@ -128,6 +134,8 @@ public class EmprestimoView extends JFrame {
 		contentPane.setEnabled(false);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setBounds(0, 0,  1930, 1080);
+
 		
 		JButton sair = new JButton("Sair");
 		sair.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -470,7 +478,7 @@ public class EmprestimoView extends JFrame {
 		
 		JScrollPane scrollPane_2_1 = new JScrollPane();
 		scrollPane_2_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		scrollPane_2_1.setBounds(143, 549, 1723, 328);
+		scrollPane_2_1.setBounds(143, 549, 858, 328);
 		contentPane.add(scrollPane_2_1);
 		
 		table = new JTable();
@@ -506,17 +514,24 @@ public class EmprestimoView extends JFrame {
 		btnDevolucao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					sistema.devolucaoEmprestimo(Integer.parseInt(String.valueOf((table.getValueAt(table.getSelectedRow(), 0)))));
+					String texto = sistema.devolucaoEmprestimo(Integer.parseInt(String.valueOf((table.getValueAt(table.getSelectedRow(), 0)))));
+					if(!(texto.equals(""))) JOptionPane.showMessageDialog(null, texto);
+					System.out.println(texto);
 					atualizarTabela_2();
-				} catch (NumberFormatException | InsertException | SelectException | JaCadastradoException e1) {
+					atualizarTabela_3();
+					
+				} catch (NumberFormatException | InsertException | SelectException | JaCadastradoException | SQLWarning e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
+				btnDevolucao.setEnabled(false);
+				btnRenovarEmprestimo.setEnabled(false);
+				btnRealizarEmprstimo.setEnabled(false);
 				
 			}
 		});
 		btnDevolucao.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		btnDevolucao.setBackground(Color.WHITE);
-		btnDevolucao.setBounds(1301, 889, 216, 21);
+		btnDevolucao.setBounds(638, 889, 216, 21);
 		contentPane.add(btnDevolucao);
 		
 		btnRenovarEmprestimo = new JButton("Renovar Empréstimo");
@@ -529,12 +544,15 @@ public class EmprestimoView extends JFrame {
 			} catch (NumberFormatException | InsertException | SelectException | JaCadastradoException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
+			btnDevolucao.setEnabled(false);
+			btnRenovarEmprestimo.setEnabled(false);
+			btnRealizarEmprstimo.setEnabled(false);
 				
 			}
 		});
 		btnRenovarEmprestimo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		btnRenovarEmprestimo.setBackground(Color.WHITE);
-		btnRenovarEmprestimo.setBounds(451, 889, 216, 21);
+		btnRenovarEmprestimo.setBounds(236, 889, 216, 21);
 		contentPane.add(btnRenovarEmprestimo);
 		table.getTableHeader().setOpaque(false);
 		table.getTableHeader().setBackground(new Color(225, 235, 252));
@@ -549,8 +567,78 @@ public class EmprestimoView extends JFrame {
 				JLabel lblExemplares_1_3 = new JLabel("EMPRÉSTIMOS CORRENTES");
 				lblExemplares_1_3.setForeground(new Color(85, 97, 120));
 				lblExemplares_1_3.setFont(new Font("Lato Black", Font.BOLD, 16));
-				lblExemplares_1_3.setBounds(870, 517, 337, 20);
+				lblExemplares_1_3.setBounds(427, 515, 337, 20);
 				contentPane.add(lblExemplares_1_3);
+				
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(1110, 549, 756, 328);
+				contentPane.add(scrollPane);
+				
+				table_3 = new JTable();
+				table_3.setBackground(Color.WHITE);
+				table_3.setModel(new DefaultTableModel(
+					new Object[][] {
+					},
+					new String[] {
+						"ID Usu\u00E1rio", "Usu\u00E1rio", "ISBN", "T\u00EDtulo", "Exemplar", "Dias restantes"
+					}
+				));
+				table_3.getTableHeader().setOpaque(false);
+				table_3.getTableHeader().setBackground(new Color(225, 235, 252));
+				table_3.setFillsViewportHeight(true);
+				scrollPane.setViewportView(table_3);
+
+				
+				btnRealizarEmprstimo = new JButton("Realizar Empréstimo");
+				btnRealizarEmprstimo.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {				
+							try {
+								int usuario = Integer.parseInt(String.valueOf((table_3.getValueAt(table_3.getSelectedRow(), 0))));
+								int exemplar = Integer.parseInt(String.valueOf((table_3.getValueAt(table_3.getSelectedRow(), 4))));
+								int funcionario = Integer.parseInt(TelaPrincipal.tfIdUsuario.getText());
+								sistema.inserirEmprestimoPorReserva(exemplar, usuario, funcionario);
+							} catch (InsertException | SelectException | JaCadastradoException e1) {
+								JOptionPane.showMessageDialog(null, e1.getMessage());
+							}
+							limpar();
+							atualizarTabela_2();
+							atualizarTabela_3();
+							btnDevolucao.setEnabled(false);
+							btnRenovarEmprestimo.setEnabled(false);
+							btnRealizarEmprstimo.setEnabled(false);
+					}
+				});
+				btnRealizarEmprstimo.setEnabled(false);
+				btnRealizarEmprstimo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+				btnRealizarEmprstimo.setBackground(Color.WHITE);
+				btnRealizarEmprstimo.setBounds(1182, 889, 216, 21);
+				contentPane.add(btnRealizarEmprstimo);
+				
+				table_3.addMouseListener(new MouseAdapter() {
+					public void mousePressed(MouseEvent arg0) {
+						btnRealizarEmprstimo.setEnabled(true);
+						
+					}
+				});
+				
+				JLabel lblExemplares_1_3_1 = new JLabel("RESERVAS CORRENTES");
+				lblExemplares_1_3_1.setForeground(new Color(85, 97, 120));
+				lblExemplares_1_3_1.setFont(new Font("Lato Black", Font.BOLD, 16));
+				lblExemplares_1_3_1.setBounds(1402, 515, 337, 20);
+				contentPane.add(lblExemplares_1_3_1);
+				
+				JButton btnFilaDeReservas = new JButton("Fila de Reserva");
+				btnFilaDeReservas.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						FilaReservaView frame = new FilaReservaView();
+						frame.setVisible(true);
+						frame.setLocationRelativeTo(null);
+					}
+				});
+				btnFilaDeReservas.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+				btnFilaDeReservas.setBackground(Color.WHITE);
+				btnFilaDeReservas.setBounds(1602, 887, 216, 21);
+				contentPane.add(btnFilaDeReservas);
 		
 				JLabel lblNewLabel = new JLabel("New label");
 				lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
@@ -598,7 +686,7 @@ public class EmprestimoView extends JFrame {
 
 public static void atualizarTabela_1() {
 		try {
-			int id_livro = Integer.parseInt(String.valueOf(table_2.getValueAt(table_2.getSelectedRow(), 0)));
+		    int id_livro = Integer.parseInt(String.valueOf(table_2.getValueAt(table_2.getSelectedRow(), 0)));
 			exemplares = sistema.listarExemplaresLivrosDisponiveis(id_livro);
 			DefaultTableModel model = (DefaultTableModel) table_1.getModel();
 			model.setNumRows(0);
@@ -616,6 +704,19 @@ public static void atualizarTabela_2() {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.setNumRows(0);
 	for (int i=0;i<emprestimos.size();i++) model.addRow((Object[]) emprestimos.get(i));
+	
+	} catch (Exception e) {
+		JOptionPane.showMessageDialog(null, e.getMessage());
+	}
+}
+
+
+public static void atualizarTabela_3() {
+	try {
+		reservas = sistema.listarReservasAtivas();
+		DefaultTableModel model = (DefaultTableModel) table_3.getModel();
+		model.setNumRows(0);
+	for (int i=0;i<reservas.size();i++) model.addRow((Object[]) reservas.get(i));
 	
 	} catch (Exception e) {
 		JOptionPane.showMessageDialog(null, e.getMessage());

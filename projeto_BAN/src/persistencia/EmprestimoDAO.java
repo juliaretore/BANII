@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLWarning;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +35,8 @@ private static EmprestimoDAO instance = null;
 	private PreparedStatement select_historico_exemplar;
 	private PreparedStatement select_emprestimos_correntes;
 	private PreparedStatement select_pagar_multas;
+	private PreparedStatement select_reservas_ativas;
+	private PreparedStatement select_fila_reserva;
 	
 	public static EmprestimoDAO getInstance() throws ClassNotFoundException, SQLException, SelectException{
 		if(instance==null) instance=new EmprestimoDAO();
@@ -48,13 +51,15 @@ private static EmprestimoDAO instance = null;
 		atualizar_multas = conexao.prepareStatement("select atualiza_multas()");
 		renovar_emprestimo = conexao.prepareStatement("select renovar_emprestimo(?)");
 		verifica_datas_reservas = conexao.prepareStatement("select verifica_datas_reservas()");
-		insert_reserva = conexao.prepareStatement("insert into reservas_livro values (?, ?)");
+		insert_reserva = conexao.prepareStatement("select cadastra_reserva(?,?)");
 		delete_reserva = conexao.prepareStatement("delete from reservas_livro where id_livro=? and id_usuario=?");
 		pagar_multa = conexao.prepareStatement("select pagamento_multas(?)");
 		select_data_emprestimo = conexao.prepareStatement("select ((select c.tempo_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=?)+current_date)");
 		select_historico_exemplar = conexao.prepareStatement("select e.id,  u.nome, e.data_empr, e.data_est_entr, e.data_real_entr, e.situacao, e.multa, e.pagamento_multa from emprestimo e join usuario u on u.id=e.id_usuario where id_exemplar=?");
 		select_emprestimos_correntes = conexao.prepareStatement("select e.id, u.nome, l.titulo, ex.id, e.data_empr, e.data_est_entr, e.renovacoes from emprestimo e join usuario u on u.id=e.id_usuario join exemplar ex on ex.id=e.id_exemplar join livro l on l.id=ex.id_livro where e.situacao=0");
 		select_pagar_multas = conexao.prepareStatement("select e.id_usuario, u.nome, sum(multa) from emprestimo e join usuario u on u.id=e.id_usuario where e.situacao=1 and e.pagamento_multa=1 group by e.id_usuario, u.nome");
+		select_reservas_ativas = conexao.prepareStatement("select u.id, u.nome, l.isbn, l.titulo, e.id, 7-abs(e.data_reserva-current_date) from exemplar e join livro l on l.id=e.id_livro join usuario u on u.id=e.id_usuario_reserva where id_usuario_reserva is not null");
+		select_fila_reserva = conexao.prepareStatement("select u.nome, l.isbn, l.titulo,  r.data_reserva from reservas_livro r join livro l on l.id=r.id_livro join usuario u on u.id=r.id_usuario");
 	}
 	
 	public void insert_emprestimo(int cid_exemplar, int cid_usuario, int cid_funcionario) throws InsertException, SelectException, JaCadastradoException{
@@ -74,20 +79,23 @@ private static EmprestimoDAO instance = null;
 			insert_emprestimo_reserva.setInt(1, cid_exemplar);
 			insert_emprestimo_reserva.setInt(2, cid_usuario);
 			insert_emprestimo_reserva.setInt(3, cid_funcionario);				
-			insert_emprestimo_reserva.executeUpdate();
+			insert_emprestimo_reserva.execute();
 		}catch (SQLException e) {
 			String texto[] = e.getMessage().split("\\r?\\n");
 			JOptionPane.showMessageDialog(null, texto[0]);
 		}	
 	}	
 
-	public void devolucao_emprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException{
+	public String devolucao_emprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException, SQLWarning{
 		try {
 			devolucao_emprestimo.setInt(1, cid_emprestimo);
 			devolucao_emprestimo.execute();
-		}catch (SQLException e) {
-			throw new InsertException("Erro na devolução do empréstimo");
-		}	
+			if(devolucao_emprestimo.getWarnings()!=null) return devolucao_emprestimo.getWarnings().getMessage();
+		}catch (SQLException e ) {
+			String texto[] = e.getMessage().split("\\r?\\n");
+			JOptionPane.showMessageDialog(null, texto[0]);
+		}
+		return "";
 	}
 	
 	public void renovar_emprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException{
@@ -104,7 +112,7 @@ private static EmprestimoDAO instance = null;
 		try {
 			insert_reserva.setInt(1, cid_livro);
 			insert_reserva.setInt(2, cid_usuario);
-			insert_reserva.executeUpdate();
+			insert_reserva.execute();
 		}catch (SQLException e) {
 			throw new InsertException("Erro inserir reserva");
 		}	
@@ -211,6 +219,35 @@ private static EmprestimoDAO instance = null;
 		}
 		return lista;
 	}
+	
+	public List<Object> select_reservas_ativas() throws SelectException {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			ResultSet rs = select_reservas_ativas.executeQuery();
+			while(rs.next()) {
+					Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),rs.getInt(5),rs.getInt(6)};
+					lista.add(linha);				
+			}
+		}catch(SQLException e) {
+			throw new SelectException("Erro ao buscar reservas");
+		}
+		return lista;
+	}
+	
+	public List<Object> select_fila_reserva() throws SelectException {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			ResultSet rs = select_fila_reserva.executeQuery();
+			while(rs.next()) {
+					Object[] linha  = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)};
+					lista.add(linha);				
+			}
+		}catch(SQLException e) {
+			throw new SelectException("Erro ao buscar fila de reserva");
+		}
+		return lista;
+	}
+	
 	
 	
 }

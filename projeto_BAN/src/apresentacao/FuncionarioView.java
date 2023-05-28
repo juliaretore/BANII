@@ -124,7 +124,7 @@ public class FuncionarioView extends JFrame {
 		contentPane.setEnabled(false);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		setBounds(0, 0,  1930, 1080);
+//		setBounds(0, 0,  1930, 1080);
 
 		
 		JLabel lblNewLabel = new JLabel("New label");

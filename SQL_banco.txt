@@ -89,8 +89,12 @@ create table funcionario(
 	turno varchar(40) NOT NULL, -- Vespertino, Matutino, Notuno, Integral
 	tipo int NOT NULL,          -- 1 -> bibliotecario  2->assistente
 	email varchar(50) NOT NULL,
+	ativo int NOT NULL, --> 1 -> ativo 0-> inativo
 	primary key (id)
 );
+
+update funcionario set ativo=0 where id=?
+select * from funcionario
 
 create table supervisao(
 	id_assistente int NOT NULL,
@@ -123,7 +127,7 @@ create sequence id_reservas_livro;
 create table reservas_livro(
 	id_livro int NOT NULL,
 	id_usuario int NOT NULL,	
-	data_reserva date,
-	primary key (id_livro, id_usuario),
+	data_reserva timestamp,
+	primary key (id_livro, id_usuario, data_reserva),
 	foreign key (id_usuario) references usuario
 );

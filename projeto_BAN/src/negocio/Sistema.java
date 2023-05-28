@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.sql.SQLWarning;
+
 //import javazoom.jl.decoder.JavaLayerException;
 //import javazoom.jl.player.Player;
 import persistencia.*;
@@ -197,8 +199,8 @@ public class Sistema {
 		emprestimoDAO.insert_emprestimo_reserva(cid_exemplar, cid_usuario, cid_funcionario);
 	}
 	
-	public void devolucaoEmprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException {
-		emprestimoDAO.devolucao_emprestimo(cid_emprestimo);
+	public String devolucaoEmprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException, SQLWarning {
+		return emprestimoDAO.devolucao_emprestimo(cid_emprestimo);
 	}
 	
 	public void renovarEmprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException {
@@ -240,5 +242,15 @@ public class Sistema {
 	public List<Object> listarMultas() throws SelectException{
 		return emprestimoDAO.select_pagar_multas();
 	}
+	
+	public List<Object> listarReservasAtivas() throws SelectException{
+		return emprestimoDAO.select_reservas_ativas();
+	}
+	
+	public List<Object> listarFilaReserva() throws SelectException{
+		return emprestimoDAO.select_fila_reserva();
+	}
+	
+	
 	
 }

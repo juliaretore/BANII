@@ -170,6 +170,7 @@ begin
 	if usuario_reserva is not null then
 		update exemplar set id_usuario_reserva=usuario_reserva, data_reserva=current_date where id=exemplar_emprestimo;
 		delete from reservas_livro where id_livro=livro and id_usuario=usuario_reserva;
+		raise warning 'Livro reservado. Não devolver para a prateleira';
 	end if;
 end;
 $$ language plpgsql;
@@ -190,16 +191,12 @@ $$ language plpgsql;
 
 ---------------------------------------------------------------------------------------------
 -- 8) Trigger para colocar a data corrente no registro de cadastro
-
-create or replace function cadastro_reserva() returns trigger as
+create or replace function cadastra_reserva(cid_livro int, cid_usuario int) returns void as
 $$
-begin 
-	new.data_reserva = current_date;
-	return new;
+begin
+	insert into reservas_livro values(cid_livro, cid_usuario, (select current_timestamp));
 end;
 $$ language plpgsql;
-
-create trigger cadastro_reserva  before insert on reservas_livro for each row execute procedure cadastro_reserva();
 
 
 ---------------------------------------------------------------------------------------------
