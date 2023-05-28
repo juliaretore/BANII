@@ -28,7 +28,7 @@ begin
 end;
 $$ language plpgsql;
 
-select atualiza_multas()
+select atualiza_multas();
 
 
 ---------------------------------------------------------------------------------------------
@@ -135,7 +135,7 @@ for item in select * from exemplar loop
 end;
 $$ language plpgsql;
 
-select verifica_datas_reservas()
+select verifica_datas_reservas();
 
 
 ---------------------------------------------------------------------------------------------
