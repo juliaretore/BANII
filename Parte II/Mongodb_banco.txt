@@ -1,0 +1,157 @@
+
+------------------- Categoria -----------------
+db.categoria.insertMany([
+{
+  _id: 1,
+  nome: "Aluno Graduação",
+  tempo_empr: 15,
+  qnt_max_empr: 6
+},
+{
+  _id: 2,
+  nome: "Aluno Pós-Graduação",
+  tempo_empr: 30,
+  qnt_max_empr: 8
+},
+{
+  _id: 3,
+  nome: "Professor",
+  tempo_empr: 30,
+  qnt_max_empr: 10
+},
+{
+  _id: 4,
+  nome: "Professor Pós-Graduação",
+  tempo_empr: 90,
+  qnt_max_empr: 10
+}
+])
+
+------------------- Usuario -----------------
+
+db.usuario.insertMany([
+{
+ _id: 1,
+ nome: “Julia Retore”,  
+ turno: "Matutino", 
+ email: "juliaretore@gmail.com",
+ categoria_id: 1,
+ telefones:["49 991741129", "35332753"],
+ endereço: {
+ 	     cidade: "Joinville",
+ 	     rua: "Rua Paulo Malschitzki",
+ 	     bairro: "Zona Industrial Norte",
+ 	     numero: 100,	
+ 	     estado: "SC",
+ 	     complemento: "apt 602"
+           }
+ },
+ {
+  _id: 2,
+  nome: "Ana Athayde",  
+  turno: "Matutino", 
+  email: "apc@gmail.com",
+  categoria_id: 1,
+  telefones:["47 99347284"],
+  endereço: {
+  cidade: "Joinville",
+  rua: "Rua Paulo Malschitzki",
+  bairro: "Zona Industrial Norte",
+  numero: 100,
+  estado: "SC",
+  complemento: "apt 602"
+}
+])
+
+
+------------------- Funcionario -----------------
+db.funcionario.insertMany([
+{
+  _id: 1,
+  login: "ana.lucia",
+  senha: "123",
+  nome: "Ana Lucia",
+  salario: "3000",
+  turno: "Matutino",
+  tipo: 1,
+  email: "analucia@gmail.com",
+  ativo: 1,
+  supervisores: [{supervisor_id: ObjectId("...") }],
+  supervisinado: [{supervisinado_id: ObjectId("...") }]
+}
+])
+
+
+
+------------------- Autor -----------------
+db.autor.insertMany([
+{
+ _id: 1,
+ nome: "James Stewart",
+ area: "Matemática",
+ nacionalidade: "Canadense"
+},
+{
+ _id: 2,
+ nome: "Michael Sipser",
+ area: "Computação",
+ nacionalidade: "Norte Americano"
+}
+])
+
+
+------------------- Livro -----------------
+db.livro.insertMany([
+{
+ isbn: “978-34-83943-01-3”,  
+ titulo: "Cálculo I",
+ editora: "cengag"
+ autores: [{autor: ObjectId(1)}],
+ reservas: [{usuario: ObjectId(1), data: ISODate("..")}]
+ },
+{}
+])
+
+
+------------------- Exemplar ---------------
+db.exemplar.insertMany([
+{
+ _id: 1,
+ prateleira: 5,
+ estante: 4,
+ colecao: "Permanente",
+ livro: ObjectId(),
+ data_reserva: ISODate(),
+ usuario_reserva: ObjectId(),
+ reservas [
+		{
+		 _id: ObjectId("..."),
+		 multa: "float",
+		 pagamento_multa: "int",
+		 renovacoes: "int",
+		 data_empr: ISODate("..."),
+		 data_est_entr: ISODate("..."),
+		 data_real_entr: ISODate("..."),
+		 usuario_id: ObjectId("..."),
+		 funcionario_id: ObjectId("..."),
+		 situacao: "int"
+		}
+          ]
+},
+{
+ id: 2,
+ prateleira: 5,
+ estante: 4,
+ colecao: "Permanente",
+ livro: ObjectId(),
+ data_reserva: ISODate(),
+ usuario_reserva: ObjectId(),
+ reservas: []
+},
+{}
+])
+
+
+
+
+
