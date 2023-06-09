@@ -1,13 +1,30 @@
 package persistencia;
 
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.combine;
+import static com.mongodb.client.model.Updates.set;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+
+import dados.Endereco;
 import dados.Funcionario;
 import exceptions.DeleteException;
 import exceptions.InsertException;
@@ -17,28 +34,6 @@ import exceptions.SelectException;
 import exceptions.UpdateException;
 
 public class FuncionarioDAO {
-private static FuncionarioDAO instance = null;
-	
-	private PreparedStatement select_new_id_funcionario;
-	private PreparedStatement insert_funcionario;
-	private PreparedStatement insert_supervisao;
-	private PreparedStatement update_funcionario;
-	private PreparedStatement inativa_funcionario;
-	private PreparedStatement select_bibliotecarios;
-	private PreparedStatement select_assistentes;
-	private PreparedStatement select_assistentes_bibliotecario;
-	private PreparedStatement select_adicionar_supervisao;
-	private PreparedStatement delete_supervisoes;
-	private PreparedStatement delete_supervisoes_a;
-	private PreparedStatement delete_supervisao;
-	
-	
-
-	public static FuncionarioDAO getInstance() throws ClassNotFoundException, SQLException, SelectException{
-		if(instance==null) instance=new FuncionarioDAO();
-		return instance;
-	}
-	
 //	private FuncionarioDAO() throws ClassNotFoundException, SQLException, SelectException{
 //		Connection conexao = Conexao.getConexao();
 //		select_new_id_funcionario = conexao.prepareStatement("select nextval('id_funcionario')");
@@ -55,148 +50,169 @@ private static FuncionarioDAO instance = null;
 //		select_adicionar_supervisao = conexao.prepareStatement("select id, nome, login, turno, salario, email from funcionario where tipo=2 and ativo=1 and id not in (select id_assistente from supervisao where id_bibliotecario=?)");
 //	}
 	
-	private int select_new_id_funcionario() throws SelectException{
-		try {
-			ResultSet rs = select_new_id_funcionario.executeQuery();
-			if(rs.next()) return rs.getInt(1);
-		}catch(SQLException e) {
-			throw new SelectException("Erro ao buscar novo ID da tabela funcionário");
-		}
-		return 0;
+	
+	private static FuncionarioDAO instance = null;
+	private static MongoCollection<Document> collection;
+	private static MongoDatabase connection;
+
+	public static FuncionarioDAO getInstance() throws Exception {
+		if (instance == null)  instance = new FuncionarioDAO();
+		return instance;
 	}
 	
-	public void insert_funcionario(Funcionario funcionario) throws InsertException, SelectException, JaCadastradoException{
+	private FuncionarioDAO() throws  Exception {
+	connection = Conexao.getConexao();
+	try {
+		collection = connection.getCollection("funcionario");
+	} catch (Exception e) {
+		throw new SelectException("Erro ao conectar a coleção funcionario");
+	}
+}
+
+	public void insert_funcionario(Funcionario funcionario) throws Exception{
 			try {
-				insert_funcionario.setInt(1, select_new_id_funcionario());
-				insert_funcionario.setString(2, funcionario.getLogin());
-				insert_funcionario.setString(3, funcionario.getSenha());
-				insert_funcionario.setString(4, funcionario.getNome());
-				insert_funcionario.setDouble(5, funcionario.getSalario());
-				insert_funcionario.setString(6, funcionario.getTurno());
-				insert_funcionario.setInt(7, funcionario.getTipo());
-				insert_funcionario.setString(8, funcionario.getEmail());
-				insert_funcionario.setInt(9, 1);
-				insert_funcionario.executeUpdate();
-			}catch (SQLException e) {
+				ArrayList<String> al = new ArrayList<String>();
+				Document document = new Document(
+						"login", funcionario.getLogin())
+						.append("senha", funcionario.getSenha())
+						.append("nome", funcionario.getNome())
+						.append("salario", funcionario.getSalario())
+						.append("turno", funcionario.getTurno())
+						.append("tipo", funcionario.getTipo())
+						.append("email", funcionario.getEmail())
+						.append("ativo", 1)
+						.append("supervisiona", al);
+				collection.insertOne(document);
+			}catch (Exception e) {
 				throw new InsertException("Erro ao inserir funcionário.");
 			}		
 	}
-	
-	public void insert_supervisao(int id_assistente, int id_bibliotecario) throws InsertException, SelectException, JaCadastradoException{
+
+	public void insert_supervisao(String id_assistente, ObjectId id_bibliotecario) throws Exception{
 		try {
-			insert_supervisao.setInt(1, id_assistente);
-			insert_supervisao.setInt(2, id_bibliotecario);
-			insert_supervisao.executeUpdate();
-		}catch (SQLException e) {
+			Document funcionario = collection.find(eq("_id", id_bibliotecario)).first();
+			List<String>  assistentes =  (List<String>) funcionario.get("supervisiona");
+			assistentes.add(id_assistente);			
+			collection.updateOne(eq("_id", id_bibliotecario), combine(set("supervisiona", assistentes)));
+		}catch (Exception e) {
 			throw new InsertException("Erro ao inserir supervisão.");
 		}		
 }
 
-	public void update_funcionario(Funcionario funcionario) throws UpdateException, SelectException, NaoCadastradoException{
+	public void update_funcionario(Funcionario funcionario) throws Exception{
+		ObjectId id = new ObjectId(funcionario.getId());
 		try {
-			update_funcionario.setString(1, funcionario.getLogin());
-			update_funcionario.setString(2, funcionario.getNome());
-			update_funcionario.setDouble(3, funcionario.getSalario());
-			update_funcionario.setString(4, funcionario.getTurno());
-			update_funcionario.setString(5, funcionario.getEmail());
-			update_funcionario.setInt(6, funcionario.getId());
-			update_funcionario.executeUpdate();
-		}catch (SQLException e) {
+			collection.updateOne(eq("_id", id), combine(
+					 set("login", funcionario.getLogin()),
+				 	 set("senha", funcionario.getSenha()),
+				 	 set("nome", funcionario.getNome()),
+				     set("salario", funcionario.getSalario()),
+	                 set("turno", funcionario.getTurno()),
+					 set("email", funcionario.getEmail())
+	                ));
+		}catch (Exception e) {
 			throw new UpdateException("Erro ao atualizar funcionário.");
 		}
 	}
 	
-	public void inativa_funcionario(int funcionario, int op) throws DeleteException, SelectException, NaoCadastradoException{
+	public void inativa_funcionario(ObjectId funcionario) throws Exception{
 		try {
-			
-			if(op==0) {       //bibliotecario
-				delete_supervisoes.setInt(1, funcionario);
-				delete_supervisoes.executeUpdate();
-			}else if(op==1) { //assistesnte
-				delete_supervisoes_a.setInt(1, funcionario);
-				delete_supervisoes_a.executeUpdate();
-			}
-			inativa_funcionario.setInt(1, funcionario);
-			inativa_funcionario.executeUpdate();
-		}catch(SQLException e) {
-			throw new DeleteException("Erro ao deletar funcionário");
+				collection.updateOne(eq("_id", funcionario), combine(set("ativo", 0)));
+		}catch(Exception e) {
+			throw new DeleteException("Erro ao inativar funcionário");
 		}
 	}
 	
-	public void delete_supervisao(int bibliotecario, int assistente) throws DeleteException, SelectException, NaoCadastradoException{
+	public void delete_supervisao(ObjectId id_bibliotecario, String assistente) throws Exception{
 		try {	
-			delete_supervisao.setInt(1, bibliotecario);
-			delete_supervisao.setInt(2, assistente);
-			delete_supervisao.executeUpdate();
-		}catch(SQLException e) {
+			Document bibliotecario = collection.find(eq("_id", id_bibliotecario)).first();
+			List<String>  assistentes =  (List<String>) bibliotecario.get("supervisiona");
+			for(int i=0; i<assistentes.size();i++) {
+				if(assistentes.get(i).equals(assistente)) {
+					assistentes.remove(i);
+					break;
+				}
+			}
+			collection.updateOne(eq("_id", id_bibliotecario), combine(set("supervisiona", assistentes)));
+		}catch(Exception e) {
 			throw new DeleteException("Erro ao deletar supervisão");
 		}
 	}
 	
-	public List<Object> select_bibliotecarios() throws SelectException {
+	public List<Object> select_bibliotecarios() throws Exception {
 		List<Object> lista = new ArrayList<Object>();
 		try {
-			ResultSet rs = select_bibliotecarios.executeQuery();
-			while(rs.next()) {
-				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getDouble(5), rs.getString(6)};
-				lista.add(linha);
+			BasicDBObject query = new BasicDBObject();
+			query.put("tipo", 1);
+		    query.put("ativo", 1);
+			
+			MongoIterable<Document> funcionarios = collection.find(query);
+			for(Document f : funcionarios) {
+					Object[] linha  = {f.getObjectId("_id"), f.getString("nome"), f.getString("login"),  f.getString("turno"), f.getDouble("salario"), f.getString("email")};		
+					lista.add(linha);
 			}
-		}catch(SQLException e) {
+		}catch(Exception e) {
 			throw new SelectException("Erro ao buscar dados para preencher a tabela de bibliotecários");
 		}
 		return lista;
 	}
 	
-	
 	public List<Object> select_assistentes() throws SelectException {
 		List<Object> lista = new ArrayList<Object>();
 		try {
-			ResultSet rs = select_assistentes.executeQuery();
-			while(rs.next()) {
-				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getDouble(5), rs.getString(6)};
-				lista.add(linha);
-			}
-		}catch(SQLException e) {
+			BasicDBObject query = new BasicDBObject();
+			query.put("tipo", 2);
+		    query.put("ativo", 1);
+			MongoIterable<Document> funcionarios = collection.find(query);
+			for(Document f : funcionarios) {
+					Object[] linha  = {f.getObjectId("_id"), f.getString("nome"), f.getString("login"),  f.getString("turno"), f.getDouble("salario"), f.getString("email")};		
+					lista.add(linha);
+				}	
+		}catch(Exception e) {
 			throw new SelectException("Erro ao buscar dados para preencher a tabela de assistentes");
 		}
 		return lista;
 	}
 	
-	
-	
-public List<Object> select_assistentes_bibliotecario(int id_bibliotecario) throws SelectException {
+	public List<Object> select_assistentes_bibliotecario(ObjectId id_bibliotecario) throws SelectException {
 		List<Object> lista = new ArrayList<Object>();
 		try {
-			select_assistentes_bibliotecario.setInt(1, id_bibliotecario);
-			ResultSet rs = select_assistentes_bibliotecario.executeQuery();
-			while(rs.next()) {
-				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getDouble(5), rs.getString(6)};
-				lista.add(linha);
+			Document funcionario = collection.find(eq("_id", id_bibliotecario)).first();
+			List<String> assistentes = (List<String>) funcionario.get("supervisiona");
+			for(String a : assistentes) {
+					ObjectId objId = new ObjectId(a);
+					Document assistente = collection.find(eq("_id", objId)).first();
+					if(assistente.getInteger("ativo")==1) {
+						Object[] linha  = {assistente.getObjectId("_id"), assistente.getString("nome"), assistente.getString("login"),  assistente.getString("turno"), assistente.getDouble("salario"), assistente.getString("email")};		
+						lista.add(linha);
+					}
+			}	
+		}catch(Exception e) {
+			throw new SelectException("Erro ao buscar dados para preencher a tabela de assistentes");
+		}
+			return lista;
+		}	
+					
+	public List<Object> select_adicionar_supervisao(ObjectId id_bibliotecario) throws Exception {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			Document funcionario = collection.find(eq("_id", id_bibliotecario)).first();
+			List<String> assistentes_bibliotecario = (List<String>) funcionario.get("supervisiona");
+			MongoIterable<Document> assistentes = collection.find(eq("tipo", 2));
+			System.out.println(assistentes);
+			for(Document f : assistentes) {
+				if(!assistentes_bibliotecario.contains(String.valueOf(f.getObjectId("_id"))) && f.getInteger("ativo")==1) {
+					Object[] linha  = {f.getObjectId("_id"), f.getString("nome"), f.getString("login"),  f.getString("turno"), f.getDouble("salario"), f.getString("email")};		
+					lista.add(linha);
+				}
 			}
-		}catch(SQLException e) {
+		}catch(Exception e) {
 			throw new SelectException("Erro ao buscar dados para preencher a tabela de assistentes");
 		}
 		return lista;
-	}	
-
-		
-
-public List<Object> select_adicionar_supervisao(int id_bibliotecario) throws SelectException {
-	List<Object> lista = new ArrayList<Object>();
-	try {
-		select_adicionar_supervisao.setInt(1, id_bibliotecario);
-		ResultSet rs = select_adicionar_supervisao.executeQuery();
-		while(rs.next()) {
-			Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4), rs.getDouble(5), rs.getString(6)};
-			lista.add(linha);
-		}
-	}catch(SQLException e) {
-		throw new SelectException("Erro ao buscar os assistentes para supervisão");
 	}
-	return lista;
-}
 
-
+	
 
 }
 	

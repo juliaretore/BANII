@@ -16,6 +16,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import org.bson.types.ObjectId;
+
 import dados.Funcionario;
 import exceptions.DeleteException;
 import exceptions.InsertException;
@@ -106,7 +109,7 @@ public class FuncionarioView extends JFrame {
 	public FuncionarioView() {
 		try {
 			sistema = new Sistema();
-		} catch (ClassNotFoundException | SQLException | SelectException e) {
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null,  e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
 		
@@ -183,7 +186,7 @@ public class FuncionarioView extends JFrame {
 		scrollPane.setOpaque(false);
 		scrollPane.setBackground(new Color(255, 255, 255));
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(243, 186, 611, 431);
+		scrollPane.setBounds(138, 186, 716, 431);
 		contentPane.add(scrollPane);
 		table.setSelectionBackground(new Color(212, 226, 250));
 		table.setBackground(Color.WHITE);
@@ -204,7 +207,7 @@ public class FuncionarioView extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		table.getColumnModel().getColumn(0).setPreferredWidth(20);
+		table.getColumnModel().getColumn(0).setPreferredWidth(90);
 		table.getColumnModel().getColumn(1).setPreferredWidth(90);
 		table.getColumnModel().getColumn(2).setPreferredWidth(80);
 		table.getColumnModel().getColumn(3).setPreferredWidth(80);
@@ -213,7 +216,7 @@ public class FuncionarioView extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(1035, 186, 614, 431);
+		scrollPane_1.setBounds(1035, 186, 716, 431);
 		contentPane.add(scrollPane_1);
 		
 		table_1 = new JTable();
@@ -225,7 +228,7 @@ public class FuncionarioView extends JFrame {
 				"ID", "Nome", "Login", "Turno", "Salario", "Email"
 			}
 		));
-		table_1.getColumnModel().getColumn(0).setPreferredWidth(20);
+		table_1.getColumnModel().getColumn(0).setPreferredWidth(90);
 		table_1.getColumnModel().getColumn(1).setPreferredWidth(90);
 		table_1.getColumnModel().getColumn(2).setPreferredWidth(80);
 		table_1.getColumnModel().getColumn(3).setPreferredWidth(80);
@@ -255,7 +258,7 @@ public class FuncionarioView extends JFrame {
 		contentPane.add(layeredPane);
 		
 		tfCodigo = new JTextField();
-		tfCodigo.setBounds(127, 31, 33, 19);
+		tfCodigo.setBounds(127, 31, 282, 19);
 		layeredPane.add(tfCodigo);
 		tfCodigo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		tfCodigo.setEditable(false);
@@ -301,7 +304,7 @@ public class FuncionarioView extends JFrame {
 						funcionario.setEmail(tfemail.getText());
 						try {
 							sistema.adicionarFuncionario(funcionario);
-						} catch (InsertException | SelectException | JaCadastradoException e1) {
+						} catch (Exception e1) {
 							JOptionPane.showMessageDialog(null, e1.getMessage());
 						}
 					
@@ -321,7 +324,7 @@ public class FuncionarioView extends JFrame {
 		alterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					Funcionario funcionario = new Funcionario();
-					funcionario.setId(Integer.parseInt(tfCodigo.getText()));
+					funcionario.setId(tfCodigo.getText());
 					funcionario.setNome(tfNome.getText());
 					funcionario.setLogin(tfLogin.getText());
 					funcionario.setSalario(Double.parseDouble(tfSalario.getText()));
@@ -329,7 +332,7 @@ public class FuncionarioView extends JFrame {
 					funcionario.setEmail(tfemail.getText());
 					try {
 						sistema.alterarFuncionario(funcionario);
-					} catch (UpdateException | SelectException | NaoCadastradoException e1) {
+					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					};						
 			
@@ -351,8 +354,9 @@ public class FuncionarioView extends JFrame {
 				int input = JOptionPane.showConfirmDialog(null, "Você realmente deseja inativar funcionário? Essa ação é irreversível.");
 		        if(input==0) {
 					try {
-						sistema.inativaFuncionario(Integer.parseInt(tfCodigo.getText()), 0);
-					} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
+						ObjectId objId = new ObjectId(tfCodigo.getText());
+						sistema.inativaFuncionario(objId);
+					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(null,  e1.getMessage());
 					}
 		        }
@@ -425,7 +429,7 @@ public class FuncionarioView extends JFrame {
 		tfCodigo_1.setEditable(false);
 		tfCodigo_1.setColumns(10);
 		tfCodigo_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		tfCodigo_1.setBounds(127, 31, 33, 19);
+		tfCodigo_1.setBounds(127, 31, 282, 19);
 		layeredPane_1.add(tfCodigo_1);
 		
 		tfNome_1 = new JTextField();
@@ -470,8 +474,9 @@ public class FuncionarioView extends JFrame {
 				int input = JOptionPane.showConfirmDialog(null, "Você realmente deseja inativar funcionário? Essa ação é irreversível.");
 		        if(input==0) {
 					try {
-						sistema.inativaFuncionario(Integer.parseInt(tfCodigo_1.getText()),1);
-					} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
+						ObjectId objId = new ObjectId(tfCodigo_1.getText());
+						sistema.inativaFuncionario(objId);
+					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(null,  e1.getMessage());
 					}
 					atualizarTabela();
@@ -526,7 +531,7 @@ public class FuncionarioView extends JFrame {
 		alterar_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Funcionario funcionario = new Funcionario();
-				funcionario.setId(Integer.parseInt(tfCodigo_1.getText()));
+				funcionario.setId(tfCodigo_1.getText());
 				funcionario.setNome(tfNome_1.getText());
 				funcionario.setLogin(tfLogin_1.getText());
 				funcionario.setSalario(Double.parseDouble(tfSalario_1.getText()));
@@ -534,11 +539,13 @@ public class FuncionarioView extends JFrame {
 				funcionario.setEmail(tfemail_2.getText());
 				try {
 					sistema.alterarFuncionario(funcionario);
-				} catch (UpdateException | SelectException | NaoCadastradoException e1) {
+				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				};						
 		
 			atualizarTabela();
+			atualizarTabela_1();
+			limpar_1();
 			limpar();
 			}
 				
@@ -605,8 +612,9 @@ public class FuncionarioView extends JFrame {
 		remover_assistente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					sistema.excluirSupervisao(Integer.parseInt(tfCodigo.getText()), Integer.parseInt(tfCodigo_1.getText()));
-				} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
+					ObjectId objId = new ObjectId(tfCodigo.getText());
+					sistema.excluirSupervisao(objId, tfCodigo_1.getText());
+				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 				atualizarTabela_1_1();
@@ -819,8 +827,9 @@ public class FuncionarioView extends JFrame {
 
 public static void atualizarTabela_1_1() {
 		try {
-			int id_bibliotecario = Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
-			assistentes2 = sistema.listarAssistentesBibliotecario(id_bibliotecario);
+			String id_bibliotecario = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
+			ObjectId objId = new ObjectId(id_bibliotecario);
+			assistentes2 = sistema.listarAssistentesBibliotecario(objId);
 			DefaultTableModel model = (DefaultTableModel) table_1.getModel();
 			model.setNumRows(0);
 		for (int i=0;i<assistentes2.size();i++) model.addRow((Object[]) assistentes2.get(i));

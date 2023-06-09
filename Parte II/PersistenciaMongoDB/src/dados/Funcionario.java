@@ -1,7 +1,7 @@
 package dados;
 
 public class Funcionario {
-	private int id;
+	private String id;
 	private String nome;
 	private String login;
 	private String senha;
@@ -10,7 +10,7 @@ public class Funcionario {
 	private int tipo;
 	private String email;
 	
-	public Funcionario(int id, String nome, String login, String senha, double salario, String turno, int tipo) {
+	public Funcionario(String id, String nome, String login, String senha, double salario, String turno, int tipo) {
 		this.setId(id);
 		this.setLogin(login);
 		this.setNome(nome);
@@ -23,10 +23,10 @@ public class Funcionario {
 		
 	}
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getNome() {

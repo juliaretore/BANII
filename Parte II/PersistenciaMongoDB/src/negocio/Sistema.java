@@ -157,39 +157,39 @@ public class Sistema {
 	}
 	
 	//FUNCIONARIO
-	public List<Object> listarBibliotecarios() throws SelectException{
+	public List<Object> listarBibliotecarios() throws Exception{
 		return funcionarioDAO.select_bibliotecarios();
 	}
 	
-	public List<Object> listarAssistentes() throws SelectException{
+	public List<Object> listarAssistentes() throws Exception{
 		return funcionarioDAO.select_assistentes();
 	}
 	
-	public List<Object> listarAssistentesBibliotecario(int id_bibliotecario) throws SelectException{
+	public List<Object> listarAssistentesBibliotecario(ObjectId id_bibliotecario) throws Exception{
 		return funcionarioDAO.select_assistentes_bibliotecario(id_bibliotecario);
 	}
 	
-	public List<Object> listarAdicionarAssistentesBibliotecario(int id_bibliotecario) throws SelectException{
+	public List<Object> listarAdicionarAssistentesBibliotecario(ObjectId id_bibliotecario) throws Exception{
 		return funcionarioDAO.select_adicionar_supervisao(id_bibliotecario);
 	}
 	
-	public void adicionarFuncionario(Funcionario funcionario) throws InsertException, SelectException, JaCadastradoException {
+	public void adicionarFuncionario(Funcionario funcionario) throws Exception {
 		funcionarioDAO.insert_funcionario(funcionario);
 	}
 	
-	public void adicionarSupervisao(int id_assistente, int id_bibliotecario) throws InsertException, SelectException, JaCadastradoException {
+	public void adicionarSupervisao(String id_assistente, ObjectId id_bibliotecario) throws Exception {
 		funcionarioDAO.insert_supervisao(id_assistente, id_bibliotecario);
 	}
 	
-	public void alterarFuncionario(Funcionario funcionario) throws UpdateException, SelectException, NaoCadastradoException {
+	public void alterarFuncionario(Funcionario funcionario) throws Exception {
 		funcionarioDAO.update_funcionario(funcionario);
 	}
 	
-	public void inativaFuncionario(int funcionario, int op) throws DeleteException, SelectException, NaoCadastradoException {
-		funcionarioDAO.inativa_funcionario(funcionario, op);
+	public void inativaFuncionario(ObjectId funcionario) throws Exception {
+		funcionarioDAO.inativa_funcionario(funcionario);
 	}
 
-	public void excluirSupervisao(int bibliotecario, int assistente) throws DeleteException, SelectException, NaoCadastradoException { 
+	public void excluirSupervisao(ObjectId bibliotecario, String assistente) throws Exception { 
 		funcionarioDAO.delete_supervisao(bibliotecario, assistente);
 	}
 	

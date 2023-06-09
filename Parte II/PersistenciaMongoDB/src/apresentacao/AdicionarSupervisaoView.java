@@ -24,6 +24,9 @@ import javax.swing.event.CaretListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import org.bson.types.ObjectId;
+
 import exceptions.InsertException;
 import exceptions.JaCadastradoException;
 import exceptions.SelectException;
@@ -59,7 +62,7 @@ public class AdicionarSupervisaoView extends JFrame {
 	public AdicionarSupervisaoView() {
 		try {
 			sistema = new Sistema();
-		} catch (ClassNotFoundException | SQLException | SelectException e) {
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
 		addWindowListener(new WindowAdapter() {
@@ -153,11 +156,11 @@ public class AdicionarSupervisaoView extends JFrame {
 		selecionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (table.getSelectedRow()!=-1){
-					int assistente = Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
-					int bibliotecario = Integer.parseInt(FuncionarioView.tfCodigo.getText());
+					String assistente = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
+					ObjectId objId = new ObjectId(FuncionarioView.tfCodigo.getText());
 					try {
-						sistema.adicionarSupervisao(assistente, bibliotecario);
-					} catch (InsertException | SelectException |NumberFormatException | JaCadastradoException e) {
+						sistema.adicionarSupervisao(assistente, objId);
+					} catch (Exception e) {
 						JOptionPane.showMessageDialog(null, e.getMessage());
 					}
 					FuncionarioView.atualizarTabela_1_1();
@@ -209,7 +212,8 @@ public class AdicionarSupervisaoView extends JFrame {
 
 	public static void atualizarTabela() {
 		try {
-			assistentes = sistema.listarAdicionarAssistentesBibliotecario(Integer.parseInt(FuncionarioView.tfCodigo.getText()));
+			ObjectId objId = new ObjectId(FuncionarioView.tfCodigo.getText());
+			assistentes = sistema.listarAdicionarAssistentesBibliotecario(objId);
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.setNumRows(0);
 		for (int i=0;i<assistentes.size();i++) model.addRow((Object[]) assistentes.get(i));

@@ -1,40 +1,3 @@
-db.counters.insertMany([
-   {_id: "id_usuario",seq: 2},
-   {_id: "id_funcionario",seq: 0},
-   {_id: "id_autor",seq: 0},
-   {_id: "id_livro",seq: 0},
-   {_id: "id_exemplar", seq: 0}
-])
-
-function getNextSequence(name) {
-   var ret = db.counters.findAndModify(
-          {
-            query: { _id: name },
-            update: { $inc: { seq: 1 } },
-            new: true
-          }
-   );
-return ret.seq;
-}
-
-{
-  "name": "<Trigger Name>",
-  "type": "DATABASE",
-  "config": {
-    "service_name": "<MongoDB Service Name>",
-    "database": "<Database Name>",
-    "collection": "<Collection Name>",
-    "operation_types": ["<Operation Type>", ...],
-    "full_document": <boolean>,
-    "full_document_before_change": <boolean>,
-    "tolerate_resume_errors": <boolean>,
-    "unordered": <boolean>,
-    "match": { <Match Filter> },
-    "project": { <Projection Filter> },
-  },
-  "function_name": "<Trigger Function Name>",
-  "disabled": <Boolean>
-}
 
 ------------------- Categoria -----------------
 db.categoria.insertMany([
@@ -103,20 +66,50 @@ db.usuario.insertMany([
 ------------------- Funcionario -----------------
 db.funcionario.insertMany([
 {
-  _id: 1,
   login: "ana.lucia",
   senha: "123",
   nome: "Ana Lucia",
-  salario: "3000",
+  salario: 3000.0,
   turno: "Matutino",
   tipo: 1,
   email: "analucia@gmail.com",
   ativo: 1,
-  supervisores: [{supervisor_id: ObjectId("...") }],
-  supervisinado: [{supervisinado_id: ObjectId("...") }]
+  supervisiona: []
+}, 
+{
+  login: "fernando",
+  senha: "123",
+  nome: "Fernando Lima",
+  salario: 3000.0,
+  turno: "Vespertino",
+  tipo: 1,
+  email: "fernandolima@gmail.com",
+  ativo: 1,
+  supervisiona: []
+},
+{
+  login: "ana.maria",
+  senha: "123",
+  nome: "Ana Maria",
+  salario: 2000.0,
+  turno: "Vespertino",
+  tipo: 2,
+  email: "anamaria@gmail.com",
+  ativo: 1,
+  supervisiona: []
+},
+{
+  login: "liliane",
+  senha: "123",
+  nome: "Liliane Silva",
+  salario: 2000.0,
+  turno: "Matutino",
+  tipo: 2,
+  email: "lilianesilva@gmail.com",
+  ativo: 1,
+  supervisiona: []
 }
 ])
-
 
 
 ------------------- Autor -----------------
