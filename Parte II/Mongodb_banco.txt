@@ -1,3 +1,40 @@
+db.counters.insertMany([
+   {_id: "id_usuario",seq: 2},
+   {_id: "id_funcionario",seq: 0},
+   {_id: "id_autor",seq: 0},
+   {_id: "id_livro",seq: 0},
+   {_id: "id_exemplar", seq: 0}
+])
+
+function getNextSequence(name) {
+   var ret = db.counters.findAndModify(
+          {
+            query: { _id: name },
+            update: { $inc: { seq: 1 } },
+            new: true
+          }
+   );
+return ret.seq;
+}
+
+{
+  "name": "<Trigger Name>",
+  "type": "DATABASE",
+  "config": {
+    "service_name": "<MongoDB Service Name>",
+    "database": "<Database Name>",
+    "collection": "<Collection Name>",
+    "operation_types": ["<Operation Type>", ...],
+    "full_document": <boolean>,
+    "full_document_before_change": <boolean>,
+    "tolerate_resume_errors": <boolean>,
+    "unordered": <boolean>,
+    "match": { <Match Filter> },
+    "project": { <Projection Filter> },
+  },
+  "function_name": "<Trigger Function Name>",
+  "disabled": <Boolean>
+}
 
 ------------------- Categoria -----------------
 db.categoria.insertMany([
@@ -31,8 +68,7 @@ db.categoria.insertMany([
 
 db.usuario.insertMany([
 {
- _id: 1,
- nome: “Julia Retore”,  
+ nome: "Julia Retore",  
  turno: "Matutino", 
  email: "juliaretore@gmail.com",
  categoria_id: 1,
@@ -47,7 +83,6 @@ db.usuario.insertMany([
            }
  },
  {
-  _id: 2,
   nome: "Ana Athayde",  
   turno: "Matutino", 
   email: "apc@gmail.com",
@@ -60,6 +95,7 @@ db.usuario.insertMany([
   numero: 100,
   estado: "SC",
   complemento: "apt 602"
+}
 }
 ])
 

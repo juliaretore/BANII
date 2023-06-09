@@ -1,16 +1,28 @@
 package dados;
 
+import java.util.List;
+
 public class Usuario {
-	private int id;
+	private String id;
 	private String nome;
 	private String turno;
 	private Endereco endereco;
 	private Categoria categoria;
 	private String email;
-	
+	private List<String> telefones;
 
 	public Usuario() {
 		
+	}
+
+
+	public List<String> getTelefones() {
+		return telefones;
+	}
+
+
+	public void setTelefones(List<String> telefones) {
+		this.telefones = telefones;
 	}
 
 
@@ -29,10 +41,10 @@ public class Usuario {
 		this.nome = nome;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	

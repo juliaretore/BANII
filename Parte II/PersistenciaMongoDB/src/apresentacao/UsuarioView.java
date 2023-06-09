@@ -17,6 +17,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import org.bson.types.ObjectId;
+
 import dados.Categoria;
 import dados.Endereco;
 import dados.Usuario;
@@ -114,7 +117,7 @@ public class UsuarioView extends JFrame {
 		setTitle("Gerenciar Usuários");
 		setResizable(false);
 		setBounds(0, 0,  1930, 1080);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);;
+//		setExtendedState(JFrame.MAXIMIZED_BOTH);;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		contentPane = new JPanel();
 		contentPane.setEnabled(false);
@@ -179,11 +182,11 @@ public class UsuarioView extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nome", "Categoria", "Turno", "Endereco", "ID endereco", "email"
+				"ID", "Nome", "Categoria", "Turno", "Endereco", "email"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false, true, true
+				false, false, false, false, false, true
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -193,8 +196,7 @@ public class UsuarioView extends JFrame {
 		table.getColumnModel().getColumn(1).setPreferredWidth(90);
 		table.getColumnModel().getColumn(2).setPreferredWidth(70);
 		table.getColumnModel().getColumn(4).setPreferredWidth(400);
-		table.getColumnModel().getColumn(5).setPreferredWidth(15);
-		table.getColumnModel().getColumn(6).setPreferredWidth(105);
+		table.getColumnModel().getColumn(5).setPreferredWidth(105);
 		scrollPane.setViewportView(table);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -244,7 +246,7 @@ public class UsuarioView extends JFrame {
 		tfNome.setColumns(10);
 		
 		tfCodigo = new JTextField();
-		tfCodigo.setBounds(127, 16, 33, 19);
+		tfCodigo.setBounds(127, 16, 189, 19);
 		layeredPane.add(tfCodigo);
 		tfCodigo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		tfCodigo.setEditable(false);
@@ -315,12 +317,14 @@ public class UsuarioView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 					if(table_1.getSelectedRow()!=-1){
 						try {
-							sistema.alterarTelefone(Integer.parseInt(tfCodigo.getText()), tfTelefone.getText(), String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));		
+							ObjectId objId = new ObjectId(tfCodigo.getText());
+							sistema.alterarTelefone(objId, tfTelefone.getText(), String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));		
 							tfTelefone.setText("");
 						} catch (Exception e1) {
 							JOptionPane.showMessageDialog(null, e1.getMessage());
 						}
-						atualizarTabela_1(Integer.parseInt(tfCodigo.getText()));
+						ObjectId objId = new ObjectId(tfCodigo.getText());
+						atualizarTabela_1(objId);
 						tfTelefone.setText("");
 						
 					}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
@@ -338,11 +342,13 @@ public class UsuarioView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(table.getSelectedRow()!=-1){
 					try {
-						sistema.adicionarTelefone(Integer.parseInt(tfCodigo.getText()), tfTelefone.getText());
+						ObjectId objId = new ObjectId(tfCodigo.getText());
+						sistema.adicionarTelefone(objId, tfTelefone.getText());
 					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					}
-					atualizarTabela_1(Integer.parseInt(tfCodigo.getText()));
+					ObjectId objId = new ObjectId(tfCodigo.getText());
+					atualizarTabela_1(objId);
 					tfTelefone.setText("");
 				}else JOptionPane.showMessageDialog(null, "Nenhuma usuário selecionado");
 			
@@ -359,11 +365,13 @@ public class UsuarioView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (table_1.getSelectedRow()!=-1){
 					try {
-						sistema.excluirTelefone(Integer.parseInt(tfCodigo.getText()), String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));
-					} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
+						ObjectId objId = new ObjectId(tfCodigo.getText());
+						sistema.excluirTelefone(objId, String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));
+					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(null,  e1.getMessage());
 					}
-					atualizarTabela_1(Integer.parseInt(tfCodigo.getText()));
+					ObjectId objId = new ObjectId(tfCodigo.getText());
+					atualizarTabela_1(objId);
 					tfTelefone.setText("");
 				
 				}else JOptionPane.showMessageDialog(null, "Nenhuma linha selecionada");
@@ -393,6 +401,9 @@ public class UsuarioView extends JFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (SelectException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -559,7 +570,7 @@ public class UsuarioView extends JFrame {
 		 					if(!(estado.equals("Selecione"))) {
 		 						if(!(tfemail.getText().equals(""))) {
 		 							try {
-		 								usuario.setId(Integer.parseInt(tfCodigo.getText()));	
+		 								usuario.setId(tfCodigo.getText());	
 		 								usuario.setNome(tfNome.getText());
 		 								usuario.setTurno(turno);
 		 								usuario.setEmail(tfemail.getText());
@@ -573,7 +584,6 @@ public class UsuarioView extends JFrame {
 		 								endereco.setBairro(tfBairro.getText());
 		 								endereco.setRua(tfRua.getText());
 		 								endereco.setComplemento(tfComplemento.getText());
-		 								endereco.setId(Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 5))));
 		 								endereco.setNumero(Integer.parseInt(tfNumero.getText()));
 		 								usuario.setEndereco(endereco);
 		 								sistema.alterarUsuario(usuario);						
@@ -628,7 +638,7 @@ public class UsuarioView extends JFrame {
 		 				usuario.setEndereco(endereco);
 		 				try {
 		 					sistema.adicionarUsuario(usuario);
-		 				} catch (InsertException | SelectException | JaCadastradoException e1) {
+		 				} catch (Exception e1) {
 		 					JOptionPane.showMessageDialog(null, e1.getMessage());
 		 				}
 		 				
@@ -696,7 +706,7 @@ public class UsuarioView extends JFrame {
 		}
 	}
 	
-	public static void atualizarTabela_1(int id_usuario) {
+	public static void atualizarTabela_1(ObjectId id_usuario) {
 		try {
 			telefones = sistema.listarTelefones(id_usuario);
 			DefaultTableModel model = (DefaultTableModel) table_1.getModel();
@@ -707,17 +717,24 @@ public class UsuarioView extends JFrame {
 		}
 	}
 	
-	public void setCamposFromTabela() throws NumberFormatException, SelectException {
+	public void setCamposFromTabela() throws Exception {
 		tfCodigo.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
-		atualizarTabela_1(Integer.parseInt((tfCodigo.getText())));
+		ObjectId objId = new ObjectId(tfCodigo.getText());
+		atualizarTabela_1(objId);
 		tfNome.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
 		String categoria = String.valueOf(table.getValueAt(table.getSelectedRow(), 2));
 		comboBox.setSelectedItem(categoria);
 		String turno = String.valueOf(table.getValueAt(table.getSelectedRow(), 3));
 		comboBox_1.setSelectedItem(turno);
-		//tfCodigoEndereco.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 5)));
-		//Enro.setText(String.valueOf(e.getNumero()));
-		tfemail.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 6)));
+		Endereco endereco = sistema.buscaEndereco(objId);
+		tfRua.setText(endereco.getRua());
+		tfComplemento.setText(endereco.getComplemento());
+		tfBairro.setText(endereco.getBairro());
+		tfCidade.setText(endereco.getCidade());
+		tfNumero.setText(String.valueOf(endereco.getNumero()));
+		String estado = endereco.getEstado();
+		comboBox_2.setSelectedItem(estado);
+		tfemail.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 5)));		
 	}
 	
 	

@@ -1,12 +1,11 @@
 package dados;
 
 public class Endereco {
-	private int id;
-	private String estado;
 	private String cidade;
-	private String bairro;
 	private String rua;
+	private String bairro;
 	private int numero;
+	private String estado;
 	private String complemento;
 	
 	public Endereco() {
@@ -14,7 +13,6 @@ public class Endereco {
 	}
 	
 	public Endereco(int id, String cidade, String estado, String bairro, String rua, int numero, String complemento) {
-		this.setId(id);
 		this.setEstado(estado);
 		this.setCidade(cidade);
 		this.setBairro(bairro);
@@ -25,12 +23,6 @@ public class Endereco {
 	
 	
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getEstado() {
 		return estado;
 	}

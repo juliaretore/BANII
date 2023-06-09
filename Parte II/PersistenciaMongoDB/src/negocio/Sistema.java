@@ -12,6 +12,9 @@ import java.sql.SQLWarning;
 //import javazoom.jl.player.Player;
 import persistencia.*;
 import java.util.List;
+
+import org.bson.types.ObjectId;
+
 import dados.*;
 import exceptions.ArquivoNaoEncontradoException;
 import exceptions.DeleteException;
@@ -58,35 +61,34 @@ public class Sistema {
 		return usuarioDAO.select_table();
 	}
 	
-	public List<Object> listarTelefones(int id_usuario) throws Exception{
+	public List<Object> listarTelefones(ObjectId id_usuario) throws Exception{
 		return usuarioDAO.select_telefones(id_usuario);
 	}
 	
-	public Endereco buscaEndereco(int id_usuario) throws SelectException {
-		return null;
-//		return usuarioDAO.select_endereco(id_usuario);
+	public Endereco buscaEndereco(ObjectId id_usuario) throws Exception {
+		return usuarioDAO.select_endereco(id_usuario);
 	}
 	
-	public void adicionarUsuario(Usuario usuario) throws InsertException, SelectException, JaCadastradoException {
-//		usuarioDAO.insert_usuario(usuario);
+	public void adicionarUsuario(Usuario usuario) throws Exception {
+		usuarioDAO.insert_usuario(usuario);
 	}
 	
-	public void adicionarTelefone(int usuario, String telefone) throws InsertException, SelectException, JaCadastradoException {
-//		usuarioDAO.insert_telefone(usuario,  telefone);
+	public void adicionarTelefone(ObjectId usuario, String telefone) throws Exception {
+		usuarioDAO.insert_telefone(usuario,  telefone);
 		
 	}
 	
-	public void alterarUsuario(Usuario usuario) throws UpdateException, SelectException, NaoCadastradoException {
-//		usuarioDAO.update_usuario(usuario);
+	public void alterarUsuario(Usuario usuario) throws  Exception {
+		usuarioDAO.update_usuario(usuario);
 	}
 	
 	
-	public void excluirTelefone(int usuario, String telefone) throws DeleteException, SelectException, NaoCadastradoException {
-//		usuarioDAO.delete_telefone(usuario, telefone);
+	public void excluirTelefone(ObjectId usuario, String telefone) throws Exception {
+		usuarioDAO.delete_telefone(usuario, telefone);
 	}
 	
-	public void alterarTelefone(int usuario, String novo_telefone,  String antigo_telefone) throws UpdateException {
-//		usuarioDAO.update_telefone(usuario, novo_telefone, antigo_telefone);
+	public void alterarTelefone(ObjectId usuario, String novo_telefone,  String antigo_telefone) throws Exception {
+		usuarioDAO.update_telefone(usuario, novo_telefone, antigo_telefone);
 	}
 	
 	public List<Object> listarUsuariosEmprestimo() throws SelectException{
