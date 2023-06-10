@@ -84,9 +84,15 @@ public class TelaPrincipal extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				LoginView frame = new LoginView();
-				frame.setVisible(true);
-				frame.setLocationRelativeTo(null);
+				LoginView frame;
+				try {
+					frame = new LoginView();
+					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
+				
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -96,16 +102,22 @@ public class TelaPrincipal extends JFrame {
 		btnUsuario.setActionCommand("Gerenciamento de Usuários");
 		btnUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UsuarioView objeto = UsuarioView.getInstance();
-				UsuarioView.tfIdUsuario.setText(tfIdUsuario.getText());
-				UsuarioView.textusuario.setText(textusuario.getText());
-				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-				int height = screenSize.height;
-				int width = screenSize.width;
-				objeto.setSize(width, height);
-				objeto.setVisible(true);
-				objeto.setLocationRelativeTo(null);
-				dispose();
+				UsuarioView objeto;
+				try {
+					objeto = UsuarioView.getInstance();
+					UsuarioView.tfIdUsuario.setText(tfIdUsuario.getText());
+					UsuarioView.textusuario.setText(textusuario.getText());
+					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+					int height = screenSize.height;
+					int width = screenSize.width;
+					objeto.setSize(width, height);
+					objeto.setVisible(true);
+					objeto.setLocationRelativeTo(null);
+					dispose();
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
+			
 			}
 		});
 		

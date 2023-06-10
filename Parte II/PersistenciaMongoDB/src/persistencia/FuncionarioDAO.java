@@ -3,54 +3,21 @@ package persistencia;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
 import org.bson.Document;
 import org.bson.types.ObjectId;
-
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
-
-import dados.Endereco;
 import dados.Funcionario;
 import exceptions.DeleteException;
 import exceptions.InsertException;
-import exceptions.JaCadastradoException;
-import exceptions.NaoCadastradoException;
 import exceptions.SelectException;
 import exceptions.UpdateException;
 
-public class FuncionarioDAO {
-//	private FuncionarioDAO() throws ClassNotFoundException, SQLException, SelectException{
-//		Connection conexao = Conexao.getConexao();
-//		select_new_id_funcionario = conexao.prepareStatement("select nextval('id_funcionario')");
-//		insert_funcionario =  conexao.prepareStatement("insert into funcionario values (?,?,?,?,?,?,?,?,?)");
-//		insert_supervisao = conexao.prepareStatement("insert into supervisao values (?,?)");
-//		update_funcionario = conexao.prepareStatement("update funcionario set login=?, nome=?, salario=?, turno=?, email=? where id=?");
-//		inativa_funcionario = conexao.prepareStatement("update funcionario set ativo=0 where id=?");
-//		delete_supervisoes = conexao.prepareStatement("delete from supervisao where id_bibliotecario=?");
-//		delete_supervisoes_a = conexao.prepareStatement("delete from supervisao where id_assistente=?");
-//		delete_supervisao = conexao.prepareStatement("delete from supervisao where id_bibliotecario=? and id_assistente=?");
-//		select_bibliotecarios = conexao.prepareStatement("select id, nome, login, turno, salario, email from funcionario where tipo=1 and ativo=1");
-//		select_assistentes = conexao.prepareStatement("select id, nome, login, turno, salario, email from funcionario where tipo=2 and ativo=1");
-//		select_assistentes_bibliotecario = conexao.prepareStatement("select id, nome, login, turno, salario, email from funcionario where tipo=2 and ativo=1 and id in (select id_assistente from supervisao where id_bibliotecario=?)");
-//		select_adicionar_supervisao = conexao.prepareStatement("select id, nome, login, turno, salario, email from funcionario where tipo=2 and ativo=1 and id not in (select id_assistente from supervisao where id_bibliotecario=?)");
-//	}
-	
-	
+public class FuncionarioDAO {	
 	private static FuncionarioDAO instance = null;
 	private static MongoCollection<Document> collection;
 	private static MongoDatabase connection;
@@ -104,7 +71,6 @@ public class FuncionarioDAO {
 		try {
 			collection.updateOne(eq("_id", id), combine(
 					 set("login", funcionario.getLogin()),
-				 	 set("senha", funcionario.getSenha()),
 				 	 set("nome", funcionario.getNome()),
 				     set("salario", funcionario.getSalario()),
 	                 set("turno", funcionario.getTurno()),
@@ -211,8 +177,6 @@ public class FuncionarioDAO {
 		}
 		return lista;
 	}
-
-	
 
 }
 	

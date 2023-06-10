@@ -397,15 +397,8 @@ public class UsuarioView extends JFrame {
 					excluir_2.setEnabled(false);
 					alterar_2.setEnabled(false);
 					tfTelefone.setText("");
-				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SelectException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null,  e.getMessage());
 				}
 			}
 		});
@@ -445,9 +438,14 @@ public class UsuarioView extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				LoginView frame = new LoginView();
-				frame.setVisible(true);
-				frame.setLocationRelativeTo(null);
+				LoginView frame;
+				try {
+					frame = new LoginView();
+					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null,  e1.getMessage());
+				}
 			}
 		});
 		

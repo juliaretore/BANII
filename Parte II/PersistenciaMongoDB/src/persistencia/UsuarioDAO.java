@@ -204,8 +204,7 @@ public class UsuarioDAO {
 //		}
 //		return lista;
 //	}
-//
-//	
+	
 	public void delete_telefone(ObjectId id_usuario, String telefone) throws Exception{
 		try {
 			Document usuario = collection.find(eq("_id", id_usuario)).first();

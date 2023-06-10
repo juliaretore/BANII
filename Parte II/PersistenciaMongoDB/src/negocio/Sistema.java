@@ -44,14 +44,13 @@ public class Sistema {
 	
 	
 	//LOGIN
-	public Funcionario validacaoLogin(String login, String senha) throws SQLException, SelectException, LoginIncorretoException {
+	public Funcionario validacaoLogin(String login, String senha) throws Exception {
 		List<String> logins = loginDAO.listaFuncionario();
 		if(logins.contains(login)) {
 			List<String> senhaLogin = loginDAO.validarSenha(login);
 			if(senhaLogin.contains(senha)) {
 				return loginDAO.retornarFuncionario(login);
 			}else throw new LoginIncorretoException("Senha incorreta! Tente novamente");
-			
 		}else throw new LoginIncorretoException("Funcionário não encontrado! Tente novamente");
 	}
 	

@@ -10,7 +10,7 @@ public class Funcionario {
 	private int tipo;
 	private String email;
 	
-	public Funcionario(String id, String nome, String login, String senha, double salario, String turno, int tipo) {
+	public Funcionario(String id, String nome, String login, String senha, double salario, String turno, int tipo, String email) {
 		this.setId(id);
 		this.setLogin(login);
 		this.setNome(nome);
@@ -18,6 +18,7 @@ public class Funcionario {
 		this.setSalario(salario);
 		this.setTurno(turno);
 		this.setTipo(tipo);
+		this.setEmail(email);
 	}
 	public Funcionario() {
 		

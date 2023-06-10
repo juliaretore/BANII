@@ -1,5 +1,7 @@
 package persistencia;
 
+import static com.mongodb.client.model.Filters.eq;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,78 +9,80 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.Document;
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+
+import dados.Endereco;
 import dados.Funcionario;
 import dados.Usuario;
 import exceptions.SelectException;
 
 public class LoginDAO {
-		private static LoginDAO instance = null;
-		private PreparedStatement listaFuncionario;
-		private PreparedStatement validarSenha;
-		private PreparedStatement retornarFuncionario;
-		
-		public static LoginDAO getInstance() throws ClassNotFoundException, SQLException, SelectException{
-			if(instance==null) instance=new LoginDAO();
-			return instance;
-			
-		}
-		
-//		public LoginDAO() throws ClassNotFoundException, SQLException, SelectException{
-//			Connection conexao = Conexao.getConexao();
-//			listaFuncionario = conexao.prepareStatement("SELECT login FROM funcionario");
-//			validarSenha =  conexao.prepareStatement("SELECT senha FROM funcionario WHERE login=?");
-//			retornarFuncionario = conexao.prepareStatement("SELECT * FROM funcionario WHERE login=?");
-//		}	
+	private static LoginDAO instance = null;
+	private static MongoCollection<Document> collection;
+	private static MongoDatabase connection;
+
+	public static LoginDAO getInstance() throws Exception {
+		if (instance == null)  instance = new LoginDAO();
+		return instance;
+	}
 	
+	private LoginDAO() throws  Exception {
+	connection = Conexao.getConexao();
+	try {
+		collection = connection.getCollection("funcionario");
+	} catch (Exception e) {
+		throw new Exception("Erro ao conectar");
+	}
+}
+
 
 	
-	public List<String> listaFuncionario() throws SQLException, SelectException{
+	public List<String> listaFuncionario() throws Exception{
 		List<String> login = new ArrayList<String>();
 		try {
-			ResultSet rs = listaFuncionario.executeQuery();
-			while (rs.next()) {
-				login.add(rs.getString(1));
+			MongoIterable<Document> funcionarios = collection.find();
+			for(Document f : funcionarios) {
+				login.add(f.getString("login"));
 			}
-		} catch (SQLException e) {
-			throw new SelectException("Erro ao buscar funcionários cadastrados");
+		} catch (Exception e) {
+			throw new Exception("Erro ao buscar funcionários cadastrados");
 		}
+		System.out.println(login);
 		return login;
 	}
 	
 
-	public List<String> validarSenha(String login) throws SQLException, SelectException{
+	public List<String> validarSenha(String login) throws Exception{
 		List<String> senha = new ArrayList<String>();
 		try {
-			validarSenha.setString(1, login);
-			ResultSet rs= validarSenha.executeQuery();		
-			while (rs.next()) {
-				senha.add(rs.getString(1));
-			}
-		} catch (SQLException e) {
-			throw new SelectException("Erro ao buscar senha");
+			Document funcionario = collection.find(eq("login", login)).first();
+			senha.add(funcionario.getString("senha"));
+		} catch (Exception e) {
+			throw new Exception("Erro ao buscar senha");
 		}
 		return senha;
 	}
 		
-	public Funcionario retornarFuncionario(String login) throws SQLException, SelectException {	
+	public Funcionario retornarFuncionario(String login) throws Exception {	
 		Funcionario funcionario = null;
 		try {
-			retornarFuncionario.setString(1, login);
-			ResultSet rs= retornarFuncionario.executeQuery();		
-			while (rs.next()) {
-				int id=rs.getInt(1);
-				String login2 = rs.getString(2);
-				String senha = rs.getString(3);
-				String nome = rs.getString(4);
-				double salario = rs.getDouble(5);
-				String turno = rs.getString(6);
-				int tipo = rs.getInt(7);
-				return new Funcionario(id, nome, login2,senha, salario, turno, tipo);
-			}
-		} catch (SQLException e) {
-			throw new SelectException("Erro ao buscar funcionário no login");
-		}			
-		return funcionario;
+			Document f = collection.find(eq("login", login)).first();
+			String id = String.valueOf(f.getObjectId("_id")) ;
+			String flogin = f.getString("login");
+			String senha = f.getString("senha");
+			String nome = f.getString("nome");
+			double salario = f.getDouble("salario");
+			String turno = f.getString("turno");
+			int tipo = f.getInteger("tipo");
+			String email = f.getString("email");
+			return new Funcionario(id, nome, login, senha, salario, turno, tipo, email);
+		} catch (Exception e) {
+			throw new Exception("Erro ao buscar funcionário no login");
+		}
 	}
 			
 }
