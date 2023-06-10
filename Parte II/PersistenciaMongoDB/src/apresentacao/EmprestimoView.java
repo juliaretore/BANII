@@ -17,6 +17,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import org.bson.types.ObjectId;
+
 import exceptions.InsertException;
 import exceptions.JaCadastradoException;
 import exceptions.SelectException;
@@ -104,7 +107,7 @@ public class EmprestimoView extends JFrame {
 	public EmprestimoView() {
 		try {
 			sistema = new Sistema();
-		} catch (ClassNotFoundException | SQLException | SelectException e) {
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null,  e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
 		
@@ -425,9 +428,16 @@ public class EmprestimoView extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				LoginView frame = new LoginView();
-				frame.setVisible(true);
-				frame.setLocationRelativeTo(null);
+				LoginView frame;
+				try {
+					frame = new LoginView();
+					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -685,8 +695,9 @@ public class EmprestimoView extends JFrame {
 
 public static void atualizarTabela_1() {
 		try {
-		    int id_livro = Integer.parseInt(String.valueOf(table_2.getValueAt(table_2.getSelectedRow(), 0)));
-			exemplares = sistema.listarExemplaresLivrosDisponiveis(id_livro);
+//		    int id_livro = Integer.parseInt(String.valueOf(table_2.getValueAt(table_2.getSelectedRow(), 0)));
+		    ObjectId objId = new ObjectId(String.valueOf(table_2.getValueAt(table_2.getSelectedRow(), 0)));
+			exemplares = sistema.listarExemplaresLivrosDisponiveis(objId);
 			DefaultTableModel model = (DefaultTableModel) table_1.getModel();
 			model.setNumRows(0);
 		for (int i=0;i<exemplares.size();i++) model.addRow((Object[]) exemplares.get(i));

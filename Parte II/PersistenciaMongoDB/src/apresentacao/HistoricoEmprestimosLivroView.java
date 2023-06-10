@@ -58,7 +58,7 @@ public class HistoricoEmprestimosLivroView extends JFrame {
 	public HistoricoEmprestimosLivroView() {
 		try {
 			sistema = new Sistema();
-		} catch (ClassNotFoundException | SQLException | SelectException e) {
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
 		addWindowListener(new WindowAdapter() {

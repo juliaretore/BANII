@@ -1,7 +1,7 @@
 package dados;
 
 public class Autor {
-	private int id;
+	private String id;
 	private String nome;
 	private String nacionalidade;
 	private String area;
@@ -11,18 +11,18 @@ public class Autor {
 		
 	}
 	
-	public Autor(int id, String nome, String nacionalidade, String area) {
+	public Autor(String id, String nome, String nacionalidade, String area) {
 		this.setId(id);
 		this.setNome(nome);
 		this.setArea(area);
 		this.setNacionalidade(nacionalidade);
 	}
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

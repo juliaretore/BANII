@@ -1,59 +1,22 @@
 package persistencia;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-
 import dados.Endereco;
 import dados.Usuario;
 import exceptions.DeleteException;
 import exceptions.InsertException;
-import exceptions.JaCadastradoException;
-import exceptions.NaoCadastradoException;
 import exceptions.SelectException;
 import exceptions.UpdateException;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.CommandResult;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
-import com.mongodb.DBCursor;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
-
-import java.util.ArrayList;
-
 import org.bson.Document;
 import org.bson.types.ObjectId;
-
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 
-import org.bson.BsonDocument;
-import org.bson.BsonInt64;
-import org.bson.Document;
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.MongoException;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
-
-	
 		
 public class UsuarioDAO {
 		private static UsuarioDAO instance = null;
@@ -132,7 +95,7 @@ public class UsuarioDAO {
 		}
 	}
 
-	public  Endereco select_endereco(ObjectId id_usuario) throws Exception  {
+	public Endereco select_endereco(ObjectId id_usuario) throws Exception  {
 		Endereco end = new Endereco();
 		try {
 			Document usuario = collection.find(eq("_id", id_usuario)).first();

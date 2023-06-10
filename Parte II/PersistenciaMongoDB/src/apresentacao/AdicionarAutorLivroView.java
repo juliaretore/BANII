@@ -33,6 +33,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.bson.types.ObjectId;
+
 //import dados.Autor;
 import dados.Autor;
 import exceptions.DeleteException;
@@ -77,7 +79,7 @@ public class AdicionarAutorLivroView extends JFrame {
 	public AdicionarAutorLivroView() {
 		try {
 			sistema = new Sistema();
-		} catch (ClassNotFoundException | SQLException | SelectException e) {
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
 		addWindowListener(new WindowAdapter() {
@@ -170,11 +172,11 @@ public class AdicionarAutorLivroView extends JFrame {
 		selecionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (table.getSelectedRow()!=-1){
-					int id_autor = Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
-					int id_livro = Integer.parseInt(LivroView.tfCodigo.getText());
+					String id_autor = String.valueOf(table.getValueAt(table.getSelectedRow(), 0));
+					ObjectId id_livro = new ObjectId(LivroView.tfCodigo.getText());
 					try {
 						sistema.adicionarAutoresLivros(id_livro, id_autor);
-					} catch (InsertException | SelectException |NumberFormatException | JaCadastradoException e) {
+					} catch (Exception e) {
 						JOptionPane.showMessageDialog(null, e.getMessage());
 					}
 					LivroView.atualizarTabela_1();
@@ -224,7 +226,7 @@ public class AdicionarAutorLivroView extends JFrame {
 					autor.setArea(tfArea.getText());
 					try {
 						sistema.adicionarAutor(autor);
-					} catch (InsertException | SelectException | JaCadastradoException e1) {
+					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					}
 					limpar();
@@ -246,13 +248,13 @@ public class AdicionarAutorLivroView extends JFrame {
 					JOptionPane.showMessageDialog(null, "Preencha todos os campos");
 				}else {
 					Autor autor = new Autor();
-					autor.setId(Integer.parseInt(tfCodigo.getText()));
+					autor.setId(tfCodigo.getText());
 					autor.setNome(tfNome.getText());
 					autor.setNacionalidade(tfNacionalidade.getText());
 					autor.setArea(tfArea.getText());
 					try {
 						sistema.alterarAutor(autor);
-					} catch (UpdateException | SelectException | NaoCadastradoException e1) {
+					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					}				
 					atualizarTabela();
@@ -354,7 +356,8 @@ public class AdicionarAutorLivroView extends JFrame {
 
 	public static void atualizarTabela() {
 		try {
-			autores = sistema.listarAdiconarAutoresLivros(Integer.parseInt(LivroView.tfCodigo.getText()));
+			ObjectId objId = new ObjectId(LivroView.tfCodigo.getText());
+			autores = sistema.listarAdiconarAutoresLivros(objId);
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.setNumRows(0);
 		for (int i=0;i<autores.size();i++) model.addRow((Object[]) autores.get(i));

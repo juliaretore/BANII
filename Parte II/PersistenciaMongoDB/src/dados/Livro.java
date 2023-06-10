@@ -1,7 +1,7 @@
 package dados;
 
 public class Livro {
-	private int id;
+	private String id;
 	private String isbn;
 	private String titulo;
 	private String editora;
@@ -11,18 +11,18 @@ public class Livro {
 		
 	}
 	
-	public Livro(int id, String isbn, String titulo, String editora) {
+	public Livro(String id, String isbn, String titulo, String editora) {
 		this.setId(id);
 		this.setIsbn(isbn);
 		this.setTitulo(titulo);
 		this.setEditora(editora);
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

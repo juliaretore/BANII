@@ -2,11 +2,11 @@ package dados;
 
 public class Exemplar {
 	
-	private int id;
+	private String id;
 	private String colecao;
 	private int prateleira;
 	private int estante;
-	private int id_livro;
+	private String id_livro;
 	private int id_usuario_reserva;
 	private String data_reserva;
 	public String getColecao() {
@@ -27,10 +27,10 @@ public class Exemplar {
 	public void setEstante(int estante) {
 		this.estante = estante;
 	}
-	public int getId_livro() {
+	public String getId_livro() {
 		return id_livro;
 	}
-	public void setId_livro(int id_livro) {
+	public void setId_livro(String id_livro) {
 		this.id_livro = id_livro;
 	}
 	public int getId_usuario_reserva() {
@@ -45,10 +45,10 @@ public class Exemplar {
 	public void setData_reserva(String data_reserva) {
 		this.data_reserva = data_reserva;
 	}
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	

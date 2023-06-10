@@ -696,9 +696,15 @@ public class FuncionarioView extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				LoginView frame = new LoginView();
-				frame.setVisible(true);
-				frame.setLocationRelativeTo(null);
+				LoginView frame;
+				try {
+					frame = new LoginView();
+					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
+
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 10));

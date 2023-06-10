@@ -28,7 +28,6 @@ db.categoria.insertMany([
 ])
 
 ------------------- Usuario -----------------
-
 db.usuario.insertMany([
 {
  nome: "Julia Retore",  
@@ -61,7 +60,6 @@ db.usuario.insertMany([
 }
 }
 ])
-
 
 ------------------- Funcionario -----------------
 db.funcionario.insertMany([
@@ -115,13 +113,11 @@ db.funcionario.insertMany([
 ------------------- Autor -----------------
 db.autor.insertMany([
 {
- _id: 1,
  nome: "James Stewart",
  area: "Matemática",
  nacionalidade: "Canadense"
 },
 {
- _id: 2,
  nome: "Michael Sipser",
  area: "Computação",
  nacionalidade: "Norte Americano"
@@ -132,52 +128,95 @@ db.autor.insertMany([
 ------------------- Livro -----------------
 db.livro.insertMany([
 {
- isbn: “978-34-83943-01-3”,  
+ isbn: "978-34-83943-01-3",  
  titulo: "Cálculo I",
- editora: "cengag"
- autores: [{autor: ObjectId(1)}],
- reservas: [{usuario: ObjectId(1), data: ISODate("..")}]
+ editora: "cengag",
+ autores: [],
+ reservas: []
  },
-{}
+{
+ isbn: "902-34-44484-78-1",  
+ titulo: "Cálculo II",
+ editora: "cengag",
+ autores: [],
+ reservas: []
+ },
+ {
+ isbn: "434-27-82054-85-6",  
+ titulo: "Cálculo III",
+ editora: "cengag",
+ autores: [],
+ reservas: []
+ },
+ {
+ isbn: "865-54-53859-54-3",  
+ titulo: "Introdução à Teoria da Computação",
+ editora: "cengag",
+ autores: [],
+ reservas: []
+ }
 ])
 
 
 ------------------- Exemplar ---------------
 db.exemplar.insertMany([
 {
- _id: 1,
  prateleira: 5,
  estante: 4,
  colecao: "Permanente",
- livro: ObjectId(),
- data_reserva: ISODate(),
- usuario_reserva: ObjectId(),
- reservas [
-		{
-		 _id: ObjectId("..."),
-		 multa: "float",
-		 pagamento_multa: "int",
-		 renovacoes: "int",
-		 data_empr: ISODate("..."),
-		 data_est_entr: ISODate("..."),
-		 data_real_entr: ISODate("..."),
-		 usuario_id: ObjectId("..."),
-		 funcionario_id: ObjectId("..."),
-		 situacao: "int"
-		}
-          ]
+ livro: ,
+ data_reserva: null,
+ usuario_reserva: null,
+ emprestimos: []
 },
 {
- id: 2,
  prateleira: 5,
  estante: 4,
  colecao: "Permanente",
- livro: ObjectId(),
- data_reserva: ISODate(),
- usuario_reserva: ObjectId(),
- reservas: []
+ livro: ,
+ data_reserva: null,
+ usuario_reserva: null,
+ emprestimos: []
 },
-{}
+{
+ prateleira: 6,
+ estante: 4,
+ colecao: "Reserva",
+ livro: ,
+ data_reserva: null,
+ usuario_reserva: null,
+ emprestimos: []
+},
+{
+ prateleira: 6,
+ estante: 4,
+ colecao: "Permanente",
+ livro: ,
+ data_reserva: null,
+ usuario_reserva: null,
+ emprestimos: []
+},
+{
+ prateleira: 2,
+ estante: 2,
+ colecao: "Permanente",
+ livro: "6483d60f99142787c19ef2d2",
+ data_reserva: null,
+ usuario_reserva: null,
+ emprestimos: [
+ 		{
+ 			multa: 3.50,
+ 			pagamento_multa: 1,
+			renovacoes: 0,
+			data_empr: new Date("<2023-05-19>"),
+			data_est_entr: new Date("<2023-06-03>"),
+			data_real_entr: null,
+			id_usuario: "64832225b492e8a318a378dd",
+			id_funcionario: "64835495e39758ef4358993f",
+			situacao: 0
+		 }
+ ]
+}
 ])
 
 

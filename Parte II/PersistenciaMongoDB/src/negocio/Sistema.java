@@ -97,61 +97,59 @@ public class Sistema {
 	
 
 // LIVRO 
-	public List<Object> listarLivros() throws SelectException{
+	public List<Object> listarLivros() throws Exception{
 		return livroDAO.select_livros();
 	}
 	
-	public List<Object> listarAutoresLivros(int id_livro) throws SelectException{
+	public List<Object> listarAutoresLivros(ObjectId id_livro) throws Exception{
 		return livroDAO.select_autores_livro(id_livro);
 	}
 	
-	public List<Object> listarExemplaresLivros(int id_livro) throws SelectException{
+	public List<Object> listarExemplaresLivros(String id_livro) throws Exception{
 		return livroDAO.select_exemplares_livro(id_livro); 
 	}
 	
-	public List<Object> listarExemplaresLivrosDisponiveis(int id_livro) throws SelectException{
-		return livroDAO.select_exemplares_livro_disponiveis(id_livro); 
+	public List<Object> listarExemplaresLivrosDisponiveis(ObjectId id_livro) throws Exception{
+		return null;
+//		return livroDAO.select_exemplares_livro_disponiveis(id_livro);
 	}
 
-	public List<Object> listarAdiconarAutoresLivros(int id_livro) throws SelectException{
+	public List<Object> listarAdiconarAutoresLivros(ObjectId id_livro) throws Exception{
 		return livroDAO.select_adicionar_autores_livro(id_livro); 
 	}	
 	
-	public void adicionarLivro(Livro livro) throws InsertException, SelectException, JaCadastradoException {
+	public void adicionarLivro(Livro livro) throws Exception {
 		livroDAO.insert_livro(livro);
 	}
 	
-	public void adicionarExemplar(Exemplar exemplar) throws InsertException, SelectException, JaCadastradoException {
+	public void adicionarExemplar(Exemplar exemplar) throws Exception {
 		livroDAO.insert_exemplar(exemplar);
 	}
 		
-	public void adicionarAutoresLivros(int id_livro, int id_autor) throws InsertException, SelectException, JaCadastradoException {
+	public void adicionarAutoresLivros(ObjectId id_livro, String id_autor) throws Exception {
 		livroDAO.insert_autores_livro(id_livro, id_autor);
 	}
 
-	public void alterarLivro(Livro livro) throws UpdateException, SelectException, NaoCadastradoException {
+	public void alterarLivro(Livro livro) throws Exception {
 		livroDAO.update_livro(livro);
 	}
 	
-	public void alterarExemplar(Exemplar exemplar) throws UpdateException, SelectException, NaoCadastradoException {
+	public void alterarExemplar(Exemplar exemplar) throws Exception {
 		livroDAO.update_exemplar(exemplar);
 	}
 	
-	public void excluirAutorLivro(int id_livro, int id_autor) throws DeleteException, SelectException, NaoCadastradoException { 
+	public void excluirAutorLivro(ObjectId id_livro, String id_autor) throws Exception { 
 		livroDAO.delete_autor_livro(id_livro, id_autor);
 	}	
 	
 
 	//AUTOR
-	public void excluirAutor(int autor) throws DeleteException, SelectException, NaoCadastradoException { 
-		autorDAO.delete_autor(autor);
-	}
 	
-	public void alterarAutor(Autor autor) throws UpdateException, SelectException, NaoCadastradoException {
+	public void alterarAutor(Autor autor) throws Exception {
 		autorDAO.update_autor(autor);
 	}	
 	
-	public void adicionarAutor(Autor autor) throws InsertException, SelectException, JaCadastradoException {
+	public void adicionarAutor(Autor autor) throws Exception {
 		autorDAO.insert_autor(autor);
 	}
 	

@@ -16,6 +16,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import org.bson.types.ObjectId;
+
 import dados.Exemplar;
 import dados.Livro;
 import exceptions.DeleteException;
@@ -104,7 +107,7 @@ public class LivroView extends JFrame {
 	public LivroView() {
 		try {
 			sistema = new Sistema();
-		} catch (ClassNotFoundException | SQLException | SelectException e) {
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null,  e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 		}
 		
@@ -121,6 +124,8 @@ public class LivroView extends JFrame {
 		contentPane.setEnabled(false);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setBounds(0, 0,  1930, 1080);
+
 		
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background2.png")));
@@ -262,7 +267,7 @@ public class LivroView extends JFrame {
 						livro.setEditora(tfEditora.getText());
 						try {
 							sistema.adicionarLivro(livro);
-						} catch (InsertException | SelectException | JaCadastradoException e1) {
+						} catch (Exception e1) {
 							JOptionPane.showMessageDialog(null, e1.getMessage());
 						}
 						limpar();
@@ -284,11 +289,11 @@ public class LivroView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				livro.setIsbn(tfIsbn.getText());
 				livro.setTitulo(tfTitulo.getText());
-				livro.setEditora(tfEditora.getText());	
-				livro.setId(Integer.parseInt(tfCodigo.getText()));
+				livro.setEditora(tfEditora.getText());
+				livro.setId(tfCodigo.getText());
 					try {
 						sistema.alterarLivro(livro);
-					} catch (UpdateException | SelectException | NaoCadastradoException e1) {
+					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					};						
 					limpar();
@@ -377,7 +382,7 @@ public class LivroView extends JFrame {
 							JOptionPane.showMessageDialog(null, "Preencha todos os campos");
 						}else {
 							Exemplar exemplar = new Exemplar();
-							exemplar.setId_livro(Integer.parseInt(tfCodigo.getText()));
+							exemplar.setId_livro(tfCodigo.getText());
 							exemplar.setPrateleira(Integer.parseInt(tfPrateleira.getText()));
 							exemplar.setEstante(Integer.parseInt(tfEstante.getText()));
 							exemplar.setColecao(String.valueOf(comboBox.getSelectedItem()));
@@ -408,13 +413,13 @@ public class LivroView extends JFrame {
 					JOptionPane.showMessageDialog(null, "Preencha todos os campos");
 				}else {
 					Exemplar exemplar = new Exemplar();
-					exemplar.setId(Integer.parseInt(tfCodigo_1.getText()));
+					exemplar.setId(tfCodigo_1.getText());
 					exemplar.setPrateleira(Integer.parseInt(tfPrateleira.getText()));
 					exemplar.setEstante(Integer.parseInt(tfEstante.getText()));
 					exemplar.setColecao(String.valueOf(comboBox.getSelectedItem()));
 					try {
 						sistema.alterarExemplar(exemplar);
-					} catch (UpdateException | SelectException | NaoCadastradoException e1) {
+					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					}				
 					atualizarTabela_2();
@@ -474,8 +479,9 @@ public class LivroView extends JFrame {
 		remover_autor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					sistema.excluirAutorLivro(Integer.parseInt(tfCodigo.getText()), Integer.parseInt(String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0))));
-				} catch (NumberFormatException | DeleteException | SelectException | NaoCadastradoException e1) {
+					ObjectId id_livro = new ObjectId(tfCodigo.getText());
+					sistema.excluirAutorLivro(id_livro, String.valueOf(table_1.getValueAt(table_1.getSelectedRow(), 0)));
+				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 				limpar_1();
@@ -570,7 +576,7 @@ public class LivroView extends JFrame {
 			public void mousePressed(MouseEvent arg0) {
 					try {
 						setCamposFromTabela();
-					} catch (NumberFormatException | SelectException e) {
+					} catch (Exception e) {
 						JOptionPane.showMessageDialog(null, e.getMessage());
 					}
 					atualizarTabela_1();
@@ -606,9 +612,15 @@ public class LivroView extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				LoginView frame = new LoginView();
-				frame.setVisible(true);
-				frame.setLocationRelativeTo(null);
+				LoginView frame;
+				try {
+					frame = new LoginView();
+					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
+				
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -739,7 +751,8 @@ public class LivroView extends JFrame {
 	public static void atualizarTabela_1() {
 		try {
 			if(table.getSelectedRow()!=-1) {
-				autores = sistema.listarAutoresLivros(Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 0))));
+				ObjectId objId = new ObjectId(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
+				autores = sistema.listarAutoresLivros(objId);
 			}else autores.clear();
 			DefaultTableModel model = (DefaultTableModel) table_1.getModel();
 			model.setNumRows(0);
@@ -753,7 +766,7 @@ public class LivroView extends JFrame {
 public static void atualizarTabela_2() {
 		try {
 			if(table.getSelectedRow()!=-1) {
-				exemplares = sistema.listarExemplaresLivros(Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 0))));
+				exemplares = sistema.listarExemplaresLivros(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
 			}else exemplares.clear();
 			DefaultTableModel model = (DefaultTableModel) table_2.getModel();
 			model.setNumRows(0);
