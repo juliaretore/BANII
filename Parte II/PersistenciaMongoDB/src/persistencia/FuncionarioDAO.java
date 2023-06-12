@@ -146,8 +146,7 @@ public class FuncionarioDAO {
 			Document funcionario = collection.find(eq("_id", id_bibliotecario)).first();
 			List<String> assistentes = (List<String>) funcionario.get("supervisiona");
 			for(String a : assistentes) {
-					ObjectId objId = new ObjectId(a);
-					Document assistente = collection.find(eq("_id", objId)).first();
+					Document assistente = collection.find(eq("_id", new ObjectId(a))).first();
 					if(assistente.getInteger("ativo")==1) {
 						Object[] linha  = {assistente.getObjectId("_id"), assistente.getString("nome"), assistente.getString("login"),  assistente.getString("turno"), assistente.getDouble("salario"), assistente.getString("email")};		
 						lista.add(linha);
@@ -165,7 +164,6 @@ public class FuncionarioDAO {
 			Document funcionario = collection.find(eq("_id", id_bibliotecario)).first();
 			List<String> assistentes_bibliotecario = (List<String>) funcionario.get("supervisiona");
 			MongoIterable<Document> assistentes = collection.find(eq("tipo", 2));
-			System.out.println(assistentes);
 			for(Document f : assistentes) {
 				if(!assistentes_bibliotecario.contains(String.valueOf(f.getObjectId("_id"))) && f.getInteger("ativo")==1) {
 					Object[] linha  = {f.getObjectId("_id"), f.getString("nome"), f.getString("login"),  f.getString("turno"), f.getDouble("salario"), f.getString("email")};		

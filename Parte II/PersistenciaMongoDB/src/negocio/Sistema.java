@@ -194,25 +194,24 @@ public class Sistema {
 		return emprestimoDAO.dias_emprestimo(id_usuario);
 	}
 
-	public void inserirEmprestimo(int cid_exemplar, int cid_usuario, int cid_funcionario) throws Exception { 
-//		emprestimoDAO.insert_emprestimo(cid_exemplar, cid_usuario, cid_funcionario);
+	public void inserirEmprestimo(String cid_exemplar, String cid_usuario, String cid_funcionario) throws Exception { 
+		emprestimoDAO.insert_emprestimo(cid_exemplar, cid_usuario, cid_funcionario);
 	}
 	
-	public void inserirEmprestimoPorReserva(int cid_exemplar, int cid_usuario, int cid_funcionario) throws Exception {
-//		emprestimoDAO.insert_emprestimo_reserva(cid_exemplar, cid_usuario, cid_funcionario);
+	public void inserirEmprestimoPorReserva(String cid_exemplar, String cid_usuario, String cid_funcionario) throws Exception {
+		emprestimoDAO.insert_emprestimo_reserva(cid_exemplar, cid_usuario, cid_funcionario);
 	}
 	
-	public String devolucaoEmprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException, SQLWarning {
-		return null;
-//		return emprestimoDAO.devolucao_emprestimo(cid_emprestimo);
+	public void devolucaoEmprestimo(String cid_emprestimo) throws Exception {
+		emprestimoDAO.devolucao_emprestimo(cid_emprestimo);
 	}
 	
-	public void renovarEmprestimo(int cid_emprestimo) throws Exception {
-//		emprestimoDAO.renovar_emprestimo(cid_emprestimo);
+	public void renovarEmprestimo(ObjectId cid_emprestimo) throws Exception {
+		emprestimoDAO.renovar_emprestimo(cid_emprestimo);
 	}
 	
-	public void inserirReserva(ObjectId cid_livro, String cid_usuario, String data) throws Exception {
-		emprestimoDAO.insert_reserva(cid_livro, cid_usuario, data);	
+	public void inserirReserva(ObjectId cid_livro, String cid_usuario) throws Exception {
+		emprestimoDAO.insert_reserva(cid_livro, cid_usuario);	
 	}
 	
 	public void deletarReserva(int cid_livro, int cid_usuario) throws InsertException, SelectException, JaCadastradoException {
@@ -221,11 +220,6 @@ public class Sistema {
 	
 	public void pagarMulta(int cid_usuario) throws InsertException, SelectException, JaCadastradoException {
 //		emprestimoDAO.pagar_multa(cid_usuario);
-	}
-	
-	public String dataEmprestimo(int cid_usuario) throws InsertException {
-		return null;
-//		return emprestimoDAO.select_data_emprestimo(cid_usuario);
 	}
 	
 	public List<Object> HistoricoExemplar(int id_exemplar) throws SelectException{
@@ -250,9 +244,8 @@ public class Sistema {
 //		return emprestimoDAO.select_pagar_multas();
 	}
 	
-	public List<Object> listarReservasAtivas() throws SelectException{
-		return null;
-//		return emprestimoDAO.select_reservas_ativas();
+	public List<Object> listarReservasAtivas() throws Exception{
+		return emprestimoDAO.select_reservas_ativas();
 	}
 	
 	public List<Object> listarFilaReserva() throws Exception{

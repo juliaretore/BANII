@@ -154,7 +154,8 @@ public class AdicionarUsuarioEmprestimoView extends JFrame {
 				if (table.getSelectedRow()!=-1){
 					EmprestimoView.tfCodigo.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
 					EmprestimoView.tfUsuario.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
-					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+//					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 					Date data_estimada = new Date();
 				    Calendar c = Calendar.getInstance();
 				    c.setTime(data_estimada);				

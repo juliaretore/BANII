@@ -273,11 +273,10 @@ public class EmprestimoView extends JFrame {
 							JOptionPane.showMessageDialog(null, "Preencha todos os campos");
 						}else {					
 							try {
-								int usuario = Integer.parseInt(tfCodigo.getText());
-								int exemplar = Integer.parseInt(String.valueOf((table_1.getValueAt(table_1.getSelectedRow(), 0))));
-								int funcionario = Integer.parseInt(TelaPrincipal.tfIdUsuario.getText());
-								sistema.inserirEmprestimo(exemplar, usuario, funcionario);
-							} catch (InsertException | SelectException | JaCadastradoException e1) {
+								String exemplar = String.valueOf((table_1.getValueAt(table_1.getSelectedRow(), 0)));
+								String funcionario = (TelaPrincipal.tfIdUsuario.getText());
+								sistema.inserirEmprestimo(exemplar, tfCodigo.getText(), funcionario);
+							} catch (Exception e1) {
 								JOptionPane.showMessageDialog(null, e1.getMessage());
 							}
 						
@@ -310,7 +309,7 @@ public class EmprestimoView extends JFrame {
 						try {
 							ObjectId livro = new ObjectId((String.valueOf((table_2.getValueAt(table_2.getSelectedRow(), 0)))));
 							String usuario = tfCodigo.getText();
-							sistema.inserirReserva(livro, usuario, tfData.getText());
+							sistema.inserirReserva(livro, usuario);
 						} catch (Exception e1) {
 							JOptionPane.showMessageDialog(null, e1.getMessage());
 						}
@@ -434,7 +433,6 @@ public class EmprestimoView extends JFrame {
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -524,12 +522,12 @@ public class EmprestimoView extends JFrame {
 		btnDevolucao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String texto = sistema.devolucaoEmprestimo(Integer.parseInt(String.valueOf((table.getValueAt(table.getSelectedRow(), 0)))));
-					if(!(texto.equals(""))) JOptionPane.showMessageDialog(null, texto);
+					sistema.devolucaoEmprestimo(String.valueOf((table.getValueAt(table.getSelectedRow(), 0))));
+//					if(!(texto.equals(""))) JOptionPane.showMessageDialog(null, texto);
 					atualizarTabela_2();
 					atualizarTabela_3();
 					
-				} catch (NumberFormatException | InsertException | SelectException | JaCadastradoException | SQLWarning e1) {
+				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 				btnDevolucao.setEnabled(false);
@@ -548,7 +546,7 @@ public class EmprestimoView extends JFrame {
 		btnRenovarEmprestimo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			try {
-				sistema.renovarEmprestimo(Integer.parseInt(String.valueOf((table.getValueAt(table.getSelectedRow(), 0)))));
+				sistema.renovarEmprestimo(new ObjectId(String.valueOf((table.getValueAt(table.getSelectedRow(), 0)))));
 				atualizarTabela_2();
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage());
@@ -602,9 +600,9 @@ public class EmprestimoView extends JFrame {
 				btnRealizarEmprstimo.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {				
 							try {
-								int usuario = Integer.parseInt(String.valueOf((table_3.getValueAt(table_3.getSelectedRow(), 0))));
-								int exemplar = Integer.parseInt(String.valueOf((table_3.getValueAt(table_3.getSelectedRow(), 4))));
-								int funcionario = Integer.parseInt(TelaPrincipal.tfIdUsuario.getText());
+								String usuario = String.valueOf((table_3.getValueAt(table_3.getSelectedRow(), 0)));
+								String exemplar = String.valueOf((table_3.getValueAt(table_3.getSelectedRow(), 4)));
+								String funcionario = TelaPrincipal.tfIdUsuario.getText();
 								sistema.inserirEmprestimoPorReserva(exemplar, usuario, funcionario);
 							} catch (Exception e1) {
 								JOptionPane.showMessageDialog(null, e1.getMessage());

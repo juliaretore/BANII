@@ -3,12 +3,11 @@ package persistencia;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
+import static com.mongodb.client.model.Sorts.ascending;
+import static com.mongodb.client.model.Sorts.descending;
+import com.mongodb.client.model.Sorts;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,23 +19,16 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Filters;
 
-import apresentacao.EmprestimoView;
-import dados.Funcionario;
-import exceptions.DeleteException;
 import exceptions.InsertException;
-import exceptions.JaCadastradoException;
-import exceptions.NaoCadastradoException;
 import exceptions.SelectException;
-import exceptions.UpdateException;
 
 public class EmprestimoDAO {
 	private static EmprestimoDAO instance = null;
@@ -67,59 +59,54 @@ public class EmprestimoDAO {
 	}
 }
 	
+	//TO-DO:
+	//    1- não permitir empréstimo se usuario tem livros atrasados, multa ou excedeu o numero max de emprestimos;
+	//    2- não permitir mais de 3 renovações em um empréstimo;
+	
+	// Revisar:
+	//    1- pro próximo da fila, nao seria melhor fazer um sort? Como?
+
+	
 //	private EmprestimoDAO() throws ClassNotFoundException, SQLException, SelectException{
-//		Connection conexao = Conexao.getConexao();
-//		insert_emprestimo =  conexao.prepareStatement("select cadastro_emprestimo(?, ?, ?)");
-//		insert_emprestimo_reserva = conexao.prepareStatement("select cadastro_emprestimo_reserva(?, ?, ?)");
 //		devolucao_emprestimo = conexao.prepareStatement("select devolucao_emprestimo(?)");
 //		atualizar_multas = conexao.prepareStatement("select atualiza_multas()");
-//		renovar_emprestimo = conexao.prepareStatement("select renovar_emprestimo(?)");
 //		verifica_datas_reservas = conexao.prepareStatement("select verifica_datas_reservas()");
-//		insert_reserva = conexao.prepareStatement("select cadastra_reserva(?,?)");
 //		delete_reserva = conexao.prepareStatement("delete from reservas_livro where id_livro=? and id_usuario=?");
 //		pagar_multa = conexao.prepareStatement("select pagamento_multas(?)");
-//		select_data_emprestimo = conexao.prepareStatement("select ((select c.tempo_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=?)+current_date)");
 //		select_historico_exemplar = conexao.prepareStatement("select e.id,  u.nome, e.data_empr, e.data_est_entr, e.data_real_entr, e.situacao, e.multa, e.pagamento_multa from emprestimo e join usuario u on u.id=e.id_usuario where id_exemplar=?");
 //		select_pagar_multas = conexao.prepareStatement("select e.id_usuario, u.nome, sum(multa) from emprestimo e join usuario u on u.id=e.id_usuario where e.situacao=1 and e.pagamento_multa=1 group by e.id_usuario, u.nome");
-
 //	}
 	
-//	public void insert_emprestimo(int cid_exemplar, int cid_usuario, int cid_funcionario) throws InsertException, SelectException, JaCadastradoException{
-//			try {
-//				insert_emprestimo.setInt(1, cid_exemplar);
-//				insert_emprestimo.setInt(2, cid_usuario);
-//				insert_emprestimo.setInt(3, cid_funcionario);				
-//				insert_emprestimo.execute();
-//			}catch (SQLException e) {
-//				String texto[] = e.getMessage().split("\\r?\\n");
-//				JOptionPane.showMessageDialog(null, texto[0]);
-//			}	
-//	}
-//	
-//	public void insert_emprestimo_reserva(int cid_exemplar, int cid_usuario, int cid_funcionario) throws InsertException, SelectException, JaCadastradoException{
-//		try {
-//			insert_emprestimo_reserva.setInt(1, cid_exemplar);
-//			insert_emprestimo_reserva.setInt(2, cid_usuario);
-//			insert_emprestimo_reserva.setInt(3, cid_funcionario);				
-//			insert_emprestimo_reserva.execute();
-//		}catch (SQLException e) {
-//			String texto[] = e.getMessage().split("\\r?\\n");
-//			JOptionPane.showMessageDialog(null, texto[0]);
-//		}	
-//	}	
-//
-//	public String devolucao_emprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException, SQLWarning{
-//		try {
-//			devolucao_emprestimo.setInt(1, cid_emprestimo);
-//			devolucao_emprestimo.execute();
-//			if(devolucao_emprestimo.getWarnings()!=null) return devolucao_emprestimo.getWarnings().getMessage();
-//		}catch (SQLException e ) {
-//			String texto[] = e.getMessage().split("\\r?\\n");
-//			JOptionPane.showMessageDialog(null, texto[0]);
-//		}
-//		return "";
-//	}
-//	
+	public String proximo_fila_reserva(ObjectId id_livro)  {
+		Document livro = collection_livro.find(eq("_id", id_livro)).first();
+		List<Document>  reservas =  (List<Document>) livro.get("reservas");
+		if (reservas.isEmpty()) return null;
+		else return reservas.get(0).getString("usuario_reserva");
+	}
+	
+	public String devolucao_emprestimo(String cid_emprestimo) throws Exception {
+		try {
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = new Date();
+			Document emprestimo = collection_emprestimo.find(eq("_id",  new ObjectId(cid_emprestimo))).first();
+			String id_livro = collection_exemplar.find(eq("_id",  new ObjectId(emprestimo.getString("id_exemplar")))).first().getString("livro");
+			Document livro = collection_livro.find(eq("_id",  new ObjectId(id_livro))).first();
+			String usuario = proximo_fila_reserva(new ObjectId(id_livro));
+			collection_emprestimo.updateOne(eq("_id", new ObjectId(cid_emprestimo)), combine(set("situacao", 1), set("data_real_entr", dateFormat.format(date))));	
+			if (usuario!=null) {
+				collection_exemplar.updateOne(eq("_id", new ObjectId(emprestimo.getString("id_exemplar"))), combine(set("usuario_reserva", usuario), set("data_reserva", dateFormat.format(date))));	
+				List<Document>  reservas =  (List<Document>) livro.get("reservas");
+				reservas.remove(0);
+				collection_livro.updateOne(eq("_id", new  ObjectId(id_livro)), combine(set("reservas", reservas)));
+				JOptionPane.showMessageDialog(null, "Livro reservado. Não devolver para a prateleira");
+			}
+
+		}catch (Exception e ) {
+			throw new InsertException("Erro ao devolver emprestimo");
+		}
+		return "";
+	}
+
 	
 	public Integer dias_emprestimo(ObjectId id_usuario) throws Exception{
 		try {
@@ -131,26 +118,75 @@ public class EmprestimoDAO {
 		}
 	}
 
-//	public void renovar_emprestimo(ObjectId cid_emprestimo) throws Exception{
-//	try {
-//		renovar_emprestimo.setInt(1, cid_emprestimo);
-//		renovar_emprestimo.execute();
-//	}catch (Exception e) {
+	public void insert_emprestimo(String cid_exemplar, String cid_usuario, String cid_funcionario) throws Exception{
+		try {
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		    int dias = dias_emprestimo(new ObjectId(cid_usuario));
+		    Calendar c = Calendar.getInstance();
+		    c.add(c.DATE, dias);
+		    Date data_estimada= c.getTime();
+		    System.out.println(data_estimada);
+		    Date date = new Date();
+		    Document document = new Document(
+					"multa", 0.0)
+					.append("pagamento_multa", 0)
+					.append("renovacoes", 0)
+					.append("data_empr", dateFormat.format(date))
+					.append("data_est_entr", dateFormat.format(data_estimada))
+					.append("data_real_entr", null)
+					.append("id_usuario", cid_usuario)
+					.append("id_funcionario", cid_funcionario)
+					.append("id_exemplar", cid_exemplar)
+					.append("situacao", 0);
+			collection_emprestimo.insertOne(document);
+		}catch (Exception e) {
+//			String texto[] = e.getMessage().split("\\r?\\n");
+//			JOptionPane.showMessageDialog(null, texto[0]);
+			throw new InsertException("Erro inserir emprestimo");
+
+		}	
+	}
+	public void insert_emprestimo_reserva(String cid_exemplar, String cid_usuario, String cid_funcionario) throws Exception{
+		try {
+			Document exemplar = collection_exemplar.find(eq("_id",  new ObjectId(cid_exemplar))).first();
+			collection_exemplar.updateOne(eq("_id", new ObjectId(cid_exemplar)), combine(set("data_reserva", null), set("usuario_reserva", null)));				                                                          
+			insert_emprestimo(cid_exemplar, cid_usuario, cid_funcionario);
+		}catch (Exception e) {
+//			String texto[] = e.getMessage().split("\\r?\\n");
+//			JOptionPane.showMessageDialog(null, texto[0]);
+			throw new InsertException("Erro inserir emprestimo");
+		}	
+	}
+
+	public void renovar_emprestimo(ObjectId cid_emprestimo) throws Exception{
+	try {
+		Document emprestimo = collection_emprestimo.find(eq("_id", cid_emprestimo)).first();
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    int dias = dias_emprestimo(new ObjectId(emprestimo.getString("id_usuario")));
+	    Calendar c = Calendar.getInstance();
+	    c.setTime(emprestimo.getDate(("data_est_entr")));
+	    c.add(c.DATE, dias);
+	    Date data_estimada= c.getTime();
+		collection_emprestimo.updateOne(eq("_id", cid_emprestimo), combine(set("renovacoes", (emprestimo.getInteger("renovacoes")+1)), set("data_est_entr", data_estimada)));				                                                          
+	}catch (Exception e) {
 //		String texto[] = e.getMessage().split("\\r?\\n");
 //		JOptionPane.showMessageDialog(null, texto[0]);
-//	}	
-//}
+		throw new InsertException("Erro inserir renovar");
+
+	}	
+}
 	
-	public void insert_reserva(ObjectId cid_livro, String cid_usuario, String data) throws Exception{
+	public void insert_reserva(ObjectId cid_livro, String cid_usuario) throws Exception{
 		try {
 			Document livro = collection_livro.find(eq("_id", cid_livro)).first();
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-			Date data_formatada = dateFormat.parse(data);
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+		    Date date = new Date();
 			Document document = new Document(
 					"usuario_reserva", cid_usuario)
-					.append("data_reserva", data_formatada);
+					.append("data_reserva", dateFormat.format(date));
 			List<Document>  reservas =  (List<Document>) livro.get("reservas");
-			reservas.add(document);
+			reservas.add(document);System.out.println("g");
 			collection_livro.updateOne(eq("_id", cid_livro), combine(set("reservas", reservas)));
 		}catch (Exception e) {
 			throw new InsertException("Erro inserir reserva");
@@ -230,12 +266,12 @@ public class EmprestimoDAO {
 	public List<Object> select_emprestimos_correntes() throws Exception {
 		List<Object> lista = new ArrayList<Object>();
 		try {
-			MongoIterable<Document> emprestimos = collection_emprestimo.find();
+			MongoIterable<Document> emprestimos = collection_emprestimo.find(eq("situacao",0));
 			for(Document emprestimo : emprestimos) {
 				Document usuario = collection_usuario.find(eq("_id", new ObjectId(emprestimo.getString("id_usuario")))).first();
 				Document exemplar = collection_exemplar.find(eq("_id",  new ObjectId(emprestimo.getString("id_exemplar")))).first();
 				Document livro = collection_livro.find(eq("_id",  new ObjectId(exemplar.getString("livro")))).first();
-				Object[] linha  = {emprestimo.getObjectId("_id"), usuario.getString("nome"), livro.getString("titulo"),  exemplar.getObjectId("_id"), emprestimo.getDate("data_empr"), emprestimo.getDate("data_est_entr")};		
+				Object[] linha  = {emprestimo.getObjectId("_id"), usuario.getString("nome"), livro.getString("titulo"),  exemplar.getObjectId("_id"), emprestimo.getString("data_empr"), emprestimo.getString("data_est_entr"), emprestimo.getInteger("renovacoes")};		
 				lista.add(linha);
 			}
 		}catch(Exception e) {
@@ -286,7 +322,7 @@ public class EmprestimoDAO {
 				List<Document>  reservas =  (List<Document>) livro.get("reservas");
 				for(Document reserva: reservas) {
 					Document usuario = collection_usuario.find(eq("_id", new ObjectId(reserva.getString("usuario_reserva")))).first();
-					Object[] linha  = {usuario.getString("nome"), livro.getString("isbn"), livro.getString("titulo"),  reserva.getDate("data_reserva")};		
+					Object[] linha  = {usuario.getString("nome"), livro.getString("isbn"), livro.getString("titulo"),  reserva.getString("data_reserva")};		
 					lista.add(linha);
 				}
 			}
