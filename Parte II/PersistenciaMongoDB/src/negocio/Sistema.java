@@ -214,9 +214,9 @@ public class Sistema {
 		emprestimoDAO.insert_reserva(cid_livro, cid_usuario);	
 	}
 	
-	public void deletarReserva(int cid_livro, int cid_usuario) throws InsertException, SelectException, JaCadastradoException {
+//	public void deletarReserva(String cid_livro, String cid_usuario) throws Exception {
 //		emprestimoDAO.delete_reserva(cid_livro, cid_usuario);
-	}
+//	}
 	
 	public void pagarMulta(int cid_usuario) throws InsertException, SelectException, JaCadastradoException {
 //		emprestimoDAO.pagar_multa(cid_usuario);

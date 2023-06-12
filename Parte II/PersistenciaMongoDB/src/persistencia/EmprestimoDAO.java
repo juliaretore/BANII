@@ -3,30 +3,19 @@ package persistencia;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
-import static com.mongodb.client.model.Sorts.ascending;
-import static com.mongodb.client.model.Sorts.descending;
-import com.mongodb.client.model.Sorts;
-
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-
 import javax.swing.JOptionPane;
-
 import org.bson.Document;
 import org.bson.types.ObjectId;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Filters;
-
 import exceptions.InsertException;
 import exceptions.SelectException;
 
@@ -68,7 +57,6 @@ public class EmprestimoDAO {
 
 	
 //	private EmprestimoDAO() throws ClassNotFoundException, SQLException, SelectException{
-//		devolucao_emprestimo = conexao.prepareStatement("select devolucao_emprestimo(?)");
 //		atualizar_multas = conexao.prepareStatement("select atualiza_multas()");
 //		verifica_datas_reservas = conexao.prepareStatement("select verifica_datas_reservas()");
 //		delete_reserva = conexao.prepareStatement("delete from reservas_livro where id_livro=? and id_usuario=?");
@@ -84,30 +72,30 @@ public class EmprestimoDAO {
 		else return reservas.get(0).getString("usuario_reserva");
 	}
 	
-	public String devolucao_emprestimo(String cid_emprestimo) throws Exception {
+	
+	public void devolucao_emprestimo(String cid_emprestimo) throws Exception {
 		try {
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = new Date();
 			Document emprestimo = collection_emprestimo.find(eq("_id",  new ObjectId(cid_emprestimo))).first();
+			Document exemplar = collection_exemplar.find(eq("_id",  new ObjectId(emprestimo.getString("id_exemplar")))).first();
 			String id_livro = collection_exemplar.find(eq("_id",  new ObjectId(emprestimo.getString("id_exemplar")))).first().getString("livro");
 			Document livro = collection_livro.find(eq("_id",  new ObjectId(id_livro))).first();
 			String usuario = proximo_fila_reserva(new ObjectId(id_livro));
 			collection_emprestimo.updateOne(eq("_id", new ObjectId(cid_emprestimo)), combine(set("situacao", 1), set("data_real_entr", dateFormat.format(date))));	
 			if (usuario!=null) {
-				collection_exemplar.updateOne(eq("_id", new ObjectId(emprestimo.getString("id_exemplar"))), combine(set("usuario_reserva", usuario), set("data_reserva", dateFormat.format(date))));	
 				List<Document>  reservas =  (List<Document>) livro.get("reservas");
 				reservas.remove(0);
 				collection_livro.updateOne(eq("_id", new  ObjectId(id_livro)), combine(set("reservas", reservas)));
+				collection_exemplar.updateOne(eq("_id", exemplar.getObjectId("_id")), combine(set("usuario_reserva", usuario), set("data_reserva", dateFormat.format(date))));	
 				JOptionPane.showMessageDialog(null, "Livro reservado. Não devolver para a prateleira");
 			}
-
 		}catch (Exception e ) {
 			throw new InsertException("Erro ao devolver emprestimo");
 		}
-		return "";
 	}
-
 	
+
 	public Integer dias_emprestimo(ObjectId id_usuario) throws Exception{
 		try {
 			Document usuario = collection_usuario.find(eq("_id", id_usuario)).first();
@@ -140,8 +128,6 @@ public class EmprestimoDAO {
 					.append("situacao", 0);
 			collection_emprestimo.insertOne(document);
 		}catch (Exception e) {
-//			String texto[] = e.getMessage().split("\\r?\\n");
-//			JOptionPane.showMessageDialog(null, texto[0]);
 			throw new InsertException("Erro inserir emprestimo");
 
 		}	
@@ -152,8 +138,6 @@ public class EmprestimoDAO {
 			collection_exemplar.updateOne(eq("_id", new ObjectId(cid_exemplar)), combine(set("data_reserva", null), set("usuario_reserva", null)));				                                                          
 			insert_emprestimo(cid_exemplar, cid_usuario, cid_funcionario);
 		}catch (Exception e) {
-//			String texto[] = e.getMessage().split("\\r?\\n");
-//			JOptionPane.showMessageDialog(null, texto[0]);
 			throw new InsertException("Erro inserir emprestimo");
 		}	
 	}
@@ -170,8 +154,6 @@ public class EmprestimoDAO {
 	    Date data_estimada= c.getTime();
 		collection_emprestimo.updateOne(eq("_id", cid_emprestimo), combine(set("renovacoes", (emprestimo.getInteger("renovacoes")+1)), set("data_est_entr", data_estimada)));				                                                          
 	}catch (Exception e) {
-//		String texto[] = e.getMessage().split("\\r?\\n");
-//		JOptionPane.showMessageDialog(null, texto[0]);
 		throw new InsertException("Erro inserir renovar");
 
 	}	
@@ -186,22 +168,14 @@ public class EmprestimoDAO {
 					"usuario_reserva", cid_usuario)
 					.append("data_reserva", dateFormat.format(date));
 			List<Document>  reservas =  (List<Document>) livro.get("reservas");
-			reservas.add(document);System.out.println("g");
+			reservas.add(document);
 			collection_livro.updateOne(eq("_id", cid_livro), combine(set("reservas", reservas)));
 		}catch (Exception e) {
 			throw new InsertException("Erro inserir reserva");
 		}	
 	}
-//	
-//	public void delete_reserva(int cid_livro, int cid_usuario) throws InsertException, SelectException, JaCadastradoException{
-//		try {
-//			delete_reserva.setInt(1, cid_livro);
-//			delete_reserva.setInt(2, cid_usuario);
-//			delete_reserva.executeUpdate();
-//		}catch (SQLException e) {
-//			throw new InsertException("Erro cancelar reserva");
-//		}	
-//	}
+	
+
 //	
 //	public void pagar_multa(int cid_usuario) throws InsertException, SelectException, JaCadastradoException{
 //		try {
