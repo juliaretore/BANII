@@ -90,9 +90,8 @@ public class Sistema {
 		usuarioDAO.update_telefone(usuario, novo_telefone, antigo_telefone);
 	}
 	
-	public List<Object> listarUsuariosEmprestimo() throws SelectException{
-//		return usuarioDAO.select_table_emprestimos();
-		return null;
+	public List<Object> listarUsuariosEmprestimo() throws Exception{
+		return usuarioDAO.select_table_emprestimos();
 	}
 	
 
@@ -109,9 +108,8 @@ public class Sistema {
 		return livroDAO.select_exemplares_livro(id_livro); 
 	}
 	
-	public List<Object> listarExemplaresLivrosDisponiveis(ObjectId id_livro) throws Exception{
-		return null;
-//		return livroDAO.select_exemplares_livro_disponiveis(id_livro);
+	public List<Object> listarExemplaresLivrosDisponiveis(String id_livro) throws Exception{
+		return livroDAO.select_exemplares_livro_disponiveis(id_livro);
 	}
 
 	public List<Object> listarAdiconarAutoresLivros(ObjectId id_livro) throws Exception{
@@ -192,63 +190,74 @@ public class Sistema {
 	
 	
 	//EMPRESTIMO
-	public void inserirEmprestimo(int cid_exemplar, int cid_usuario, int cid_funcionario) throws DeleteException, SelectException, NaoCadastradoException, InsertException, JaCadastradoException { 
-		emprestimoDAO.insert_emprestimo(cid_exemplar, cid_usuario, cid_funcionario);
+	public Integer selecionarDiasEmprestimo(ObjectId id_usuario) throws Exception{
+		return emprestimoDAO.dias_emprestimo(id_usuario);
+	}
+
+	public void inserirEmprestimo(int cid_exemplar, int cid_usuario, int cid_funcionario) throws Exception { 
+//		emprestimoDAO.insert_emprestimo(cid_exemplar, cid_usuario, cid_funcionario);
 	}
 	
-	public void inserirEmprestimoPorReserva(int cid_exemplar, int cid_usuario, int cid_funcionario) throws InsertException, SelectException, JaCadastradoException {
-		emprestimoDAO.insert_emprestimo_reserva(cid_exemplar, cid_usuario, cid_funcionario);
+	public void inserirEmprestimoPorReserva(int cid_exemplar, int cid_usuario, int cid_funcionario) throws Exception {
+//		emprestimoDAO.insert_emprestimo_reserva(cid_exemplar, cid_usuario, cid_funcionario);
 	}
 	
 	public String devolucaoEmprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException, SQLWarning {
-		return emprestimoDAO.devolucao_emprestimo(cid_emprestimo);
+		return null;
+//		return emprestimoDAO.devolucao_emprestimo(cid_emprestimo);
 	}
 	
-	public void renovarEmprestimo(int cid_emprestimo) throws InsertException, SelectException, JaCadastradoException {
-		emprestimoDAO.renovar_emprestimo(cid_emprestimo);
+	public void renovarEmprestimo(int cid_emprestimo) throws Exception {
+//		emprestimoDAO.renovar_emprestimo(cid_emprestimo);
 	}
 	
-	public void inserirReserva(int cid_livro, int cid_usuario) throws InsertException, SelectException, JaCadastradoException {
-		emprestimoDAO.insert_reserva(cid_livro, cid_usuario);	
+	public void inserirReserva(ObjectId cid_livro, String cid_usuario, String data) throws Exception {
+		emprestimoDAO.insert_reserva(cid_livro, cid_usuario, data);	
 	}
 	
 	public void deletarReserva(int cid_livro, int cid_usuario) throws InsertException, SelectException, JaCadastradoException {
-		emprestimoDAO.delete_reserva(cid_livro, cid_usuario);
+//		emprestimoDAO.delete_reserva(cid_livro, cid_usuario);
 	}
 	
 	public void pagarMulta(int cid_usuario) throws InsertException, SelectException, JaCadastradoException {
-		emprestimoDAO.pagar_multa(cid_usuario);
+//		emprestimoDAO.pagar_multa(cid_usuario);
 	}
 	
 	public String dataEmprestimo(int cid_usuario) throws InsertException {
-		return emprestimoDAO.select_data_emprestimo(cid_usuario);
+		return null;
+//		return emprestimoDAO.select_data_emprestimo(cid_usuario);
 	}
 	
 	public List<Object> HistoricoExemplar(int id_exemplar) throws SelectException{
-		return emprestimoDAO.select_historico_exemplar(id_exemplar);
+		return null;
+//		return emprestimoDAO.select_historico_exemplar(id_exemplar);
 	}
 	
 	public void atualizaDatasReserva() throws InsertException, SelectException, JaCadastradoException {
-		emprestimoDAO.verifica_datas_reservas();
+//		emprestimoDAO.verifica_datas_reservas();
 	}
 	
 	public void atualizarMultas() throws InsertException, SelectException, JaCadastradoException {
-		emprestimoDAO.atualizar_multas();
+//		emprestimoDAO.atualizar_multas();
 	}
 	
 	public List<Object> listarEmprestimosCorrentes() throws SelectException{
-		return emprestimoDAO.select_emprestimos_correntes();
+		return null;
+//		return emprestimoDAO.select_emprestimos_correntes();
 	}
 	
 	public List<Object> listarMultas() throws SelectException{
-		return emprestimoDAO.select_pagar_multas();
+		return null;
+//		return emprestimoDAO.select_pagar_multas();
 	}
 	
 	public List<Object> listarReservasAtivas() throws SelectException{
-		return emprestimoDAO.select_reservas_ativas();
+		return null;
+//		return emprestimoDAO.select_reservas_ativas();
 	}
 	
-	public List<Object> listarFilaReserva() throws SelectException{
+	public List<Object> listarFilaReserva() throws Exception{
+//		return null;
 		return emprestimoDAO.select_fila_reserva();
 	}
 	

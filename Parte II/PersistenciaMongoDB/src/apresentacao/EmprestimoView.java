@@ -308,10 +308,10 @@ public class EmprestimoView extends JFrame {
 						JOptionPane.showMessageDialog(null, "Preencha todos os campos");
 					}else {					
 						try {
-							int livro = Integer.parseInt(String.valueOf((table_2.getValueAt(table_2.getSelectedRow(), 0))));
-							int usuario = Integer.parseInt(tfCodigo.getText());
-							sistema.inserirReserva(livro, usuario);
-						} catch (InsertException | SelectException | JaCadastradoException e1) {
+							ObjectId livro = new ObjectId((String.valueOf((table_2.getValueAt(table_2.getSelectedRow(), 0)))));
+							String usuario = tfCodigo.getText();
+							sistema.inserirReserva(livro, usuario, tfData.getText());
+						} catch (Exception e1) {
 							JOptionPane.showMessageDialog(null, e1.getMessage());
 						}
 					
@@ -550,7 +550,7 @@ public class EmprestimoView extends JFrame {
 			try {
 				sistema.renovarEmprestimo(Integer.parseInt(String.valueOf((table.getValueAt(table.getSelectedRow(), 0)))));
 				atualizarTabela_2();
-			} catch (NumberFormatException | InsertException | SelectException | JaCadastradoException e1) {
+			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage());
 			}
 			btnDevolucao.setEnabled(false);
@@ -606,7 +606,7 @@ public class EmprestimoView extends JFrame {
 								int exemplar = Integer.parseInt(String.valueOf((table_3.getValueAt(table_3.getSelectedRow(), 4))));
 								int funcionario = Integer.parseInt(TelaPrincipal.tfIdUsuario.getText());
 								sistema.inserirEmprestimoPorReserva(exemplar, usuario, funcionario);
-							} catch (InsertException | SelectException | JaCadastradoException e1) {
+							} catch (Exception e1) {
 								JOptionPane.showMessageDialog(null, e1.getMessage());
 							}
 							limpar();
@@ -696,8 +696,7 @@ public class EmprestimoView extends JFrame {
 public static void atualizarTabela_1() {
 		try {
 //		    int id_livro = Integer.parseInt(String.valueOf(table_2.getValueAt(table_2.getSelectedRow(), 0)));
-		    ObjectId objId = new ObjectId(String.valueOf(table_2.getValueAt(table_2.getSelectedRow(), 0)));
-			exemplares = sistema.listarExemplaresLivrosDisponiveis(objId);
+			exemplares = sistema.listarExemplaresLivrosDisponiveis(String.valueOf(table_2.getValueAt(table_2.getSelectedRow(), 0)));
 			DefaultTableModel model = (DefaultTableModel) table_1.getModel();
 			model.setNumRows(0);
 		for (int i=0;i<exemplares.size();i++) model.addRow((Object[]) exemplares.get(i));

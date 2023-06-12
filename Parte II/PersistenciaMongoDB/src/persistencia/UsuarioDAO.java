@@ -21,6 +21,8 @@ import com.mongodb.client.MongoIterable;
 public class UsuarioDAO {
 		private static UsuarioDAO instance = null;
 		private static MongoCollection<Document> collection;
+		private static MongoCollection<Document>  collection_categoria;
+
 		private static MongoDatabase connection;
 
 		public static UsuarioDAO getInstance() throws Exception {
@@ -32,6 +34,7 @@ public class UsuarioDAO {
 		connection = Conexao.getConexao();
 		try {
 			collection = connection.getCollection("usuario");
+			collection_categoria =  connection.getCollection("categoria");
 		} catch (Exception e) {
 			throw new SelectException("Erro ao conetar a coleção usuario");
 		}
@@ -140,8 +143,7 @@ public class UsuarioDAO {
 				e.setEstado(endereco.getString("estado"));
 				e.setNumero(endereco.getInteger("numero"));
 				e.setRua(endereco.getString("rua"));
-				MongoCollection<Document>  col = connection.getCollection("categoria");
-				Document categoria = col.find(eq("_id", user.getInteger("categoria_id"))).first();
+				Document categoria = collection_categoria.find(eq("_id", user.getInteger("categoria_id"))).first();
 				Object[] linha  = {user.getObjectId("_id"), user.getString("nome"), categoria.getString("nome"),  user.getString("turno"), e.endereco_completo(), user.getString("email")};
 				lista.add(linha);
 			}
@@ -153,20 +155,20 @@ public class UsuarioDAO {
 	}
 
 
-//	select_table_emprestimos = conexao.prepareStatement("select u.id, u.nome, c.nome, u.turno from usuario u join categoria c on u.id_categoria=c.id");
-//	public List<Object> select_table_emprestimos() throws SelectException {
-//		List<Object> lista = new ArrayList<Object>();
-//		try {
-//			ResultSet rs = select_table_emprestimos.executeQuery();
-//			while(rs.next()) {
-//				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4)};
-//				lista.add(linha);
-//			}
-//		}catch(SQLException e) {
-//			throw new SelectException("Erro ao buscar dados para preencher a tabela");
-//		}
-//		return lista;
-//	}
+	public List<Object> select_table_emprestimos() throws Exception {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			MongoIterable<Document> usuarios = collection.find();
+			for(Document usuario : usuarios) {
+				Document categoria = collection_categoria.find(eq("_id", usuario.getInteger("categoria_id"))).first();
+				Object[] linha  = {usuario.getObjectId("_id"), usuario.getString("nome"), categoria.getString("nome"),  usuario.getString("turno")};
+				lista.add(linha);
+			}
+		}catch(Exception e) {
+			throw new SelectException("Erro ao buscar dados para preencher a tabela");
+		}
+		return lista;
+	}
 	
 	public void delete_telefone(ObjectId id_usuario, String telefone) throws Exception{
 		try {

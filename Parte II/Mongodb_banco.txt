@@ -166,8 +166,7 @@ db.exemplar.insertMany([
  colecao: "Permanente",
  livro: ,
  data_reserva: null,
- usuario_reserva: null,
- emprestimos: []
+ usuario_reserva: null
 },
 {
  prateleira: 5,
@@ -175,8 +174,7 @@ db.exemplar.insertMany([
  colecao: "Permanente",
  livro: ,
  data_reserva: null,
- usuario_reserva: null,
- emprestimos: []
+ usuario_reserva: null
 },
 {
  prateleira: 6,
@@ -184,8 +182,7 @@ db.exemplar.insertMany([
  colecao: "Reserva",
  livro: ,
  data_reserva: null,
- usuario_reserva: null,
- emprestimos: []
+ usuario_reserva: null
 },
 {
  prateleira: 6,
@@ -193,8 +190,7 @@ db.exemplar.insertMany([
  colecao: "Permanente",
  livro: ,
  data_reserva: null,
- usuario_reserva: null,
- emprestimos: []
+ usuario_reserva: null
 },
 {
  prateleira: 2,
@@ -202,23 +198,26 @@ db.exemplar.insertMany([
  colecao: "Permanente",
  livro: "6483d60f99142787c19ef2d2",
  data_reserva: null,
- usuario_reserva: null,
- emprestimos: [
- 		{
- 			multa: 3.50,
- 			pagamento_multa: 1,
-			renovacoes: 0,
-			data_empr: new Date("<2023-05-19>"),
-			data_est_entr: new Date("<2023-06-03>"),
-			data_real_entr: null,
-			id_usuario: "64832225b492e8a318a378dd",
-			id_funcionario: "64835495e39758ef4358993f",
-			situacao: 0
-		 }
- ]
+ usuario_reserva: null
 }
 ])
 
+------------------- Emprestimo ---------------
+
+db.emprestimo.insertMany([
+{
+ multa: 3.50,
+ pagamento_multa: 1,
+ renovacoes: 0,
+ data_empr: new Date("<2023-05-19>"),
+ data_est_entr: new Date("<2023-06-03>"),
+ data_real_entr: null,
+ id_usuario: "64832225b492e8a318a378dd",
+ id_funcionario: "64835495e39758ef4358993f",
+ id_exemplar: "64835495e39758ef4358993f",
+ situacao: 0
+}
+])
 
 
 

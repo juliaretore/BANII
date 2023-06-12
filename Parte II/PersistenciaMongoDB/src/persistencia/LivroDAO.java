@@ -7,10 +7,18 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Projections;
+
 import dados.Exemplar;
 import dados.Livro;
 import exceptions.DeleteException;
@@ -24,7 +32,7 @@ public class LivroDAO {
 	private static MongoCollection<Document> collection_autor;
 	private static MongoCollection<Document> collection_exemplar;
 	private static MongoCollection<Document> collection_usuario;
-
+	private static MongoCollection<Document>  collection_emprestimo;
 	private static MongoDatabase connection;
 
 	public static LivroDAO getInstance() throws Exception {
@@ -39,9 +47,11 @@ public class LivroDAO {
 			collection_autor = connection.getCollection("autor");
 			collection_exemplar = connection.getCollection("exemplar");
 			collection_usuario = connection.getCollection("usuario");
+			collection_emprestimo = connection.getCollection("emprestimo");
+
 
 		} catch (Exception e) {
-			throw new SelectException("Erro ao conectar a coleção funcionario");
+			throw new SelectException("Erro ao conectar a coleção");
 		}
 	}
 	
@@ -62,15 +72,13 @@ public class LivroDAO {
 	
 	public void insert_exemplar(Exemplar exemplar) throws Exception{
 		try {
-			ArrayList<Object> empty_array = new ArrayList<Object>();
 			Document document = new Document(
 					"prateleira", exemplar.getPrateleira())
 					.append("estante", exemplar.getEstante())
 					.append("colecao", exemplar.getColecao())
 					.append("livro", exemplar.getId_livro())
 					.append("data_reserva", null)
-					.append("usuario_reserva", null)
-					.append("emprestimos", empty_array);
+					.append("usuario_reserva", null);
 			collection_exemplar.insertOne(document);
 		}catch (Exception e) {
 			throw new InsertException("Erro ao inserir exemplar.");
@@ -188,22 +196,25 @@ public class LivroDAO {
 				String nome = "";
 				String situacao="Disponível";
 				
-				List<Object> empres = (List<Object>) exemplar.get("emprestimos");
-					for(Object emp: empres) {
-						Document emprestimo = (Document) emp;
-						if(emprestimo.getInteger("situacao")==0) { //Está emprestado
-							situacao = "Em empréstimo"; 
-							ObjectId objId_usuario = new ObjectId(emprestimo.getString("id_usuario"));	
-							Document usuario = collection_usuario.find(eq("_id", objId_usuario)).first();
-							nome = usuario.getString("nome");
-							break;
-						}
-					}
-					if(id_usuario!=null) {  // Está reservado
-						situacao = "Reservado";
-						ObjectId objId_usuario = new ObjectId(id_usuario);
-						nome = ((ResultSet) collection_usuario.find(eq("_id", objId_usuario))).getString("nome");
-					}
+	            Bson query = Filters.and(
+	                    Filters.eq("id_exemplar", String.valueOf(id_exemplar)),
+	                    Filters.eq("situacao", 0)
+	            );
+	            Document result = (Document) collection_emprestimo.find(query).first();
+
+	            if(result!=null) { //Está emprestado
+	            	situacao = "Em empréstimo";
+	            	ObjectId objId_usuario = new ObjectId(result.getString("id_usuario"));
+					Document usuario = collection_usuario.find(eq("_id", objId_usuario)).first();
+					nome = usuario.getString("nome");
+	            	
+	            }
+				if(id_usuario!=null) { //Está reservado
+					situacao = "Reservado";
+					ObjectId objId_usuario = new ObjectId(id_usuario);
+ 					Document usuario = collection_usuario.find(eq("_id", objId_usuario)).first();
+					nome = usuario.getString("nome");
+				}
 	
 				Object[] linha  = {id_exemplar, exemplar.getInteger("prateleira"), exemplar.getInteger("estante"), exemplar.getString("colecao"), situacao, nome};
 				lista.add(linha);
@@ -214,22 +225,32 @@ public class LivroDAO {
 		return lista;
 	}
 
-	//emprestimo
-//	select_exemplares_livro_disponiveis = conexao.prepareStatement("select id, prateleira, estante, colecao from exemplar where id_livro=? and id_usuario_reserva is null and colecao!='Reserva' and colecao!='Fora de uso' and id not in (select id_exemplar from emprestimo where situacao=0)");
-//	public List<Object> select_exemplares_livro_disponiveis(int id_livro) throws SelectException {
-//		List<Object> lista = new ArrayList<Object>();
-//		try {
-//			select_exemplares_livro_disponiveis.setInt(1, id_livro);
-//			ResultSet rs = select_exemplares_livro_disponiveis.executeQuery();
-//			while(rs.next()) {
-//				Object[] linha  = { rs.getInt(1), rs.getInt(2), rs.getInt(3),rs.getString(4)};
-//				lista.add(linha);
-//			}
-//		}catch(SQLException e) {
-//			throw new SelectException("Erro ao buscar dados para preencher a tabela de exemplares disponiveis");
-//		}
-//		return lista;
-//	}
+	public List<Object> select_exemplares_livro_disponiveis(String id_livro) throws Exception {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+            Bson query = Filters.and(
+                    Filters.eq("livro", id_livro),
+                    Filters.eq("id_usuario_reserva", null),
+                    Filters.ne("colecao", "Reserva"),
+                    Filters.ne("colecao", "Fora de uso")
+                    );
+
+            	FindIterable<Document> exemplares = collection_exemplar.find(query);
+                FindIterable<Document> emprestimos =  collection_emprestimo.find(eq("situacao", 0));
+                List<String> resultList = new ArrayList<>();
+                for (Document emprestimo : emprestimos) resultList.add(emprestimo.getString("id_exemplar"));
+
+	            for(Document exemplar : exemplares) {
+	            	if(!resultList.contains(String.valueOf(exemplar.getObjectId("_id")))){
+	            		Object[] linha  = {exemplar.getObjectId("_id"), exemplar.getInteger("prateleira"), exemplar.getInteger("estante"), exemplar.getString("colecao")};
+	    				lista.add(linha);
+	            	}   	
+				}
+		}catch(Exception e) {
+			throw new SelectException("Erro ao buscar dados para preencher a tabela de exemplares disponiveis");
+		}
+		return lista;
+	}
 
 	
 	

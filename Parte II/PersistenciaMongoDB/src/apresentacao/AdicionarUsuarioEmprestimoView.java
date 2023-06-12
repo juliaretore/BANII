@@ -7,7 +7,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,6 +28,9 @@ import javax.swing.event.CaretListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import org.bson.types.ObjectId;
+
 import exceptions.InsertException;
 import exceptions.SelectException;
 import negocio.Sistema;
@@ -134,7 +141,6 @@ public class AdicionarUsuarioEmprestimoView extends JFrame {
 				DefaultTableModel model = (DefaultTableModel) table.getModel();  
 				filtro = new TableRowSorter<TableModel>(model);  
 				table.setRowSorter(filtro); 
-				
 				if (textPNome.getText().length()==0) filtro.setRowFilter(null);
 				else filtro.setRowFilter(RowFilter.regexFilter("(?i)" + textPNome.getText(), 1));  		
 			}
@@ -148,12 +154,19 @@ public class AdicionarUsuarioEmprestimoView extends JFrame {
 				if (table.getSelectedRow()!=-1){
 					EmprestimoView.tfCodigo.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
 					EmprestimoView.tfUsuario.setText(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
+					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+					Date data_estimada = new Date();
+				    Calendar c = Calendar.getInstance();
+				    c.setTime(data_estimada);				
+				    int dias=0;
 					try {
-						EmprestimoView.tfData.setText(sistema.dataEmprestimo(Integer.parseInt(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)))));
-					} catch (NumberFormatException | InsertException e) {
+						dias = sistema.selecionarDiasEmprestimo(new ObjectId(String.valueOf(table.getValueAt(table.getSelectedRow(), 0))));
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
-//					dataEmprestimo
+					c.add(Calendar.DATE, dias);
+				    data_estimada= c.getTime();
+				    EmprestimoView.tfData.setText(String.valueOf(dateFormat.format(data_estimada))); 
 					dispose();  
 				}else JOptionPane.showMessageDialog(null, "Nenhum usuário selecionado!");
 			}
