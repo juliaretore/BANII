@@ -80,7 +80,6 @@ public class EmprestimoDAO {
 //		pagar_multa = conexao.prepareStatement("select pagamento_multas(?)");
 //		select_data_emprestimo = conexao.prepareStatement("select ((select c.tempo_empr from categoria c join usuario u on u.id_categoria=c.id where u.id=?)+current_date)");
 //		select_historico_exemplar = conexao.prepareStatement("select e.id,  u.nome, e.data_empr, e.data_est_entr, e.data_real_entr, e.situacao, e.multa, e.pagamento_multa from emprestimo e join usuario u on u.id=e.id_usuario where id_exemplar=?");
-//		select_emprestimos_correntes = conexao.prepareStatement("select e.id, u.nome, l.titulo, ex.id, e.data_empr, e.data_est_entr, e.renovacoes from emprestimo e join usuario u on u.id=e.id_usuario join exemplar ex on ex.id=e.id_exemplar join livro l on l.id=ex.id_livro where e.situacao=0");
 //		select_pagar_multas = conexao.prepareStatement("select e.id_usuario, u.nome, sum(multa) from emprestimo e join usuario u on u.id=e.id_usuario where e.situacao=1 and e.pagamento_multa=1 group by e.id_usuario, u.nome");
 
 //	}
@@ -134,20 +133,11 @@ public class EmprestimoDAO {
 
 //	public void renovar_emprestimo(ObjectId cid_emprestimo) throws Exception{
 //	try {
-////		renovar_emprestimo.setInt(1, cid_emprestimo);
-////		renovar_emprestimo.execute();
-//		Document exmprestimo = collection_emprestimo.find(eq("_id", cid_emprestimo)).first();
-//		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-//		Date data_estimada = new Date();
-//	    Calendar c = Calendar.getInstance();
-//	    c.setTime(data_estimada);
-//	    c.add(Calendar.DATE, 15);
-//	    data_estimada= c.getTime();
-//	    EmprestimoView.tfData.setText(String.valueOf(dateFormat.format(data_estimada))); 
-//
+//		renovar_emprestimo.setInt(1, cid_emprestimo);
+//		renovar_emprestimo.execute();
 //	}catch (Exception e) {
-////		String texto[] = e.getMessage().split("\\r?\\n");
-////		JOptionPane.showMessageDialog(null, texto[0]);
+//		String texto[] = e.getMessage().split("\\r?\\n");
+//		JOptionPane.showMessageDialog(null, texto[0]);
 //	}	
 //}
 	
@@ -236,21 +226,23 @@ public class EmprestimoDAO {
 //		}
 //		return lista;
 //	}	
-//	
-//		
-//	public List<Object> select_emprestimos_correntes() throws SelectException {
-//		List<Object> lista = new ArrayList<Object>();
-//		try {
-//			ResultSet rs = select_emprestimos_correntes.executeQuery();
-//			while(rs.next()) {
-//				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getInt(4),rs.getString(5), rs.getString(6), rs.getInt(7)};
-//				lista.add(linha);
-//			}
-//		}catch(SQLException e) {
-//			throw new SelectException("Erro ao buscar emprestimos correntes");
-//		}
-//		return lista;
-//	}
+	
+	public List<Object> select_emprestimos_correntes() throws Exception {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			MongoIterable<Document> emprestimos = collection_emprestimo.find();
+			for(Document emprestimo : emprestimos) {
+				Document usuario = collection_usuario.find(eq("_id", new ObjectId(emprestimo.getString("id_usuario")))).first();
+				Document exemplar = collection_exemplar.find(eq("_id",  new ObjectId(emprestimo.getString("id_exemplar")))).first();
+				Document livro = collection_livro.find(eq("_id",  new ObjectId(exemplar.getString("livro")))).first();
+				Object[] linha  = {emprestimo.getObjectId("_id"), usuario.getString("nome"), livro.getString("titulo"),  exemplar.getObjectId("_id"), emprestimo.getDate("data_empr"), emprestimo.getDate("data_est_entr")};		
+				lista.add(linha);
+			}
+		}catch(Exception e) {
+			throw new SelectException("Erro ao buscar emprestimos correntes");
+		}
+		return lista;
+	}
 //
 //	public List<Object> select_pagar_multas() throws SelectException {
 //		List<Object> lista = new ArrayList<Object>();
@@ -268,37 +260,23 @@ public class EmprestimoDAO {
 //		}
 //		return lista;
 //	}
-//	
+	
 
-//("select u.id, u.nome, l.isbn, l.titulo, e.id, 7-abs(e.data_reserva-current_date) from exemplar e join livro l on l.id=e.id_livro join usuario u on u.id=e.id_usuario_reserva where id_usuario_reserva is not null");
-
-//	public List<Object> select_reservas_ativas() throws Exception {
-//		List<Object> lista = new ArrayList<Object>();
-//		try {
-////			ResultSet rs = select_reservas_ativas.executeQuery();
-////			while(rs.next()) {
-////					Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),rs.getInt(5),rs.getInt(6)};
-////					lista.add(linha);				
-////			}
-//			 Bson query = Filters.and(
-//	            Filters.ne("usuario_reserva", null));
-//	            Document result = (Document) collection_emprestimo.find(query).first();
-//			MongoIterable<Document> exemplares = collection_exemplar.find();
-//			for(Document livro : livros) {
-//				List<Document>  reservas =  (List<Document>) livro.get("reservas");
-//				for(Document reserva: reservas) {
-//					ObjectId objId_usuario = new ObjectId(reserva.getString("usuario_reserva"));
-//					Document usuario = collection_usuario.find(eq("_id", objId_usuario)).first();
-//					String nome = usuario.getString("nome");
-//					Object[] linha  = {nome, livro.getString("isbn"), livro.getString("titulo"),  reserva.getDate("data_reserva")};		
-//					lista.add(linha);
-//				}
-//			}
-//		}catch(Exception e) {
-//			throw new SelectException("Erro ao buscar reservas");
-//		}
-//		return lista;
-//	}
+	public List<Object> select_reservas_ativas() throws Exception {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			MongoIterable<Document> exemplares = collection_exemplar.find(Filters.ne("usuario_reserva", null));
+			for(Document exemplar : exemplares) {
+				Document usuario = collection_usuario.find(eq("_id", new ObjectId(exemplar.getString("usuario_reserva")))).first();
+				Document livro = collection_livro.find(eq("_id",  new ObjectId(exemplar.getString("livro")))).first();
+				Object[] linha  = {exemplar.getString("usuario_reserva"), usuario.getString("nome"), livro.getString("isbn"), livro.getString("titulo"),  exemplar.getObjectId("_id")};		
+				lista.add(linha);
+			}
+		}catch(Exception e) {
+			throw new SelectException("Erro ao buscar reservas");
+		}
+		return lista;
+	}
 
 	public List<Object> select_fila_reserva() throws Exception {
 		List<Object> lista = new ArrayList<Object>();
@@ -307,10 +285,8 @@ public class EmprestimoDAO {
 			for(Document livro : livros) {
 				List<Document>  reservas =  (List<Document>) livro.get("reservas");
 				for(Document reserva: reservas) {
-					ObjectId objId_usuario = new ObjectId(reserva.getString("usuario_reserva"));
-					Document usuario = collection_usuario.find(eq("_id", objId_usuario)).first();
-					String nome = usuario.getString("nome");
-					Object[] linha  = {nome, livro.getString("isbn"), livro.getString("titulo"),  reserva.getDate("data_reserva")};		
+					Document usuario = collection_usuario.find(eq("_id", new ObjectId(reserva.getString("usuario_reserva")))).first();
+					Object[] linha  = {usuario.getString("nome"), livro.getString("isbn"), livro.getString("titulo"),  reserva.getDate("data_reserva")};		
 					lista.add(linha);
 				}
 			}

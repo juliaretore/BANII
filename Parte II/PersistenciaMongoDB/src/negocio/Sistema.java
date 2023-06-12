@@ -241,9 +241,8 @@ public class Sistema {
 //		emprestimoDAO.atualizar_multas();
 	}
 	
-	public List<Object> listarEmprestimosCorrentes() throws SelectException{
-		return null;
-//		return emprestimoDAO.select_emprestimos_correntes();
+	public List<Object> listarEmprestimosCorrentes() throws Exception{
+		return emprestimoDAO.select_emprestimos_correntes();
 	}
 	
 	public List<Object> listarMultas() throws SelectException{

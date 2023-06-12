@@ -204,15 +204,13 @@ public class LivroDAO {
 
 	            if(result!=null) { //Está emprestado
 	            	situacao = "Em empréstimo";
-	            	ObjectId objId_usuario = new ObjectId(result.getString("id_usuario"));
-					Document usuario = collection_usuario.find(eq("_id", objId_usuario)).first();
+					Document usuario = collection_usuario.find(eq("_id", new ObjectId(result.getString("id_usuario")))).first();
 					nome = usuario.getString("nome");
 	            	
 	            }
 				if(id_usuario!=null) { //Está reservado
 					situacao = "Reservado";
-					ObjectId objId_usuario = new ObjectId(id_usuario);
- 					Document usuario = collection_usuario.find(eq("_id", objId_usuario)).first();
+ 					Document usuario = collection_usuario.find(eq("_id", new ObjectId(id_usuario))).first();
 					nome = usuario.getString("nome");
 				}
 	
