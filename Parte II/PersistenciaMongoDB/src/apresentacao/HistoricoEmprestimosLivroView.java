@@ -179,7 +179,7 @@ public class HistoricoEmprestimosLivroView extends JFrame {
 
 	public static void atualizarTabela() {
 		try {
-			historico = sistema.HistoricoExemplar(Integer.parseInt(LivroView.tfCodigo_1.getText()));
+			historico = sistema.HistoricoExemplar(LivroView.tfCodigo_1.getText());
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.setNumRows(0);
 		for (int i=0;i<historico.size();i++) model.addRow((Object[]) historico.get(i));

@@ -6,13 +6,20 @@ import static com.mongodb.client.model.Updates.set;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Filters;
@@ -51,19 +58,14 @@ public class EmprestimoDAO {
 	//TO-DO:
 	//    1- não permitir empréstimo se usuario tem livros atrasados, multa ou excedeu o numero max de emprestimos;
 	//    2- não permitir mais de 3 renovações em um empréstimo;
+	//    3- Multas:atualizar o valor por dia
+	//    4- Cancelar as reservas depois de 7 dias
 	
 	// Revisar:
 	//    1- pro próximo da fila, nao seria melhor fazer um sort? Como?
+	// 
 
-	
-//	private EmprestimoDAO() throws ClassNotFoundException, SQLException, SelectException{
-//		atualizar_multas = conexao.prepareStatement("select atualiza_multas()");
-//		verifica_datas_reservas = conexao.prepareStatement("select verifica_datas_reservas()");
-//		delete_reserva = conexao.prepareStatement("delete from reservas_livro where id_livro=? and id_usuario=?");
-//		pagar_multa = conexao.prepareStatement("select pagamento_multas(?)");
-//		select_historico_exemplar = conexao.prepareStatement("select e.id,  u.nome, e.data_empr, e.data_est_entr, e.data_real_entr, e.situacao, e.multa, e.pagamento_multa from emprestimo e join usuario u on u.id=e.id_usuario where id_exemplar=?");
-//		select_pagar_multas = conexao.prepareStatement("select e.id_usuario, u.nome, sum(multa) from emprestimo e join usuario u on u.id=e.id_usuario where e.situacao=1 and e.pagamento_multa=1 group by e.id_usuario, u.nome");
-//	}
+
 	
 	public String proximo_fila_reserva(ObjectId id_livro)  {
 		Document livro = collection_livro.find(eq("_id", id_livro)).first();
@@ -145,7 +147,6 @@ public class EmprestimoDAO {
 	public void renovar_emprestimo(ObjectId cid_emprestimo) throws Exception{
 	try {
 		Document emprestimo = collection_emprestimo.find(eq("_id", cid_emprestimo)).first();
-
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	    int dias = dias_emprestimo(new ObjectId(emprestimo.getString("id_usuario")));
 	    Calendar c = Calendar.getInstance();
@@ -176,16 +177,15 @@ public class EmprestimoDAO {
 	}
 	
 
-//	
-//	public void pagar_multa(int cid_usuario) throws InsertException, SelectException, JaCadastradoException{
-//		try {
-//			pagar_multa.setInt(1, cid_usuario);
-//			pagar_multa.execute();
-//		}catch (SQLException e) {
-//			throw new InsertException("Erro pagar multa");
-//		}	
-//	}
-//	
+	public void pagar_multa(String cid_usuario) throws Exception{
+		try {
+			Bson query = Filters.and(Filters.eq("id_usuario", cid_usuario), Filters.eq("situacao", 1));
+			collection_emprestimo.updateMany(query, combine(set("pagamento_multa", 0)));	
+		}catch (Exception e) {
+			throw new InsertException("Erro pagar multa");
+		}	
+	}
+	
 //	public void atualizar_multas() throws InsertException, SelectException, JaCadastradoException{
 //		try {
 //			atualizar_multas.execute();
@@ -202,40 +202,30 @@ public class EmprestimoDAO {
 //		}	
 //	}
 //	
-//	public String select_data_emprestimo(int cid_usuario) throws InsertException {
-//		try {
-//			select_data_emprestimo.setInt(1, cid_usuario);
-//			ResultSet rs = select_data_emprestimo.executeQuery();
-//			rs.next();
-//			return rs.getString(1);
-//		}catch (SQLException e) {
-//			throw new InsertException("Erro determinar a data de devolução do emprestimo");
-//		}
-//		
-//	}
-//	
-//	public List<Object> select_historico_exemplar(int id_exemplar) throws SelectException {
-//		List<Object> lista = new ArrayList<Object>();
-//		try {
-//			select_historico_exemplar.setInt(1, id_exemplar);
-//			ResultSet rs = select_historico_exemplar.executeQuery();
-//			while(rs.next()) {
-//				String situacao = "";
-//				String pagamento_multa = "";
-//
-//				if(rs.getInt(6) == 0) situacao="Não devolvido";
-//				else situacao="Devolvido";
-//				
-//				if(rs.getInt(8) == 1) pagamento_multa="Em aberto";
-//				else pagamento_multa = "Pago";
-//				Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getString(3),rs.getString(4),rs.getString(5), situacao, rs.getDouble(7), pagamento_multa};
-//				lista.add(linha);
-//			}
-//		}catch(SQLException e) {
-//			throw new SelectException("Erro ao buscar historico para adicionar");
-//		}
-//		return lista;
-//	}	
+
+	public List<Object> select_historico_exemplar(String id_exemplar) throws Exception {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+			MongoIterable<Document> emprestimos = collection_emprestimo.find(eq("id_exemplar", id_exemplar));
+			for(Document emprestimo : emprestimos) {
+				Document usuario = collection_usuario.find(eq("_id", new ObjectId(emprestimo.getString("id_usuario")))).first();
+				String situacao = "";
+				String pagamento_multa = "";
+				
+				if(emprestimo.getInteger("situacao") == 0) situacao="Não devolvido";
+				else situacao="Devolvido";
+
+				if(emprestimo.getInteger("pagamento_multa") == 1) pagamento_multa="Em aberto";
+				else pagamento_multa = "Pago";
+				
+				Object[] linha  = {emprestimo.getObjectId("_id"), usuario.getString("nome"), emprestimo.getString("data_empr"), emprestimo.getString("data_est_entr"), emprestimo.getString("data_real_entr"), situacao, emprestimo.getDouble("multa"), pagamento_multa};
+				lista.add(linha);		
+			}
+		}catch(Exception e) {
+			throw new SelectException("Erro ao buscar historico para adicionar");
+		}
+		return lista;
+	}	
 	
 	public List<Object> select_emprestimos_correntes() throws Exception {
 		List<Object> lista = new ArrayList<Object>();
@@ -253,23 +243,24 @@ public class EmprestimoDAO {
 		}
 		return lista;
 	}
-//
-//	public List<Object> select_pagar_multas() throws SelectException {
-//		List<Object> lista = new ArrayList<Object>();
-//		try {
-//			ResultSet rs = select_pagar_multas.executeQuery();
-//			while(rs.next()) {
-//				if(rs.getDouble(3)>0) {
-//					Object[] linha  = {rs.getInt(1), rs.getString(2), rs.getDouble(3)};
-//					lista.add(linha);
-//				}
-//				
-//			}
-//		}catch(SQLException e) {
-//			throw new SelectException("Erro ao buscar multas");
-//		}
-//		return lista;
-//	}
+
+	public List<Object> select_pagar_multas() throws Exception {
+		List<Object> lista = new ArrayList<Object>();
+		try {
+	        Document matchStage = new Document("$match", new Document("situacao", 1).append("pagamento_multa", 1));
+	        Document groupStage = new Document("$group", new Document("_id", "$id_usuario").append("total_multa", new Document("$sum", "$multa")));
+	        MongoCursor<Document> cursor = collection_emprestimo.aggregate(Arrays.asList(matchStage, groupStage)).iterator();
+	        while(cursor.hasNext()){
+	            Document result = cursor.next();
+				Document usuario = collection_usuario.find(eq("_id", new ObjectId(result.getString("_id")))).first();            
+	        	Object[] linha  = {result.getString("_id"), usuario.getString("nome"), result.getDouble("total_multa")};
+				lista.add(linha);
+	        }		
+		} catch(Exception e) {
+			throw new SelectException("Erro ao buscar multas");
+		}
+		return lista;
+	}
 	
 
 	public List<Object> select_reservas_ativas() throws Exception {

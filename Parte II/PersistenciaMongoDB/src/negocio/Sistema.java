@@ -214,17 +214,12 @@ public class Sistema {
 		emprestimoDAO.insert_reserva(cid_livro, cid_usuario);	
 	}
 	
-//	public void deletarReserva(String cid_livro, String cid_usuario) throws Exception {
-//		emprestimoDAO.delete_reserva(cid_livro, cid_usuario);
-//	}
-	
-	public void pagarMulta(int cid_usuario) throws InsertException, SelectException, JaCadastradoException {
-//		emprestimoDAO.pagar_multa(cid_usuario);
+	public void pagarMulta(String cid_usuario) throws Exception {
+		emprestimoDAO.pagar_multa(cid_usuario);
 	}
 	
-	public List<Object> HistoricoExemplar(int id_exemplar) throws SelectException{
-		return null;
-//		return emprestimoDAO.select_historico_exemplar(id_exemplar);
+	public List<Object> HistoricoExemplar(String id_exemplar) throws Exception{
+		return emprestimoDAO.select_historico_exemplar(id_exemplar);
 	}
 	
 	public void atualizaDatasReserva() throws InsertException, SelectException, JaCadastradoException {
@@ -239,9 +234,8 @@ public class Sistema {
 		return emprestimoDAO.select_emprestimos_correntes();
 	}
 	
-	public List<Object> listarMultas() throws SelectException{
-		return null;
-//		return emprestimoDAO.select_pagar_multas();
+	public List<Object> listarMultas() throws Exception{
+		return emprestimoDAO.select_pagar_multas();
 	}
 	
 	public List<Object> listarReservasAtivas() throws Exception{

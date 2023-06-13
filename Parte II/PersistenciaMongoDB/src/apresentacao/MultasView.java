@@ -118,6 +118,8 @@ public class MultasView extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setBounds(0, 0,  1930, 1080);
+
 
 		 
 		
@@ -273,9 +275,9 @@ public class MultasView extends JFrame {
 		pagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					sistema.pagarMulta(Integer.parseInt(String.valueOf((table.getValueAt(table.getSelectedRow(), 0)))));
+					sistema.pagarMulta(String.valueOf((table.getValueAt(table.getSelectedRow(), 0))));
 					atualizarTabela();
-				} catch (NumberFormatException | InsertException | SelectException | JaCadastradoException e1) {
+				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 			}
