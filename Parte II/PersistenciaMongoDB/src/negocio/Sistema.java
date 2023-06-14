@@ -222,12 +222,12 @@ public class Sistema {
 		return emprestimoDAO.select_historico_exemplar(id_exemplar);
 	}
 	
-	public void atualizaDatasReserva() throws InsertException, SelectException, JaCadastradoException {
-//		emprestimoDAO.verifica_datas_reservas();
+	public void atualizaDatasReserva() throws Exception {
+		emprestimoDAO.verifica_datas_reservas();
 	}
 	
-	public void atualizarMultas() throws InsertException, SelectException, JaCadastradoException {
-//		emprestimoDAO.atualizar_multas();
+	public void atualizarMultas() throws Exception {
+		emprestimoDAO.atualizar_multas();
 	}
 	
 	public List<Object> listarEmprestimosCorrentes() throws Exception{
@@ -243,7 +243,6 @@ public class Sistema {
 	}
 	
 	public List<Object> listarFilaReserva() throws Exception{
-//		return null;
 		return emprestimoDAO.select_fila_reserva();
 	}
 	

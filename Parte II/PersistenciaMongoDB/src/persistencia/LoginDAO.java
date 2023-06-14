@@ -51,7 +51,6 @@ public class LoginDAO {
 		} catch (Exception e) {
 			throw new Exception("Erro ao buscar funcionários cadastrados");
 		}
-		System.out.println(login);
 		return login;
 	}
 	

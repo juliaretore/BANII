@@ -113,19 +113,19 @@ public class EmprestimoView extends JFrame {
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowOpened(WindowEvent arg0) {
-				atualizarTabela();
-				atualizarTabela_2();
-				atualizarTabela_3();
 				try {
 					sistema.atualizaDatasReserva();
-				} catch (InsertException | SelectException | JaCadastradoException e) {
+				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, e.getMessage());
 				}
 				try {
 					sistema.atualizarMultas();
-				} catch (InsertException | SelectException | JaCadastradoException e) {
+				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, e.getMessage());
 				}
+				atualizarTabela();
+				atualizarTabela_2();
+				atualizarTabela_3();
 			}
 		});
 
@@ -418,7 +418,7 @@ public class EmprestimoView extends JFrame {
 		tfIdUsuario.setBackground(SystemColor.window);
 		tfIdUsuario.setEditable(false);
 		tfIdUsuario.setColumns(10);
-		tfIdUsuario.setBounds(1509, 12, 29, 29);
+		tfIdUsuario.setBounds(1340, 12, 198, 29);
 		contentPane.add(tfIdUsuario);
 		
 		JButton btnNewButton = new JButton("Deslogar");

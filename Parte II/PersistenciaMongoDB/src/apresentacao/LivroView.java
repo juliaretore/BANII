@@ -232,7 +232,7 @@ public class LivroView extends JFrame {
 		contentPane.add(layeredPane);
 		
 		tfCodigo = new JTextField();
-		tfCodigo.setBounds(127, 31, 33, 19);
+		tfCodigo.setBounds(127, 31, 282, 19);
 		layeredPane.add(tfCodigo);
 		tfCodigo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		tfCodigo.setEditable(false);
@@ -347,7 +347,7 @@ public class LivroView extends JFrame {
 		tfCodigo_1.setEditable(false);
 		tfCodigo_1.setColumns(10);
 		tfCodigo_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		tfCodigo_1.setBounds(127, 31, 33, 19);
+		tfCodigo_1.setBounds(127, 31, 282, 19);
 		layeredPane_1.add(tfCodigo_1);
 		
 		tfPrateleira = new JTextField();
@@ -603,7 +603,7 @@ public class LivroView extends JFrame {
 		tfIdUsuario.setBackground(SystemColor.window);
 		tfIdUsuario.setEditable(false);
 		tfIdUsuario.setColumns(10);
-		tfIdUsuario.setBounds(1518, 12, 29, 29);
+		tfIdUsuario.setBounds(1433, 12, 114, 29);
 		contentPane.add(tfIdUsuario);
 		
 		JButton btnNewButton = new JButton("Deslogar");

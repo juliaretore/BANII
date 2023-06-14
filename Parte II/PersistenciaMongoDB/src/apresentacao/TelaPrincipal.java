@@ -75,7 +75,7 @@ public class TelaPrincipal extends JFrame {
 		tfIdUsuario.setBackground(SystemColor.window);
 		tfIdUsuario.setEditable(false);
 		tfIdUsuario.setColumns(10);
-		tfIdUsuario.setBounds(1509, 12, 29, 29);
+		tfIdUsuario.setBounds(1383, 12, 155, 29);
 		contentPane.add(tfIdUsuario);
 		
 		JButton btnNewButton = new JButton("Deslogar");

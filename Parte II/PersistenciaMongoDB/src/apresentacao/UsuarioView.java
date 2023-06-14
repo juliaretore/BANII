@@ -246,7 +246,7 @@ public class UsuarioView extends JFrame {
 		tfNome.setColumns(10);
 		
 		tfCodigo = new JTextField();
-		tfCodigo.setBounds(127, 16, 189, 19);
+		tfCodigo.setBounds(127, 16, 282, 19);
 		layeredPane.add(tfCodigo);
 		tfCodigo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		tfCodigo.setEditable(false);
@@ -429,7 +429,7 @@ public class UsuarioView extends JFrame {
 		tfIdUsuario.setBackground(SystemColor.window);
 		tfIdUsuario.setEditable(false);
 		tfIdUsuario.setColumns(10);
-		tfIdUsuario.setBounds(1509, 12, 29, 29);
+		tfIdUsuario.setBounds(1356, 12, 182, 29);
 		contentPane.add(tfIdUsuario);
 		
 		JButton btnNewButton = new JButton("Deslogar");

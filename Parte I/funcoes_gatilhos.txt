@@ -111,7 +111,7 @@ begin
 	end if;
 end;
 $$ language plpgsql;
-
+pro
 
 ---------------------------------------------------------------------------------------------
 -- 4) cancelar a reserva caso passe do tempo limite de 7 dias (se tiver, passar para o proximo da fila de reservas)

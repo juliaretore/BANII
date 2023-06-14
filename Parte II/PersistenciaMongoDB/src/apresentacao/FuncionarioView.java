@@ -687,7 +687,7 @@ public class FuncionarioView extends JFrame {
 		tfIdUsuario.setBackground(SystemColor.window);
 		tfIdUsuario.setEditable(false);
 		tfIdUsuario.setColumns(10);
-		tfIdUsuario.setBounds(1511, 12, 29, 29);
+		tfIdUsuario.setBounds(1426, 12, 114, 29);
 		contentPane.add(tfIdUsuario);
 		
 		JButton btnNewButton = new JButton("Deslogar");
@@ -708,7 +708,7 @@ public class FuncionarioView extends JFrame {
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btnNewButton.setBounds(1658, 12, 133, 31);
+		btnNewButton.setBounds(1655, 12, 133, 31);
 		contentPane.add(btnNewButton);
 		
 		JLabel lblArtistasCadastrados_1 = new JLabel("ASSISTENTES CADASTRADOS");

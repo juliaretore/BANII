@@ -228,7 +228,6 @@ public class LivroDAO {
 		try {
             Bson query = Filters.and(
                     Filters.eq("livro", id_livro),
-                    Filters.eq("id_usuario_reserva", null),
                     Filters.ne("colecao", "Reserva"),
                     Filters.ne("colecao", "Fora de uso")
                     );

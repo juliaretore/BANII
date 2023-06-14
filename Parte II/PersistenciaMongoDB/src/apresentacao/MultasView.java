@@ -106,8 +106,15 @@ public class MultasView extends JFrame {
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowOpened(WindowEvent arg0) {
+				try {
+					sistema.atualizarMultas();
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, e.getMessage());
+				}
 				atualizarTabela();
 			}
+			
+			
 		});
 
 		setTitle("Gerenciar Multas");
